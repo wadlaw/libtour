@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+// datasource db {
+//     provider = "sqlite"
+//     url      = env("DATABASE_URL")
+// }
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Post {
+    id        Int      @id @default(autoincrement())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([name])
+}
+
+model Team {
+    id         String       @unique
+    teamName   String       @unique
+    linkName   String       @unique
+    points     Int          @default(0)
+    entrants   Entrant[]
+    teamPoints TeamPoints[]
+}
+
+model TeamPoints {
+    teamId   String
+    igCompId String
+    points   Int
+    team     Team   @relation(fields: [teamId], references: [id])
+    comp     Comp   @relation(fields: [igCompId], references: [igCompId])
+
+    @@unique([teamId, igCompId])
+}
+
+model Entrant {
+    id                Int           @id @default(autoincrement())
+    userId            String?       @unique
+    name              String        @unique
+    team              Team          @relation(fields: [teamId], references: [id])
+    teamId            String
+    captain           Boolean       @default(false)
+    entryPermission   Boolean       @default(false)
+    financePermission Boolean       @default(false)
+    compPermission    Boolean       @default(false)
+    adminPermission   Boolean       @default(false)
+    comps             CompEntrant[]
+    transactions      Transaction[]
+    user              User?         @relation(fields: [userId], references: [id])
+}
+
+model User {
+    id        String   @unique
+    firstName String
+    surname   String
+    email     String
+    avatarUrl String?
+    entrant   Entrant?
+}
+
+model Transaction {
+    id          Int          @id @default(autoincrement())
+    entrantId   Int
+    amount      Int
+    description String
+    type        String
+    netAmount   Int
+    igCompId    String?
+    winnings    Boolean      @default(false)
+    createdAt   DateTime     @default(now())
+    compEntry   CompEntrant? @relation(fields: [igCompId, entrantId], references: [compId, entrantId], onDelete: Cascade)
+    entrant     Entrant      @relation(fields: [entrantId], references: [id])
+    comp        Comp?        @relation(fields: [igCompId], references: [igCompId])
+}
+
+model Comp {
+    igCompId     String        @unique
+    shortName    String        @unique
+    name         String        @unique
+    date         DateTime
+    stableford   Boolean       @default(false)
+    open         Boolean       @default(false)
+    current      Boolean       @default(false)
+    completed    Boolean       @default(false)
+    entrants     CompEntrant[]
+    teamPoints   TeamPoints[]
+    transactions Transaction[]
+}
+
+model CompEntrant {
+    compId           String
+    entrantId        Int
+    position         Int?
+    igPosition       Int?
+    provisionalScore Int?
+    score            Int?
+    teamScore        Int?
+    noResult         Boolean       @default(false)
+    wildcard         Boolean       @default(false)
+    fee              Int           @default(500)
+    createdAt        DateTime      @default(now())
+    entrant          Entrant       @relation(fields: [entrantId], references: [id])
+    comp             Comp          @relation(fields: [compId], references: [igCompId])
+    transactions     Transaction[]
+
+    @@unique([compId, entrantId])
+}
+
+model CompPrizes {
+    prizePot Int  @id
+    first    Int
+    second   Int
+    third    Int?
+    fourth   Int?
+    fifth    Int?
+}

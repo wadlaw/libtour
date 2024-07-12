@@ -1,0 +1,550 @@
+"use client";
+
+import { api } from "~/trpc/react";
+import { useState, useTransition } from "react";
+import {
+  ProcessResults,
+  type ScrapedResultsType,
+  type ScrapedEclecticType,
+  GetEclectic,
+  type EntrantType,
+  type TeamType,
+  type CompEntrantType,
+  type TeamPointsType,
+  type TransactionType,
+} from "~/app/api/ig/results";
+import { Button } from "~/components/ui/button";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import LibMoney from "./lib-money";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "~/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/components/ui/table";
+import { EnterSomeoneButton } from "./enter-button";
+import { WithdrawSomeoneButton } from "./withdraw-button";
+import { Badge } from "~/components/ui/badge";
+import { toast } from "~/components/ui/use-toast";
+type ScrapeResultProps = {
+  eventId: string;
+};
+
+type ResultsObjectType = {
+  compEntrants: CompEntrantType[];
+  teamPoints: TeamPointsType[];
+  transactions: TransactionType[];
+  compId: string;
+};
+
+export function ScrapeResults({ eventId }: ScrapeResultProps) {
+  const [results, setResults] = useState<ScrapedResultsType | null>(null);
+  const [eclectic, setEclectic] = useState<ScrapedEclecticType | null>(null);
+  const [noShows, setNoShows] = useState<EntrantType[] | null>(null);
+  const [missingEntrants, setMissingEntrants] = useState<EntrantType[] | null>(
+    null,
+  );
+  const [missingWildcards, setMissingWildcards] = useState<TeamType[] | null>(
+    null,
+  );
+  // const [compEntrants, setCompEntrants] = useState<CompEntrantType[] | null>(
+  //   null,
+  // );
+  const [teamPoints, setTeamPoints] = useState<TeamPointsType[] | null>(null);
+  const [transactions, setTransactions] = useState<TransactionType[] | null>(
+    null,
+  );
+  const [resultsObject, setResultsObject] = useState<ResultsObjectType | null>(
+    null,
+  );
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const [isEclecticPending, startEclecticScrape] = useTransition();
+  const [isScrapePending, startScrape] = useTransition();
+
+  const open = api.comp.setOpen.useMutation({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries();
+      router.refresh();
+    },
+  });
+
+  const close = api.comp.setClosed.useMutation({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries();
+      router.refresh();
+    },
+  });
+
+  const processResults = () => {
+    startScrape(async () => {
+      const processedResults = await ProcessResults(eventId);
+      setResults(processedResults.results);
+      setMissingEntrants(processedResults.checks.missingEntrants);
+      setNoShows(processedResults.checks.noShows);
+      setMissingWildcards(processedResults.checks.missingWildcards);
+      // setCompEntrants(processedResults.resultsObject.compEntrants);
+      setTeamPoints(processedResults.resultsObject.teamPoints);
+      setTransactions(processedResults.resultsObject.transactions);
+      setResultsObject(processedResults.resultsObject);
+    });
+  };
+  const SendResults = api.comp.processResults.useMutation({
+    onSuccess: async () => {
+      toast({
+        title: `Processing Complete`,
+        description: "Competition results have been finalised",
+      });
+      await queryClient.invalidateQueries();
+      router.refresh();
+    },
+  });
+
+  const scrapeEclectic = () => {
+    startEclecticScrape(async () => {
+      const scrapedEclectic = await GetEclectic(eventId);
+      console.log("========Scraped Scores--------", scrapedEclectic);
+      setEclectic(scrapedEclectic);
+    });
+  };
+
+  return (
+    <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1  gap-4 lg:grid-cols-2">
+        <IGResults results={results} />
+        <IGLinks results={eclectic} />
+        <ProvisionalResults results={resultsObject} teamResults={teamPoints} />
+        {/* <TeamResults teamResults={teamPoints} /> */}
+        <Prizes prizes={transactions} />
+        <div className="grid grid-cols-1 gap-4">
+          <MissingEntrants entrants={missingEntrants} compId={eventId} />
+          <NoShows entrants={noShows} compId={eventId} />
+          <MissingWildcards teams={missingWildcards} />
+        </div>
+      </div>
+      <div className="w-100 flex flex-wrap justify-items-start gap-2">
+        <Button onClick={() => open.mutate(eventId)}>Open</Button>
+        <Button className="" onClick={() => close.mutate(eventId)}>
+          Close
+        </Button>
+        {/* <Button className="" onClick={scrape}>
+          Scrape Results
+        </Button> */}
+        <Button
+          className=""
+          onClick={processResults}
+          disabled={isScrapePending}
+        >
+          Process Results
+        </Button>
+        <Button
+          onClick={() => {
+            if (resultsObject) {
+              SendResults.mutate(resultsObject);
+            }
+          }}
+          disabled={resultsObject === null}
+        >
+          Finalise Results
+        </Button>
+        <Button onClick={scrapeEclectic} disabled={isEclecticPending}>
+          Process Eclectic
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+interface IGResultsProps {
+  results: ScrapedResultsType | null;
+}
+
+function IGResults({ results }: IGResultsProps) {
+  if (!results) return null;
+
+  return (
+    <Card className="w-[350px_1fr]">
+      <CardHeader>
+        <CardTitle>IG Results</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Pos</TableHead>
+
+              <TableHead>Name</TableHead>
+              <TableHead className="text-right">Score</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {results.scrapedResults.map((result) => {
+              return (
+                <TableRow key={result.entrantName}>
+                  <TableCell>{result.igPosition}</TableCell>
+                  <TableCell>{result.entrantName}</TableCell>
+                  <TableCell className="text-right">{result.score}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  );
+}
+
+interface IGLinksProps {
+  results: ScrapedEclecticType | null;
+}
+
+function IGLinks({ results }: IGLinksProps) {
+  if (!results) return null;
+
+  return (
+    <div className="flex flex-col">
+      {results.scrapedScores.map((result) => {
+        return (
+          <div className="grid grid-cols-2 gap-1" key={result.entrant}>
+            <div className="flex justify-between">
+              <div>{result.entrant}</div>
+              <div>{result.handicap}</div>
+            </div>
+            <div className="grid grid-cols-18 gap-1">
+              {result.scores.map((score) => {
+                return (
+                  <div className="text-right" key={score.hole}>
+                    {score.score}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// interface TeamResultsProps {
+//   teamResults: TeamPointsType[] | null;
+// }
+
+// function TeamResults({ teamResults }: TeamResultsProps) {
+//   if (!teamResults) return null;
+
+//   return (
+//     <Card className="w-[350px_1fr]">
+//       <CardHeader>
+//         <CardTitle>Team Results</CardTitle>
+//       </CardHeader>
+//       <CardContent>
+//         <Table>
+//           <TableHeader>
+//             <TableRow>
+//               <TableHead>Team</TableHead>
+
+//               <TableHead className="hidden text-center sm:table-cell">
+//                 Best
+//               </TableHead>
+//               <TableHead className="hidden text-center sm:table-cell">
+//                 2nd
+//               </TableHead>
+//               <TableHead className="text-center">Total</TableHead>
+//               <TableHead className="text-center">Best Pos</TableHead>
+//               <TableHead className="text-center">Points</TableHead>
+//             </TableRow>
+//           </TableHeader>
+//           <TableBody>
+//             {teamResults.map((teamResult) => {
+//               return (
+//                 <TableRow key={teamResult.teamId}>
+//                   <TableCell>{teamResult.teamName}</TableCell>
+//                   <TableCell className="hidden text-center sm:table-cell">
+//                     {teamResult.bestScore}
+//                   </TableCell>
+//                   <TableCell className="hidden text-center sm:table-cell">
+//                     {teamResult.secondScore}
+//                   </TableCell>
+//                   <TableCell className="text-center">
+//                     {teamResult.bestScore + teamResult.secondScore}
+//                   </TableCell>
+//                   <TableCell className="text-center">
+//                     {teamResult.bestFinish}
+//                   </TableCell>
+//                   <TableCell className="text-center">
+//                     {teamResult.points}
+//                   </TableCell>
+//                 </TableRow>
+//               );
+//             })}
+//           </TableBody>
+//         </Table>
+//       </CardContent>
+//     </Card>
+//   );
+// }
+
+interface PrizesProps {
+  prizes: TransactionType[] | null;
+}
+
+function Prizes({ prizes }: PrizesProps) {
+  if (!prizes) return null;
+
+  return (
+    <Card className="w-[350px_1fr]">
+      <CardHeader>
+        <CardTitle>Prizes</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Entrant</TableHead>
+              <TableHead className="text-right">£</TableHead>
+              <TableHead>Desc</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {prizes.map((prize) => {
+              return (
+                <TableRow key={`${prize.entrantId}${prize.description}`}>
+                  <TableCell>{prize.entrantName}</TableCell>
+                  <TableCell className="text-right">
+                    <LibMoney amountInPence={prize.amount} />
+                  </TableCell>
+                  <TableCell>{prize.description}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  );
+}
+
+interface ProvisionalResultsProps {
+  results: ResultsObjectType | null;
+  teamResults: TeamPointsType[] | null;
+}
+
+function ProvisionalResults({ results, teamResults }: ProvisionalResultsProps) {
+  if (!results && !teamResults) return null;
+
+  return (
+    <Card className="w-[350px_1fr]">
+      {results && (
+        <>
+          <CardHeader>
+            <CardTitle>Provisional Lib Results</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Pos</TableHead>
+                  <TableHead>Entrant</TableHead>
+                  <TableHead className="hidden sm:table-cell">Team</TableHead>
+                  <TableHead className="text-right">Score</TableHead>
+                  <TableHead className="text-right">Team score</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {results.compEntrants.map((entrant) => {
+                  return (
+                    <TableRow key={entrant.entrantId}>
+                      <TableCell>{entrant.position}</TableCell>
+                      <TableCell>
+                        <span className="mr-1">{entrant.entrantName}</span>
+                        {entrant.wildcard ? <Badge>WC</Badge> : ""}
+                      </TableCell>
+                      <TableCell className="hidden sm:table-cell">
+                        {entrant.teamName}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {entrant.noResult ? "NR" : entrant.score}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {entrant.noResult ? "NR" : entrant.teamScore}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </>
+      )}
+      {teamResults && (
+        <>
+          <CardHeader>
+            <CardTitle>Team Results</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Team</TableHead>
+
+                  <TableHead className="hidden text-center sm:table-cell">
+                    Best
+                  </TableHead>
+                  <TableHead className="hidden text-center sm:table-cell">
+                    2nd
+                  </TableHead>
+                  <TableHead className="text-center">Total</TableHead>
+                  <TableHead className="text-center">Best Pos</TableHead>
+                  <TableHead className="text-center">Points</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {teamResults.map((teamResult) => {
+                  return (
+                    <TableRow key={teamResult.teamId}>
+                      <TableCell>{teamResult.teamName}</TableCell>
+                      <TableCell className="hidden text-center sm:table-cell">
+                        {teamResult.bestScore}
+                      </TableCell>
+                      <TableCell className="hidden text-center sm:table-cell">
+                        {teamResult.secondScore}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {teamResult.bestScore + teamResult.secondScore}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {teamResult.bestFinish}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {teamResult.points}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </>
+      )}
+    </Card>
+  );
+}
+
+interface MissingEntrantsProps {
+  entrants: EntrantType[] | null;
+  compId: string;
+}
+
+function MissingEntrants({ entrants, compId }: MissingEntrantsProps) {
+  if (!entrants || entrants.length === 0) return null;
+
+  return (
+    <Card className="w-[350px_1fr]">
+      <CardHeader>
+        <CardTitle>Not Entered</CardTitle>
+        <CardDescription>
+          Didn&apos;t enter the Lib, but entered on IG!
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableBody>
+            {entrants.map((entrant) => {
+              return (
+                <TableRow key={entrant.id}>
+                  <TableCell>{entrant.name}</TableCell>
+                  <TableCell>
+                    <EnterSomeoneButton
+                      entrantId={entrant.id}
+                      compId={compId}
+                    />
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  );
+}
+
+interface NoShowsProps {
+  entrants: EntrantType[] | null;
+  compId: string;
+}
+
+function NoShows({ entrants, compId }: NoShowsProps) {
+  if (!entrants || entrants.length === 0) return null;
+
+  return (
+    <Card className="w-[350px_1fr]">
+      <CardHeader>
+        <CardTitle>No Shows</CardTitle>
+        <CardDescription>Entered the Lib, but not on IG!</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableBody>
+            {entrants.map((entrant) => {
+              return (
+                <TableRow key={entrant.id}>
+                  <TableCell>{entrant.name}</TableCell>
+                  <TableCell>
+                    <WithdrawSomeoneButton
+                      entrantId={entrant.id}
+                      compId={compId}
+                    />
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  );
+}
+
+interface MissingWildcardsProps {
+  teams: TeamType[] | null;
+}
+
+function MissingWildcards({ teams }: MissingWildcardsProps) {
+  if (!teams || teams.length === 0) {
+    return null;
+  }
+
+  return (
+    <Card className="w-[350px_1fr]">
+      <CardHeader>
+        <CardTitle>Missing wildcards</CardTitle>
+        <CardDescription>Teams that have no wildcard selected</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableBody>
+            {teams.map((team) => {
+              return (
+                <TableRow key={team.teamId}>
+                  <TableCell className="text-center">{team.teamName}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  );
+}
