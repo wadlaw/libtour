@@ -88,7 +88,7 @@ export async function GetResults(compId: string): Promise<ScrapedResultsType> {
   }
   const urlStub = 'https://redlibbets.intelligentgolf.co.uk/'
   const url = `${urlStub}competition.php?compid=${compId}`;
-  const browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome' });
+  const browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox', '--disable-setuid-sandbox'] });
   const page = await browser.newPage();
   await page.goto(url);
   const loginElement = await page.waitForSelector("#login");
@@ -399,7 +399,7 @@ export async function GetEclectic(compId: string): Promise<ScrapedEclecticType> 
   const url = `${urlStub}competition.php?compid=${compId}`;
   let browser
   try {
-    browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome' });
+    browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome',args: ['--no-sandbox', '--disable-setuid-sandbox'] }, );
     const page = await browser.newPage();
     await page.goto(url);
     const loginElement = await page.waitForSelector("#login");
