@@ -1,4 +1,5 @@
-import { type Entrant } from "@prisma/client";
+
+import { Prisma, type Entrant } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 // import { error } from "console";
 
@@ -88,6 +89,7 @@ export const compRouter = createTRPCRouter({
                     description: 'Entry Fee',
                     type: 'DR',
                     netAmount: -500,
+                    createdAt: comp.date
                   }
                 ]
               }
@@ -310,8 +312,10 @@ export const compRouter = createTRPCRouter({
   getNonEntrants: publicProcedure
     .input(z.object({ comp: z.string().min(3) }))
     .query(({ ctx, input }) => {
-      
-    return ctx.db.$queryRaw<Entrant[]>`SELECT e.* FROM Entrant e JOIN Comp c LEFT JOIN CompEntrant ce ON c.igCompId = ce.compId AND e.id = ce.entrantId LEFT JOIN Team t ON e.teamId = t.id WHERE c.igCompId = ${input.comp} AND ce.createdAt is null ORDER BY t.teamName, e.name`
+      console.log("Prisma.sql:",Prisma.sql`SELECT e.* FROM "Entrant" e CROSS JOIN "Comp" c LEFT JOIN "CompEntrant" ce ON c."igCompId" = ce."compId" AND e."id" = ce."entrantId" LEFT JOIN "Team" t ON e."teamId" = t.id WHERE (c."igCompId" = '${input.comp}' OR c."shortName" = '${input.comp}') AND ce."createdAt" is null ORDER BY t."teamName", e."name";`)
+      console.log(`calling getNonEntrants for ${input.comp}==========================`)
+    return ctx.db.$queryRaw<Entrant[]>(Prisma.sql`SELECT e.* FROM "Entrant" e CROSS JOIN "Comp" c LEFT JOIN "CompEntrant" ce ON c."igCompId" = ce."compId" AND e."id" = ce."entrantId" LEFT JOIN "Team" t ON e."teamId" = t.id WHERE (c."igCompId" = ${input.comp} OR c."shortName" = ${input.comp}) AND ce."createdAt" is null ORDER BY t."teamName", e."name";`)
+    
   }),
 
   getList: publicProcedure.query(({ ctx }) => {
@@ -372,12 +376,6 @@ export const compRouter = createTRPCRouter({
   }),
 
   
-
-  getLatest: publicProcedure.query(({ ctx }) => {
-    return ctx.db.post.findFirst({
-      orderBy: { createdAt: "desc" },
-    });
-  }),
 
   setOpen: entryProcedure
     .input(z.string().min(4))

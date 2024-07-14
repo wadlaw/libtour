@@ -3,7 +3,7 @@ import LibMain, {
   LibH1,
 } from "~/app/_components/lib-elements";
 
-import PrizeMoneyTable from "~/app/_components/prize-money";
+import PrizeMoneyTable from "~/app/_components/prize-money/prize-money";
 
 export const metadata = {
   title: "Libtour Prizewinners",

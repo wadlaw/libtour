@@ -671,10 +671,10 @@ async function main() {
   })
 
   const malk = await prisma.entrant.upsert({
-    where: { name: 'Malk Dhami'},
+    where: { name: 'Malkinder Dhami'},
     update: {},
     create: {
-        name: 'Malk Dhami',
+        name: 'Malkinder Dhami',
         teamId: 'SH',
         captain: false,
         transactions: {

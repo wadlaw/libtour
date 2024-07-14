@@ -175,11 +175,12 @@ export default async function EventEntrants({
 
 export async function EventNonEntrants({ compId, isOpen }: EventEntrantsProps) {
   const { sessionClaims } = auth();
-  const entrants = await api.comp.getNonEntrants({ comp: compId });
+  const nonEntrants = await api.comp.getNonEntrants({ comp: compId });
   const teams = await api.team.getAll();
 
-  if (!entrants) return <p>No results</p>;
-  if (entrants.length == 0)
+  if (!nonEntrants) return <p>No results</p>;
+  if (nonEntrants.length == 0) {
+    console.log("nonEntrants===================", nonEntrants);
     return (
       <div className="py-4">
         {isOpen
@@ -187,6 +188,8 @@ export async function EventNonEntrants({ compId, isOpen }: EventEntrantsProps) {
           : `Event not open to enter just yet`}
       </div>
     );
+  }
+
   return (
     <div className="xl:xm-0 mx-1 mb-1 grid w-[calc(100vw-8px)] grid-cols-1 sm:mx-2 sm:mb-2 sm:w-[calc(100vw-16px)] xl:mb-4 xl:w-[min(100vw,1280px)]">
       <Card className="">
@@ -211,7 +214,7 @@ export async function EventNonEntrants({ compId, isOpen }: EventEntrantsProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {entrants.map((entrant) => (
+              {nonEntrants.map((entrant) => (
                 <TableRow key={entrant.id}>
                   <TableCell className="font-medium">{`${entrant.name}`}</TableCell>
                   <TableCell>

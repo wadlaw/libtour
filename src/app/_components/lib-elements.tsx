@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 
 export default function LibMain(props: { children: React.ReactNode }) {
   return (
-    <main className="mx-auto flex min-h-[calc(100vh-41px)] max-w-screen-xl flex-col items-center items-stretch justify-evenly pb-1 pt-4 sm:pb-2 xl:pb-4">
+    <main className="mx-auto flex min-h-[calc(100vh-41px)] max-w-screen-xl flex-col items-stretch justify-evenly pb-1 pt-4 sm:pb-2 xl:pb-4">
       {props.children}
     </main>
   );

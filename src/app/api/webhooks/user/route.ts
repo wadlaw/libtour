@@ -2,10 +2,11 @@ import { db } from '~/server/db'
 import { z } from 'zod'
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
-import { type WebhookEvent } from '@clerk/nextjs/server'
+import { WebhookEvent } from '@clerk/nextjs/server'
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
+  console.log("Webhook hit!=====================================")
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
 
   if (!WEBHOOK_SECRET) {
@@ -38,14 +39,17 @@ const PayloadSchema = z.object({
   })
 })
 
+PayloadSchema
 
-
-  const payload = PayloadSchema.parse(await req.json())
+  // const payload = PayloadSchema.parse(await req.json())
+  
+  const payload: unknown = await req.json()
+  
   const body = JSON.stringify(payload);
+
 
   // Create a new Svix instance with your secret.
   const wh = new Webhook(WEBHOOK_SECRET);
-
   let evt: WebhookEvent
 
   // Verify the payload with the headers
@@ -69,8 +73,8 @@ const PayloadSchema = z.object({
   const eventType = evt.type;
 
   if (['user.created', 'user.updated'].includes(eventType)) {
-    
-    const { first_name, last_name, image_url, profile_image_url } = payload.data;
+    const parsedData = PayloadSchema.parse(payload)
+    const { first_name, last_name, image_url, profile_image_url, email_addresses } = parsedData.data;
     
     if (!id) return new Response('Error occurred', {
       status: 400
@@ -81,14 +85,14 @@ const PayloadSchema = z.object({
       update: {
         firstName: first_name ?? 'FirstName',
         surname: last_name ?? 'LastName',
-        email: payload.data.email_addresses[0].email_address,
+        email: email_addresses[0].email_address,
         avatarUrl: image_url ?? profile_image_url ?? ''
       },
       create: {
         id: id,
         firstName: first_name ?? 'FirstName',
         surname: last_name ?? 'LastName',
-        email: payload.data.email_addresses[0].email_address,
+        email: email_addresses[0].email_address,
         avatarUrl: image_url ?? profile_image_url 
       },
     })

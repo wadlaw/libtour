@@ -8,11 +8,11 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { api } from "~/trpc/server";
-import LibMoney from "./lib-money";
+import LibMoney from "../lib-money";
 import Link from "next/link";
-import { TeamDisplay } from "./lib-elements";
+import { TeamDisplay } from "../lib-elements";
 
-type PrizeMoneyTableProps = {
+export type PrizeMoneyTableProps = {
   recordLimit?: number;
 };
 
