@@ -10,6 +10,10 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import { Badge } from "~/components/ui/badge";
+import { Suspense } from "react";
+import { Skeleton } from "~/components/ui/skeleton";
+import SkeletonTable from "~/app/_components/skeletons";
 
 export async function generateMetadata({
   params,
@@ -31,10 +35,50 @@ export default async function Entrant({
 }: {
   params: { entrantId: string };
 }) {
-  const entrant = await api.entrant.getOne({
-    entrantId: parseInt(params.entrantId),
-  });
+  return (
+    <Suspense fallback={<ContentSkeleton />}>
+      <Content entrantId={params.entrantId} />
+    </Suspense>
+  );
+}
 
+function ContentSkeleton() {
+  return (
+    <LibMain>
+      <div className="flex flex-col items-center">
+        <div className="overflow-hidden rounded-full">
+          <Skeleton className="m-4 h-[100px] w-[100px] overflow-hidden rounded-full" />
+        </div>
+
+        <Skeleton className="h-18 m-4 w-48" />
+
+        <Skeleton className="m-4 h-6 w-40" />
+      </div>
+      <div className="mx-1 mb-1 mt-4 grid w-full grid-cols-1 gap-4 sm:mx-2 sm:mb-2 xl:mx-0 xl:mb-4">
+        <LibCard title="Results">
+          <SkeletonTable
+            rows={8}
+            columnHeaders={[
+              { title: "Comp", width: "w-32" },
+              { title: "Date", width: "w-12" },
+              { title: " ", width: "w-12" },
+            ]}
+          />
+        </LibCard>
+      </div>
+    </LibMain>
+  );
+}
+
+type ContentProps = {
+  entrantId: string;
+};
+
+async function Content({ entrantId }: ContentProps) {
+  const entrant = await api.entrant.getOne({
+    entrantId: parseInt(entrantId),
+  });
+  // await new Promise((resolve) => setTimeout(resolve, 10000));
   const ordinal = (num: number) => {
     return num > 0
       ? ["th", "st", "nd", "rd"][
@@ -91,7 +135,8 @@ export default async function Entrant({
                   <TableRow key={comp.compId}>
                     <TableCell>
                       <Link href={`/events/${comp.comp.shortName}`}>
-                        {comp.comp.name}
+                        <span className="mr-1 sm:mr-2">{comp.comp.name}</span>
+                        {comp.wildcard ? <Badge>WC</Badge> : null}
                       </Link>
                     </TableCell>
                     <TableCell>

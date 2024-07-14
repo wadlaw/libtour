@@ -1,9 +1,14 @@
-"use client"
-export default function Error({ error, reset }) {
+"use client";
+
+import LibMain, { LibH1 } from "./_components/lib-elements";
+
+export default function Error() {
   return (
     <>
-      An error occurred: {error.message}
-      <button onClock={() => reset()}>Retry</button>
+      <LibMain>
+        <LibH1>Uh-oh</LibH1>
+        <p>Some kind of error has occurred. Sad face x100 &colon;&lpar;</p>
+      </LibMain>
     </>
   );
 }

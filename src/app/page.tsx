@@ -2,7 +2,6 @@ import LibMain, { LibCardContainer, LibH1 } from "./_components/lib-elements";
 import { LeagueTable } from "./_components/league-table";
 import { RecentEventList, UpcomingEventList } from "./_components/event-list";
 import PrizeMoneyTable from "./_components/prize-money/prize-money";
-import ErrorBoundaryWrapper from "./_components/ErrorBoundaryWrapper";
 
 export const metadata = {
   title: "Libtour - Home",
@@ -20,7 +19,6 @@ export default async function Home() {
         <UpcomingEventList />
         <RecentEventList />
         <LeagueTable />
-
         <PrizeMoneyTable recordLimit={8} />
       </LibCardContainer>
     </LibMain>

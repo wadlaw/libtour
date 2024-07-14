@@ -312,8 +312,7 @@ export const compRouter = createTRPCRouter({
   getNonEntrants: publicProcedure
     .input(z.object({ comp: z.string().min(3) }))
     .query(({ ctx, input }) => {
-      console.log("Prisma.sql:",Prisma.sql`SELECT e.* FROM "Entrant" e CROSS JOIN "Comp" c LEFT JOIN "CompEntrant" ce ON c."igCompId" = ce."compId" AND e."id" = ce."entrantId" LEFT JOIN "Team" t ON e."teamId" = t.id WHERE (c."igCompId" = '${input.comp}' OR c."shortName" = '${input.comp}') AND ce."createdAt" is null ORDER BY t."teamName", e."name";`)
-      console.log(`calling getNonEntrants for ${input.comp}==========================`)
+      
     return ctx.db.$queryRaw<Entrant[]>(Prisma.sql`SELECT e.* FROM "Entrant" e CROSS JOIN "Comp" c LEFT JOIN "CompEntrant" ce ON c."igCompId" = ce."compId" AND e."id" = ce."entrantId" LEFT JOIN "Team" t ON e."teamId" = t.id WHERE (c."igCompId" = ${input.comp} OR c."shortName" = ${input.comp}) AND ce."createdAt" is null ORDER BY t."teamName", e."name";`)
     
   }),
