@@ -33,12 +33,7 @@ There are currently 8 teams:
 
 Entry fees can be paid in cash to **Danny Innes**, **Tom Whitelaw**, **Greg Hammond** or **Chris O'Donoghue**.
 
-If you want to pay by **bank transfer**, please make payment as follows:
-
-> Mr Daniel Innes
-> Natwest
-> Account Number 34545522
-> Sort Code 60-06-33
+If you want to pay by **bank transfer**, please make payment by bank transfer. If you need details, please ask
 
 Please add your name and the name of the competition to the reference so your payment can be identified.
 
