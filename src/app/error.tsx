@@ -6,8 +6,10 @@ export default function Error() {
   return (
     <>
       <LibMain>
-        <LibH1>Uh-oh</LibH1>
-        <p>Some kind of error has occurred. Sad face x100 &colon;&lpar;</p>
+        <div className="flex flex-col items-center">
+          <LibH1>Uh-oh</LibH1>
+          <p>Some kind of error has occurred. Sad face x100 :(</p>
+        </div>
       </LibMain>
     </>
   );
