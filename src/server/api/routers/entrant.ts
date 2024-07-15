@@ -36,8 +36,12 @@ export const entrantRouter = createTRPCRouter({
                             }
                         },
                         include: {
-                            comp: true
-                                
+                            comp: true,
+                            transactions: {
+                                where: {
+                                    winnings: true
+                                }
+                            }  
                             }
                         },
                         

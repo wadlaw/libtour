@@ -14,6 +14,7 @@ import { Badge } from "~/components/ui/badge";
 import { Suspense } from "react";
 import { Skeleton } from "~/components/ui/skeleton";
 import SkeletonTable from "~/app/_components/skeletons";
+import LibMoney from "~/app/_components/lib-money";
 
 export async function generateMetadata({
   params,
@@ -61,7 +62,8 @@ function ContentSkeleton() {
             columnHeaders={[
               { title: "Comp", width: "w-32" },
               { title: "Date", width: "w-12" },
-              { title: " ", width: "w-12" },
+              { title: "Result", width: "w-12" },
+              { title: "Winnings", width: "w-12" },
             ]}
           />
         </LibCard>
@@ -124,32 +126,44 @@ async function Content({ entrantId }: ContentProps) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Comp</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead></TableHead>
+                <TableHead className="px-1 sm:px-2">Comp</TableHead>
+                <TableHead className="px-1 sm:px-2">Date</TableHead>
+                <TableHead className="px-1 sm:px-2">Results</TableHead>
+                <TableHead className="px-1 text-right sm:px-2">
+                  Winnings
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {entrant?.comps.map((comp) => {
                 return (
                   <TableRow key={comp.compId}>
-                    <TableCell>
+                    <TableCell className="px-1 sm:px-2">
                       <Link href={`/events/${comp.comp.shortName}`}>
                         <span className="mr-1 sm:mr-2">{comp.comp.name}</span>
                         {comp.wildcard ? <Badge>WC</Badge> : null}
                       </Link>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="px-1 sm:px-2">
                       {new Date(comp.comp.date).toLocaleDateString("en-GB", {
                         weekday: "short",
                         month: "long",
                         day: "numeric",
                       })}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="px-1 sm:px-2">
                       {comp.position
                         ? `${comp.position}${ordinal(comp.position)} (${comp.score ? comp.score : "NR"}${comp.comp.stableford ? !comp.noResult && "pts" : ""})`
                         : "Entered"}
+                    </TableCell>
+                    <TableCell className="px-1 text-right sm:px-2">
+                      <LibMoney
+                        hideZeros={true}
+                        amountInPence={comp.transactions.reduce(
+                          (acc, cur) => acc + cur.netAmount,
+                          0,
+                        )}
+                      />
                     </TableCell>
                   </TableRow>
                 );
