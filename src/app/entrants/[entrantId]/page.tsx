@@ -127,7 +127,9 @@ async function Content({ entrantId }: ContentProps) {
             <TableHeader>
               <TableRow>
                 <TableHead className="px-1 sm:px-2">Comp</TableHead>
-                <TableHead className="px-1 sm:px-2">Date</TableHead>
+                <TableHead className="hidden px-1 sm:table-cell sm:px-2">
+                  Date
+                </TableHead>
                 <TableHead className="px-1 sm:px-2">Results</TableHead>
                 <TableHead className="px-1 text-right sm:px-2">
                   Winnings
@@ -144,7 +146,7 @@ async function Content({ entrantId }: ContentProps) {
                         {comp.wildcard ? <Badge>WC</Badge> : null}
                       </Link>
                     </TableCell>
-                    <TableCell className="px-1 sm:px-2">
+                    <TableCell className="hidden px-1 sm:table-cell sm:px-2">
                       {new Date(comp.comp.date).toLocaleDateString("en-GB", {
                         weekday: "short",
                         month: "long",
