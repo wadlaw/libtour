@@ -108,7 +108,7 @@ export const accountRouter = createTRPCRouter({
         .query(({ ctx }) => {
             return ctx.db.entrant.findMany({
                 orderBy: [
-                    
+                    {team: {teamName: "asc"}},
                     {name: "asc"}
                 ]
                 ,
