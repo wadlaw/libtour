@@ -24,9 +24,10 @@ export const accountRouter = createTRPCRouter({
                 where: {
                     entrantId: ctx.entrant.id
                 },
-                orderBy: {
-                    createdAt: "desc"
-                },
+                orderBy: [
+                    {createdAt: "desc"},
+                    {id: "desc"}
+                ],
                 include: {
                     comp: true
                 }
@@ -67,9 +68,10 @@ export const accountRouter = createTRPCRouter({
                 
                 include: {
                     transactions: {
-                        orderBy: {
-                            createdAt: "desc"
-                        },
+                        orderBy: [
+                            {createdAt: "desc"},
+                            {id: "desc"}
+                        ],
                         include: {
                             comp: true
                         }
@@ -89,9 +91,10 @@ export const accountRouter = createTRPCRouter({
                 
                 include: {
                     transactions: {
-                        orderBy: {
-                            createdAt: "desc"
-                        },
+                        orderBy: [
+                            {createdAt: "desc"},
+                            {id: "desc"}
+                        ],
                         include: {
                             comp: true
                         }
