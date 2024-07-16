@@ -17,7 +17,7 @@ import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
-type TransationPopoverProps = {
+type TransactionPopoverProps = {
   entrantId: number;
   entrantName: string;
   type: "CR" | "DR";
@@ -27,7 +27,7 @@ export function TransactionPopover({
   entrantId,
   entrantName,
   type,
-}: TransationPopoverProps) {
+}: TransactionPopoverProps) {
   const [date, setDate] = useState<Date>(new Date());
   const [amount, setAmount] = useState<number>(5);
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
