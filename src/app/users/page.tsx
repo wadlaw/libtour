@@ -3,8 +3,17 @@ import LibMain, {
   LibCard,
   LibCardContainer,
   LibH1,
+  TeamDisplay,
 } from "~/app/_components/lib-elements";
 import UserSelect from "../_components/user-select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/components/ui/table";
 
 export const metadata = {
   title: "Libtour - User Setup",
@@ -22,28 +31,41 @@ export default async function Page() {
       </div>
       <LibCardContainer>
         <LibCard title="User/Entrant Mapping">
-          {entrants.map((entrant) => {
-            return (
-              <div
-                key={entrant.id}
-                className="mb-1 flex items-center justify-between border-t px-4 pt-1"
-              >
-                <div>{entrant.name}</div>
-                <UserSelect
-                  users={users.map((user) => {
-                    return {
-                      name: `${user.firstName} ${user.surname}`,
-                      id: user.id,
-                      entrantId: user.entrant?.id,
-                    };
-                  })}
-                  currentValue={entrant.userId}
-                  entrantId={entrant.id}
-                  entrantName={entrant.name}
-                />
-              </div>
-            );
-          })}
+          <Table>
+            <TableHeader>
+              <TableHead className="px-1 sm:px-2">Entrant</TableHead>
+              <TableHead className="px-1 sm:px-2">Team</TableHead>
+              <TableHead className="px-1  sm:px-2">Mapped User</TableHead>
+            </TableHeader>
+            <TableBody>
+              {entrants.map((entrant) => {
+                return (
+                  <TableRow key={entrant.id}>
+                    <TableCell className="px-1 sm:px-2">
+                      {entrant.name}
+                    </TableCell>
+                    <TableCell className="px-1 sm:px-2">
+                      <TeamDisplay team={entrant.team} />
+                    </TableCell>
+                    <TableCell className="px-1  sm:px-2">
+                      <UserSelect
+                        users={users.map((user) => {
+                          return {
+                            name: `${user.firstName} ${user.surname}`,
+                            id: user.id,
+                            entrantId: user.entrant?.id,
+                          };
+                        })}
+                        currentValue={entrant.userId}
+                        entrantId={entrant.id}
+                        entrantName={entrant.name}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
         </LibCard>
       </LibCardContainer>
     </LibMain>

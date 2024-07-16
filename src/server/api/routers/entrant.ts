@@ -9,7 +9,7 @@ export const entrantRouter = createTRPCRouter({
         .query(({ ctx }) => {
             return ctx.db.entrant.findMany({
                 orderBy: [
-                    {teamId: "asc"},
+                    {team: {teamName: "asc"}},
                     {name: "asc"},
                 ],
                 include: {
