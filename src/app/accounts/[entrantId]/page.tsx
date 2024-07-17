@@ -7,6 +7,7 @@ import LibMain, {
 import { EntrantTransactions } from "~/app/_components/transactions";
 import { BalanceDisplay } from "~/app/_components/balance";
 import Link from "next/link";
+import { TransactionPopover } from "~/app/_components/account-transactions";
 
 export async function generateMetadata({
   params,
@@ -50,6 +51,18 @@ export default async function EntrantAccount({
               0,
             )}
             negativeRed={true}
+          />
+        </div>
+        <div className="mt-2 flex gap-4">
+          <TransactionPopover
+            entrantId={entrant.id}
+            entrantName={entrant.name}
+            type="CR"
+          />
+          <TransactionPopover
+            entrantId={entrant.id}
+            entrantName={entrant.name}
+            type="DR"
           />
         </div>
       </div>
