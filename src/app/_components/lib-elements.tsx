@@ -22,18 +22,20 @@ export function LibH1(props: { children: React.ReactNode }) {
 type TeamDisplayProps = {
   team: { id: string; linkName: string; teamName: string };
   alwaysDisplayLogo?: boolean;
+  iconOnlyWhenSmall?: boolean;
 };
 
 export function TeamDisplay({
   team,
   alwaysDisplayLogo = false,
+  iconOnlyWhenSmall = false,
 }: TeamDisplayProps) {
   if (!team) return null;
   return (
     <Link href={`/teams/${team.linkName}`}>
       <div className="flex items-center justify-start">
         <div
-          className={`mr-2 ${!alwaysDisplayLogo && "hidden"} overflow-hidden rounded-full sm:block`}
+          className={`${iconOnlyWhenSmall ? "sm:mr-2" : "mr-2"} ${!alwaysDisplayLogo && "hidden"} overflow-hidden rounded-full sm:block`}
         >
           <Image
             src={`/${team.linkName}.png`}
@@ -42,7 +44,9 @@ export function TeamDisplay({
             alt="Team Logo"
           ></Image>
         </div>
-        <div>{team.teamName}</div>
+        <div className={`${iconOnlyWhenSmall && "hidden"} sm:block`}>
+          {team.teamName}
+        </div>
       </div>
     </Link>
   );

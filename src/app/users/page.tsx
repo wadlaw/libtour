@@ -45,7 +45,11 @@ export default async function Page() {
                       {entrant.name}
                     </TableCell>
                     <TableCell className="px-1 sm:px-2">
-                      <TeamDisplay team={entrant.team} />
+                      <TeamDisplay
+                        team={entrant.team}
+                        iconOnlyWhenSmall={true}
+                        alwaysDisplayLogo={true}
+                      />
                     </TableCell>
                     <TableCell className="px-1  sm:px-2">
                       <UserSelect
