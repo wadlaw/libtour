@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
+import { Spinner } from "./lib-elements";
 
 type WithdrawButtonProps = {
   compId: string;
@@ -86,7 +87,7 @@ export default function WithdrawButton({
             type="submit"
             disabled={withdraw.isPending}
           >
-            Withdraw
+            {withdraw.isPending ? <Spinner /> : "Withdraw"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -141,7 +142,7 @@ export function WithdrawSomeoneButton({
         type="submit"
         disabled={withdraw.isPending}
       >
-        Withdraw
+        {withdraw.isPending ? <Spinner /> : "Withdraw"}
       </Button>
     </form>
   );

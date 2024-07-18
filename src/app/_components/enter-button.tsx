@@ -5,6 +5,7 @@ import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useToast } from "~/components/ui/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { Spinner } from "./lib-elements";
 
 type EnterButtonProps = {
   compId: string;
@@ -45,7 +46,7 @@ export default function EnterButton({ compId, compName }: EnterButtonProps) {
       }}
     >
       <Button className="w-24" type="submit" disabled={enter.isPending}>
-        Enter
+        {enter.isPending ? <Spinner /> : "Enter"}
       </Button>
     </form>
   );
@@ -95,7 +96,7 @@ export function EnterSomeoneButton({
       }}
     >
       <Button className="w-24" type="submit" disabled={enter.isPending}>
-        Enter
+        {enter.isPending ? <Spinner /> : "Enter"}
       </Button>
     </form>
   );

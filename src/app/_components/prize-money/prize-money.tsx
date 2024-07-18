@@ -11,6 +11,7 @@ import { api } from "~/trpc/server";
 import LibMoney from "../lib-money";
 import Link from "next/link";
 import { TeamDisplay } from "../lib-elements";
+import { Suspense } from "react";
 
 export type PrizeMoneyTableProps = {
   recordLimit?: number;
@@ -31,6 +32,7 @@ export default async function PrizeMoneyTable({
       <CardContent>
         <Table>
           <TableHeader>
+
             <TableRow>
               <TableHead className="px-1 sm:px-2">Entrant</TableHead>
               <TableHead className="px-1 sm:px-2">Team</TableHead>
@@ -43,6 +45,7 @@ export default async function PrizeMoneyTable({
             </TableRow>
           </TableHeader>
           <TableBody>
+            <Suspense>
             {prizes.map((entrant) => {
               return (
                 <TableRow key={entrant.id}>
@@ -57,7 +60,7 @@ export default async function PrizeMoneyTable({
                         teamName: entrant.teamName,
                       }}
                       alwaysDisplayLogo={true}
-                    />
+                      />
                   </TableCell>
                   <TableCell className="hidden px-1 text-center sm:table-cell sm:px-2">
                     {Number(entrant.prizeCount)}
@@ -68,6 +71,7 @@ export default async function PrizeMoneyTable({
                 </TableRow>
               );
             })}
+            </Suspense>
           </TableBody>
         </Table>
       </CardContent>

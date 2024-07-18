@@ -4,6 +4,7 @@ import { api } from "~/trpc/react";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useToast } from "~/components/ui/use-toast";
+import { Spinner } from "./lib-elements";
 
 type RemoveWildcardButtonProps = {
   compId: string;
@@ -44,7 +45,7 @@ export default function RemoveWildcardButton({
         type="submit"
         disabled={removeWildcard.isPending}
       >
-        Remove WC
+        {removeWildcard.isPending ? <Spinner /> : "Remove WC"}
       </Button>
     </form>
   );

@@ -1,6 +1,6 @@
 "use server";
 
-import puppeteer from "puppeteer";
+import puppeteer, { type PuppeteerLaunchOptions, type Browser } from "puppeteer";
 import { api } from "~/trpc/server";
 import { auth } from "@clerk/nextjs/server";
 import { z } from 'zod'
@@ -88,7 +88,11 @@ export async function GetResults(compId: string): Promise<ScrapedResultsType> {
   }
   const urlStub = 'https://redlibbets.intelligentgolf.co.uk/'
   const url = `${urlStub}competition.php?compid=${compId}`;
-  const browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+  
+  const BrowserArgsSchema = z.object({ executablePath: z.string().optional(), args: z.string().array().optional()})  
+  const browserArgs: PuppeteerLaunchOptions = BrowserArgsSchema.parse(JSON.parse(process.env.PUPPETEER_BROWSER_ARGS ?? '{}'))
+    
+  const browser = await puppeteer.launch(browserArgs);
   const page = await browser.newPage();
   await page.goto(url);
   const loginElement = await page.waitForSelector("#login");
@@ -235,13 +239,7 @@ export async function ProcessResults(compId: string): Promise<ScrapedResultsChec
     }
       
   })
-console.log('results', results.map(result => {return {
-  entrant: result.entrant.name,
-  score: result.score,
-  teamScore: result.teamScore,
-  wildcard: result.wildcard,
-  nr: result.noResult
-}}))
+
 
   //find top scoring teams
   teamResults.sort((a, b) => {
@@ -254,7 +252,7 @@ console.log('results', results.map(result => {return {
     team.position = index + 1
     team.points = 8 - index
   })
-  console.log("Team order", teamResults)
+  
 
   //Find winning team
   const winningTeam = teamResults[0]
@@ -274,17 +272,7 @@ console.log('results', results.map(result => {return {
     if (prizeBreakdown?.fourth) {prizes.push({...results[3], prize: prizeBreakdown.fourth, prizeDescription: "4th Place Winnings"})}
     if (prizeBreakdown?.fifth) {prizes.push({...results[4], prize: prizeBreakdown.fifth, prizeDescription: "5th Place Winnings"})}
   }
-  console.log('prizes', prizes.map(prize => {
-    return {
-      name: prize.entrant?.name,
-      prize: `£${prize.prize}`
-    }
-  }))
-  console.log('refunds', refundEntrants.map(ref => {
-    return {
-      name: ref.entrant.name
-    }
-  }))
+  
 
   const returnObject = {
     results: igResults,
@@ -397,9 +385,13 @@ export async function GetEclectic(compId: string): Promise<ScrapedEclecticType> 
   
   const urlStub = 'https://redlibbets.intelligentgolf.co.uk/'
   const url = `${urlStub}competition.php?compid=${compId}`;
-  let browser
+  let browser: Browser | undefined
   try {
-    browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome',args: ['--no-sandbox', '--disable-setuid-sandbox'] }, );
+    // browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome',args: ['--no-sandbox', '--disable-setuid-sandbox'] }, );
+    const BrowserArgsSchema = z.object({ executablePath: z.string().optional(), args: z.string().array().optional()})
+    
+    const browserArgs: PuppeteerLaunchOptions = BrowserArgsSchema.parse(JSON.parse(process.env.PUPPETEER_BROWSER_ARGS ?? '{}'))
+    const browser = await puppeteer.launch(browserArgs);
     const page = await browser.newPage();
     await page.goto(url);
     const loginElement = await page.waitForSelector("#login");
@@ -456,7 +448,7 @@ export async function GetEclectic(compId: string): Promise<ScrapedEclecticType> 
         if (hcp) {
           const chop = hcp.trim().replace(/[\u200B-\u200D\uFEFF]/g, '').substring(result.entrantName.length)
           scrape.handicap =  chop.substring(chop.indexOf("(")+1,chop.indexOf(")"))
-          console.log({entrant: result.entrantName, nameLength: result.entrantName.length, fulltext: hcp, chop: chop, final: scrape.handicap})
+          
         } 
         const scores = await page.$$eval('#rounds>table:nth-child(1)>tbody>tr:nth-child(5)>td>span', (elems: HTMLSpanElement[]) => {
           return Array.from(elems, (elem, index) => {

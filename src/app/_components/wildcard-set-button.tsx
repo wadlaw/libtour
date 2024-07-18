@@ -4,6 +4,7 @@ import { api } from "~/trpc/react";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useToast } from "~/components/ui/use-toast";
+import { Spinner } from "./lib-elements";
 
 type SetWildcardButtonProps = {
   compId: string;
@@ -39,7 +40,7 @@ export default function SetWildcardButton({
       }}
     >
       <Button className="w-28" type="submit" disabled={setWildcard.isPending}>
-        Set Wildcard
+        {setWildcard.isPending ? <Spinner /> : "Set Wildcard"}
       </Button>
     </form>
   );

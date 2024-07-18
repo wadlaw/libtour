@@ -36,6 +36,7 @@ import { EnterSomeoneButton } from "./enter-button";
 import { WithdrawSomeoneButton } from "./withdraw-button";
 import { Badge } from "~/components/ui/badge";
 import { toast } from "~/components/ui/use-toast";
+import { Spinner } from "./lib-elements";
 type ScrapeResultProps = {
   eventId: string;
 };
@@ -145,6 +146,7 @@ export function ScrapeResults({ eventId }: ScrapeResultProps) {
           onClick={processResults}
           disabled={isScrapePending}
         >
+          {isScrapePending ? <Spinner /> : null}
           Process Results
         </Button>
         <Button
@@ -158,7 +160,7 @@ export function ScrapeResults({ eventId }: ScrapeResultProps) {
           Finalise Results
         </Button>
         <Button onClick={scrapeEclectic} disabled={isEclecticPending}>
-          Process Eclectic
+          {isEclecticPending && <Spinner />}Process Eclectic
         </Button>
       </div>
     </div>
