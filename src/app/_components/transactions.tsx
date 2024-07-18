@@ -12,6 +12,7 @@ import {
 } from "~/components/ui/table";
 import LibMoney from "./lib-money";
 import Link from "next/link";
+import { DeleteTransactionPopover } from "./account-transactions";
 
 export default function Transactions() {
   const trans = api.account.myTransactions.useQuery();
@@ -97,6 +98,10 @@ export function EntrantTransactions({ entrantId }: EntrantTransactionsProps) {
             <TableHead className="px-1 text-right sm:px-2">DR</TableHead>
             <TableHead className="px-1 sm:px-2">Description</TableHead>
             <TableHead className="px-1 sm:px-2">Comp</TableHead>
+
+            <TableHead className="hidden px-1 sm:table-cell sm:px-2">
+              Remove
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -126,6 +131,15 @@ export function EntrantTransactions({ entrantId }: EntrantTransactionsProps) {
                 <Link href={`/events/${trn.comp?.shortName}`}>
                   {trn.comp?.name}
                 </Link>
+              </TableCell>
+
+              <TableCell className="hidden px-1 sm:table-cell sm:px-2">
+                {trn.igCompId != null ? null : (
+                  <DeleteTransactionPopover
+                    transactionId={trn.id}
+                    amountInPence={trn.amount}
+                  />
+                )}
               </TableCell>
             </TableRow>
           ))}

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure, transactionProcedure } from "~/server/api/trpc";
+import { TRPCError } from "@trpc/server";
 
 export const accountRouter = createTRPCRouter({
     myBalance: protectedProcedure
@@ -154,6 +155,37 @@ export const accountRouter = createTRPCRouter({
                     createdAt: input.transactionDate
                 }
             })
+        }),
+
+    deleteTransaction: transactionProcedure
+        .input(z.object({ transactionId: z.number().min(1) }))
+        .mutation(async ({ ctx, input }) => {
+            //check we aren't deleting any entries associated with comps
+            const trans = await ctx.db.transaction.findFirst({
+                where: {
+                    id: input.transactionId
+                }
+            })
+
+            //only delete transactions that we want to allow
+            if (trans?.igCompId === null && trans?.description !== "LIB Entry Fee") {
+                return await ctx.db.transaction.delete({
+                    where: {
+                        id: input.transactionId
+                    }
+                })
+            } else {
+                let errorMsg = "";
+                (trans) 
+                    ? 
+                    errorMsg = "Transaction cannot be deleted as it is part of a competition!" 
+                    : 
+                    errorMsg = "Transaction cannot be found. Has it already been deleted?"
+          
+                throw new TRPCError({ code: "PRECONDITION_FAILED", message: errorMsg })
+            }
+
+            
         })
 
 

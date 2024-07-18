@@ -4,7 +4,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-import { Button } from "~/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "~/components/ui/alert-dialog";
+import { Button, buttonVariants } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
@@ -16,6 +27,7 @@ import { format } from "date-fns";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import LibMoney from "./lib-money";
 
 type TransactionPopoverProps = {
   entrantId: number;
@@ -216,5 +228,75 @@ export function TransactionPopover({
         </div>
       </PopoverContent>
     </Popover>
+  );
+}
+
+type DeleteTransactionPopoverProps = {
+  transactionId: number;
+  amountInPence: number;
+};
+
+export function DeleteTransactionPopover({
+  transactionId,
+  amountInPence,
+}: DeleteTransactionPopoverProps) {
+  const { toast } = useToast();
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const remove = api.account.deleteTransaction.useMutation({
+    onSuccess: async () => {
+      toast({
+        title: `Transaction removed`,
+        description: `Account balance updated`,
+      });
+      await queryClient.invalidateQueries();
+      router.refresh();
+    },
+    onError: async (err) => {
+      toast({
+        variant: "destructive",
+        title: `Transaction not removed`,
+        description: `${err.message}`,
+      });
+      await queryClient.invalidateQueries();
+      router.refresh();
+    },
+  });
+
+  const buttonClick = () => {
+    remove.mutate({ transactionId: transactionId });
+  };
+
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive" disabled={remove.isPending}>
+          Remove
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            Are you sure you want to delete this transaction?
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            This transaction for{" "}
+            <LibMoney amountInPence={amountInPence} hideNegative={true} /> will
+            be removed and the account balance will be updated
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            className={buttonVariants({ variant: "destructive" })}
+            onClick={buttonClick}
+            type="submit"
+            disabled={remove.isPending}
+          >
+            Remove
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
