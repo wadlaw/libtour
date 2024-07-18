@@ -89,9 +89,8 @@ export async function GetResults(compId: string): Promise<ScrapedResultsType> {
   const urlStub = 'https://redlibbets.intelligentgolf.co.uk/'
   const url = `${urlStub}competition.php?compid=${compId}`;
   
-  const BrowserArgsSchema = z.object({ executablePath: z.string().optional(), args: z.string().array().optional()})  
+  const BrowserArgsSchema = z.object({ executablePath: z.string().optional(), args: z.string().array().optional(), headless: z.boolean().optional() })  
   const browserArgs: PuppeteerLaunchOptions = BrowserArgsSchema.parse(JSON.parse(process.env.PUPPETEER_BROWSER_ARGS ?? '{}'))
-    
   const browser = await puppeteer.launch(browserArgs);
   const page = await browser.newPage();
   await page.goto(url);
@@ -388,10 +387,10 @@ export async function GetEclectic(compId: string): Promise<ScrapedEclecticType> 
   let browser: Browser | undefined
   try {
     // browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome',args: ['--no-sandbox', '--disable-setuid-sandbox'] }, );
-    const BrowserArgsSchema = z.object({ executablePath: z.string().optional(), args: z.string().array().optional()})
+    const BrowserArgsSchema = z.object({ executablePath: z.string().optional(), args: z.string().array().optional(), headless: z.boolean().optional() })  
+  const browserArgs: PuppeteerLaunchOptions = BrowserArgsSchema.parse(JSON.parse(process.env.PUPPETEER_BROWSER_ARGS ?? '{}'))
+const browser = await puppeteer.launch(browserArgs);
     
-    const browserArgs: PuppeteerLaunchOptions = BrowserArgsSchema.parse(JSON.parse(process.env.PUPPETEER_BROWSER_ARGS ?? '{}'))
-    const browser = await puppeteer.launch(browserArgs);
     const page = await browser.newPage();
     await page.goto(url);
     const loginElement = await page.waitForSelector("#login");

@@ -13,7 +13,7 @@ export default function LibMain(props: { children: React.ReactNode }) {
 export function LibH1(props: { children: React.ReactNode }) {
   return (
     // <h1 className="text-[3rem] font-extrabold tracking-tight text-[hsl(280,100%,70%)]">
-    <h1 className="bg-gradient-to-r from-blue-800  to-red-800 bg-clip-text text-center text-[3rem] font-extrabold leading-tight tracking-tight text-transparent">
+    <h1 className="bg-gradient-to-r from-blue-700 to-red-700 bg-clip-text text-center  text-[3rem] font-extrabold leading-tight tracking-tight text-transparent">
       {props.children}
     </h1>
   );
