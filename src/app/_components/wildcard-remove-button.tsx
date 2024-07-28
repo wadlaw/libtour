@@ -5,6 +5,8 @@ import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useToast } from "~/components/ui/use-toast";
 import { Spinner } from "./lib-elements";
+import { useUser } from "@clerk/nextjs";
+import { usePostHog } from "posthog-js/react";
 
 type RemoveWildcardButtonProps = {
   compId: string;
@@ -15,10 +17,17 @@ export default function RemoveWildcardButton({
   compId,
   entrantId,
 }: RemoveWildcardButtonProps) {
+  const { user } = useUser();
+  const posthog = usePostHog();
   const { toast } = useToast();
   const router = useRouter();
   const removeWildcard = api.entrant.removeWildcard.useMutation({
     onSuccess: () => {
+      posthog.capture("Wildcard removed", {
+        entrantId: entrantId,
+        eventId: compId,
+        removedBy: user?.fullName,
+      });
       router.refresh();
     },
     onError: (err) => {

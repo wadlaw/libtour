@@ -5,6 +5,8 @@ import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useToast } from "~/components/ui/use-toast";
 import { Spinner } from "./lib-elements";
+import { useUser } from "@clerk/nextjs";
+import { usePostHog } from "posthog-js/react";
 
 type SetWildcardButtonProps = {
   compId: string;
@@ -15,10 +17,17 @@ export default function SetWildcardButton({
   compId,
   entrantId,
 }: SetWildcardButtonProps) {
+  const { user } = useUser();
+  const posthog = usePostHog();
   const { toast } = useToast();
   const router = useRouter();
   const setWildcard = api.entrant.setWildcard.useMutation({
     onSuccess: () => {
+      posthog.capture("Wildcard added", {
+        entrantId: entrantId,
+        eventId: compId,
+        addedBy: user?.fullName,
+      });
       router.refresh();
     },
     onError: (err) => {
