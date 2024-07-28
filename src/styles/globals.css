@@ -33,6 +33,14 @@
     --ring: 222.2 84% 4.9%;
  
     --radius: 0.5rem;
+    --chart-ballsdeep: 252 100% 37%;
+    --chart-bigsticks: 179 65% 46%;
+    --chart-bogeyboys: 123 64% 35%;
+    --chart-eurekas: 360 0% 0%;
+    --chart-regularflex: 43 74% 66%;
+    --chart-shanksandbighook: 0 100% 50%;
+    --chart-swingers: 316 100% 40%;
+    --chart-twoballers: 316 82% 68%;
   }
  
   .dark {

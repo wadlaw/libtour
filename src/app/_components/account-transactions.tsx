@@ -28,6 +28,8 @@ import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import LibMoney from "./lib-money";
+import { useUser } from "@clerk/nextjs";
+import { usePostHog } from "posthog-js/react";
 
 type TransactionPopoverProps = {
   entrantId: number;
@@ -40,6 +42,8 @@ export function TransactionPopover({
   entrantName,
   type,
 }: TransactionPopoverProps) {
+  const user = useUser();
+  const posthog = usePostHog();
   const [date, setDate] = useState<Date>(new Date());
   const [amount, setAmount] = useState<number>(5);
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
@@ -55,6 +59,12 @@ export function TransactionPopover({
       toast({
         title: `£${amount} ${type === "CR" ? "Deposited" : "Withdrawn"}`,
         description: `${entrantName}'s account updated`,
+      });
+      posthog.capture(`Account ${type}`, {
+        entrant: entrantName,
+        entrantId: entrantId,
+        createdBy: user.user?.fullName,
+        environment: process.env.NEXT_PUBLIC_POSTHOG_ENVIRONMENT,
       });
       await queryClient.invalidateQueries();
       router.refresh();
@@ -234,12 +244,20 @@ export function TransactionPopover({
 type DeleteTransactionPopoverProps = {
   transactionId: number;
   amountInPence: number;
+  entrantId: number;
+  transactionDate: string;
+  description: string;
 };
 
 export function DeleteTransactionPopover({
   transactionId,
   amountInPence,
+  entrantId,
+  transactionDate,
+  description,
 }: DeleteTransactionPopoverProps) {
+  const user = useUser();
+  const posthog = usePostHog();
   const { toast } = useToast();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -248,6 +266,15 @@ export function DeleteTransactionPopover({
       toast({
         title: `Transaction removed`,
         description: `Account balance updated`,
+      });
+      posthog.capture("Account transaction deleted", {
+        transactionId: transactionId,
+        amountInPence: amountInPence,
+        entrantId: entrantId,
+        description: description,
+        transactionDate: transactionDate,
+        deletedBy: user.user?.fullName,
+        environment: process.env.NEXT_PUBLIC_POSTHOG_ENVIRONMENT,
       });
       await queryClient.invalidateQueries();
       router.refresh();

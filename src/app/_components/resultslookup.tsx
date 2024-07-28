@@ -146,8 +146,10 @@ export function ScrapeResults({ eventId }: ScrapeResultProps) {
           onClick={processResults}
           disabled={isScrapePending}
         >
-          {isScrapePending ? <Spinner /> : null}
-          Process Results
+          <div className="flex gap-2">
+            {isScrapePending ? <Spinner /> : null}
+          </div>
+          <span>Process Results</span>
         </Button>
         <Button
           onClick={() => {
@@ -160,7 +162,10 @@ export function ScrapeResults({ eventId }: ScrapeResultProps) {
           Finalise Results
         </Button>
         <Button onClick={scrapeEclectic} disabled={isEclecticPending}>
-          {isEclecticPending && <Spinner />}Process Eclectic
+          <div className="flex gap-2">
+            {isEclecticPending && <Spinner />}
+            <span>Process Eclectic</span>
+          </div>
         </Button>
       </div>
     </div>

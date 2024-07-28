@@ -138,6 +138,9 @@ export function EntrantTransactions({ entrantId }: EntrantTransactionsProps) {
                   <DeleteTransactionPopover
                     transactionId={trn.id}
                     amountInPence={trn.amount}
+                    entrantId={entrantId}
+                    description={trn.description}
+                    transactionDate={trn.createdAt.toDateString()}
                   />
                 )}
               </TableCell>

@@ -7,6 +7,8 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { PageHeader } from "~/components/PageHeader";
 import { Separator } from "~/components/ui/separator";
 import { Toaster } from "~/components/ui/toaster";
+import { CSPostHogProvider } from "./providers";
+import dynamic from "next/dynamic";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,6 +27,10 @@ export const metadata = {
   },
 };
 
+const PostHogPageView = dynamic(() => import("./PostHogPageView"), {
+  ssr: false,
+});
+
 export default function RootLayout({
   children,
 }: {
@@ -39,14 +45,17 @@ export default function RootLayout({
       }}
     >
       <html lang="en">
-        <body className={`font-sans ${inter.variable}`}>
-          <TRPCReactProvider>
-            <PageHeader />
-            <Separator />
-            {children}
-            <Toaster />
-          </TRPCReactProvider>
-        </body>
+        <CSPostHogProvider>
+          <body className={`font-sans ${inter.variable}`}>
+            <PostHogPageView />
+            <TRPCReactProvider>
+              <PageHeader />
+              <Separator />
+              {children}
+              <Toaster />
+            </TRPCReactProvider>
+          </body>
+        </CSPostHogProvider>
       </html>
     </ClerkProvider>
   );

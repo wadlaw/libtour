@@ -94,7 +94,23 @@ export const teamRouter = createTRPCRouter({
       },
       orderBy: [{teamName: "asc"}]
     })
+  }),
+
+  getAllWithPointsAndComps: publicProcedure.query(({ ctx }) =>{
+    return ctx.db.team.findMany({
+      include: {
+        teamPoints: {
+          include: {
+            comp: true
+          },
+          orderBy: {
+            comp: {date: "asc"}
+          }
+        }
+      },
+      orderBy: [
+        {teamName: "asc"},
+      ]
+    })
   })
-
-
 });

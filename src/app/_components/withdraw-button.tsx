@@ -5,6 +5,7 @@ import { Button, buttonVariants } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "~/components/ui/use-toast";
+import { usePostHog } from "posthog-js/react";
 
 import {
   AlertDialog,
@@ -18,6 +19,7 @@ import {
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { Spinner } from "./lib-elements";
+import { useUser } from "@clerk/nextjs";
 
 type WithdrawButtonProps = {
   compId: string;
@@ -28,6 +30,8 @@ export default function WithdrawButton({
   compId,
   compName,
 }: WithdrawButtonProps) {
+  const entrant = useUser();
+  const posthog = usePostHog();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -37,6 +41,11 @@ export default function WithdrawButton({
       toast({
         title: `${compName}`,
         description: "Withdrawn from comp!",
+      });
+      posthog.capture("Withdraw from event", {
+        event: compName,
+        entrant: entrant.user?.fullName,
+        environment: process.env.NEXT_PUBLIC_POSTHOG_ENVIRONMENT,
       });
       await queryClient.invalidateQueries();
       router.refresh();
@@ -104,6 +113,8 @@ export function WithdrawSomeoneButton({
   compId,
   entrantId,
 }: WithdrawSomeoneButtonProps) {
+  const user = useUser();
+  const posthog = usePostHog();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -113,6 +124,12 @@ export function WithdrawSomeoneButton({
   });
   const withdraw = api.comp.withdrawSomeoneElse.useMutation({
     onSuccess: async () => {
+      posthog.capture("Withdraw from event", {
+        event: compId,
+        entrant: entrantId,
+        withdrawnBy: user.user?.fullName,
+        environment: process.env.NEXT_PUBLIC_POSTHOG_ENVIRONMENT,
+      });
       await queryClient.invalidateQueries();
       router.refresh();
     },

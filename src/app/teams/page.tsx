@@ -1,5 +1,8 @@
 import { LeagueTable } from "../_components/league-table";
-import LibMain, { LibH1 } from "~/app/_components/lib-elements";
+import LibMain, {
+  LibCardContainer,
+  LibH1,
+} from "~/app/_components/lib-elements";
 
 export const metadata = {
   title: "Libtour - Events",
@@ -12,8 +15,9 @@ export default async function Home() {
       <div className="flex flex-col items-center">
         <LibH1>Teams</LibH1>
       </div>
-
-      <LeagueTable />
+      <LibCardContainer>
+        <LeagueTable />
+      </LibCardContainer>
     </LibMain>
   );
 }

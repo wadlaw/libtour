@@ -555,7 +555,29 @@ export const compRouter = createTRPCRouter({
       
      await ctx.db.$transaction([ addPoints, addPrizes, completeComp])
       }
-    )
+    ),
+
+    getAllWithPointsAndTeams: publicProcedure
+      .query(({ ctx }) => {
+      return ctx.db.comp.findMany({
+        where: {
+          completed: true
+        },
+        include: {
+          teamPoints: {
+            include: {
+              team: true
+            },
+            orderBy: {
+              team: {teamName: "asc"}
+            }
+          }
+        },
+        orderBy: [
+          {date: "asc"},
+        ]
+      })
+    })
 
 
 

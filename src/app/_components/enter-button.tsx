@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useToast } from "~/components/ui/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "./lib-elements";
+import { useUser } from "@clerk/nextjs";
+import { usePostHog } from "posthog-js/react";
 
 type EnterButtonProps = {
   compId: string;
@@ -13,6 +15,8 @@ type EnterButtonProps = {
 };
 
 export default function EnterButton({ compId, compName }: EnterButtonProps) {
+  const user = useUser();
+  const posthog = usePostHog();
   const { toast } = useToast();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -22,6 +26,12 @@ export default function EnterButton({ compId, compName }: EnterButtonProps) {
       toast({
         title: `${compName}`,
         description: "Comp entered!",
+      });
+      posthog.capture("Enter event", {
+        eventName: compName,
+        eventId: compId,
+        entrant: user.user?.fullName,
+        environment: process.env.NEXT_PUBLIC_POSTHOG_ENVIRONMENT,
       });
       await queryClient.invalidateQueries();
       router.refresh();
@@ -61,6 +71,8 @@ export function EnterSomeoneButton({
   compId,
   entrantId,
 }: EnterSomeoneButtonProps) {
+  const user = useUser();
+  const posthog = usePostHog();
   const { toast } = useToast();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -72,6 +84,11 @@ export function EnterSomeoneButton({
     onSuccess: async () => {
       toast({
         description: "Comp entered!",
+      });
+      posthog.capture("Enter event", {
+        eventId: compId,
+        entrantId: user.user?.fullName,
+        environment: process.env.NEXT_PUBLIC_POSTHOG_ENVIRONMENT,
       });
       await queryClient.invalidateQueries();
       router.refresh();
