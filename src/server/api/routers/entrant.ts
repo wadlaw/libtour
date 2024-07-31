@@ -5,6 +5,15 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure,  wildcardProcedure } from "~/server/api/trpc";
 
 export const entrantRouter = createTRPCRouter({
+    getList: publicProcedure
+        .query(({ ctx}) => {
+            return ctx.db.entrant.findMany({
+                select: {
+                    id: true,
+                    name: true
+                }
+            })
+        }),
     getAll: publicProcedure
         .query(({ ctx }) => {
             return ctx.db.entrant.findMany({

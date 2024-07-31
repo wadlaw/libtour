@@ -42,6 +42,7 @@ export default function PostHogPageView(): null {
     if (!isSignedIn && posthog._isIdentified()) {
       posthog.reset();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [posthog, user]);
 
   return null;

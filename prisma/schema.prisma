@@ -103,8 +103,35 @@ model CompEntrant {
     entrant          Entrant       @relation(fields: [entrantId], references: [id])
     comp             Comp          @relation(fields: [compId], references: [igCompId])
     transactions     Transaction[]
+    scorecard        Scorecard?
 
     @@unique([compId, entrantId])
+}
+
+model Scorecard {
+    id          Int         @id @default(autoincrement())
+    compId      String
+    entrantId   Int
+    handicap    Int
+    stableford  Boolean
+    holes       Hole[]
+    compEntrant CompEntrant @relation(fields: [compId, entrantId], references: [compId, entrantId], onDelete: Cascade)
+
+    @@unique([compId, entrantId])
+}
+
+model Hole {
+    scorecardId Int
+    holeNo      Int
+    par         Int
+    strokeIndex Int
+    strokes     Int?
+    NR          Boolean   @default(false)
+    points      Int       @default(0)
+    net         Int?
+    scorecard   Scorecard @relation(fields: [scorecardId], references: [id], onDelete: Cascade)
+
+    @@unique([scorecardId, holeNo])
 }
 
 model CompPrizes {

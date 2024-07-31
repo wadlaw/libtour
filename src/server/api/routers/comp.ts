@@ -1,6 +1,7 @@
 
 import { Prisma, type Entrant } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
+
 // import { error } from "console";
 
 import { z } from "zod";
@@ -8,34 +9,6 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure, entryProcedure, adminProcedure } from "~/server/api/trpc";
 
 export const compRouter = createTRPCRouter({
-
-
-//   enter: protectedProcedure
-//     .input(z.object({ igCompId: z.string().min(4) }))
-//     .mutation(async ({ ctx, input }) => {
-//         //check that the comp can be entered and they have not already entered
-//         const user = await ctx.db.entrant.findUnique({
-//             where: {
-//                 userId: ctx.auth.userId
-//             },
-//             include: {
-//                 comps: true
-//             }
-//         })
-//         const comp = await ctx.db.comp.findUnique({
-//             where: {
-//                 igCompId: input.igCompId
-//             }
-//         })
-//       // simulate a slow db call
-//     //   await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-//       return ctx.db.post.create({
-//         data: {
-//           name: input.name,
-//         },
-//       });
-//     }),
 
     // withdraw: protectedProcedure
     enter: protectedProcedure
@@ -244,12 +217,19 @@ export const compRouter = createTRPCRouter({
           position: "asc"
         },
         include: {
+          entrant: true,
           transactions: {
             where: {
               winnings: true,
             },
           },
-          entrant: true,
+          scorecard: {
+            include: {
+              holes: {
+                orderBy: [{holeNo: 'asc'}]
+              }
+            }
+          },
         }
     })
   }),

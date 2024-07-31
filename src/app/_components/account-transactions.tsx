@@ -63,6 +63,8 @@ export function TransactionPopover({
       posthog.capture(`Account ${type}`, {
         entrant: entrantName,
         entrantId: entrantId,
+        amount: amount,
+        date: date,
         createdBy: user.user?.fullName,
         environment: process.env.NEXT_PUBLIC_POSTHOG_ENVIRONMENT,
       });

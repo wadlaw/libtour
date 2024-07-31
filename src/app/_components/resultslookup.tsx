@@ -72,6 +72,7 @@ export function ScrapeResults({ eventId }: ScrapeResultProps) {
   const router = useRouter();
   const [isEclecticPending, startEclecticScrape] = useTransition();
   const [isScrapePending, startScrape] = useTransition();
+  const [isScoreUpdatePending, startScoreUpdate] = useTransition();
 
   const open = api.comp.setOpen.useMutation({
     onSuccess: async () => {
@@ -111,6 +112,66 @@ export function ScrapeResults({ eventId }: ScrapeResultProps) {
     },
   });
 
+  const scores = api.scorecard.addMany.useMutation({
+    onSuccess: async () => {
+      toast({
+        title: "Scorecards added",
+        description: "Scraped scores have been added to entrants' records",
+      });
+      await queryClient.invalidateQueries();
+      router.refresh();
+    },
+    onError: async (err) => {
+      toast({
+        variant: "destructive",
+        title: "Scorecards not updated!",
+        description: `${err.message}`,
+      });
+    },
+  });
+
+  type ScoreDataType = {
+    compId: string;
+    entrantId: number;
+    handicap: number;
+    stableford: boolean;
+    holes: {
+      holeNo: number;
+      strokes: number | undefined;
+      NR: boolean;
+    }[];
+  }[];
+
+  const updateScores = () => {
+    startScoreUpdate(async () => {
+      //grab the scores that are matched to an entrant
+      const rawScoreData = eclectic?.scrapedScores.filter((ent) => {
+        return ent.entrantId;
+      });
+      const scoreData: ScoreDataType = [];
+      rawScoreData?.forEach((round) => {
+        const roundData = {
+          compId: eventId,
+          entrantId: round.entrantId ?? 0,
+          handicap: Number(round.handicap),
+          stableford: eclectic?.compFormat === "Stableford",
+          holes: round.scores.map((score) => {
+            return {
+              holeNo: score.hole,
+              strokes: Number(score.score) || undefined,
+              NR: score.score === "NR",
+            };
+          }),
+        };
+        scoreData.push(roundData);
+      });
+      // console.log("Raw Scores=================", eclectic?.scrapedScores);
+      // console.log("Filtered Scores==============", rawScoreData);
+      // console.log("ScoreData================", scoreData);
+      scores.mutate(scoreData);
+    });
+  };
+
   const scrapeEclectic = () => {
     startEclecticScrape(async () => {
       const scrapedEclectic = await GetEclectic(eventId);
@@ -123,7 +184,6 @@ export function ScrapeResults({ eventId }: ScrapeResultProps) {
     <div className="grid grid-cols-1 gap-4">
       <div className="grid grid-cols-1  gap-4 lg:grid-cols-2">
         <IGResults results={results} />
-        <IGLinks results={eclectic} />
         <ProvisionalResults results={resultsObject} teamResults={teamPoints} />
         {/* <TeamResults teamResults={teamPoints} /> */}
         <Prizes prizes={transactions} />
@@ -167,6 +227,18 @@ export function ScrapeResults({ eventId }: ScrapeResultProps) {
             <span>Process Eclectic</span>
           </div>
         </Button>
+        <Button
+          onClick={updateScores}
+          disabled={!eclectic || isScoreUpdatePending}
+        >
+          <div className="flex gap-2">
+            {isScoreUpdatePending && <Spinner />}
+            <span>Update Scorecards</span>
+          </div>
+        </Button>
+      </div>
+      <div className="grid grid-cols-1">
+        <IGLinks results={eclectic} />
       </div>
     </div>
   );
