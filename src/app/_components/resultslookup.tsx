@@ -159,7 +159,7 @@ export function ScrapeResults({ eventId }: ScrapeResultProps) {
             return {
               holeNo: score.hole,
               strokes: Number(score.score) || undefined,
-              NR: score.score === "NR",
+              NR: ["NR", "NS"].includes(score.score ?? ""),
             };
           }),
         };
@@ -175,7 +175,7 @@ export function ScrapeResults({ eventId }: ScrapeResultProps) {
   const scrapeEclectic = () => {
     startEclecticScrape(async () => {
       const scrapedEclectic = await GetEclectic(eventId);
-      console.log("========Scraped Scores--------", scrapedEclectic);
+      // console.log("========Scraped Scores--------", scrapedEclectic);
       setEclectic(scrapedEclectic);
     });
   };
