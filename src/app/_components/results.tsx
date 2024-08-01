@@ -97,7 +97,7 @@ export default async function Results({ compId }: ResultsProps) {
                         <span className="mr-1 sm:mr-2">
                           {result.entrant.name}
                           {result.scorecard?.id
-                            ? `(${result.scorecard.handicap})`
+                            ? ` (${result.scorecard.handicap})`
                             : ""}
                         </span>
                         {result.wildcard ? <Badge>WC</Badge> : null}
