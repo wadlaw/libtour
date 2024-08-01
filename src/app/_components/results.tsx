@@ -96,6 +96,9 @@ export default async function Results({ compId }: ResultsProps) {
                       <Link href={`/entrants/${result.entrant.id}`}>
                         <span className="mr-1 sm:mr-2">
                           {result.entrant.name}
+                          {result.scorecard?.id
+                            ? `(${result.scorecard.handicap})`
+                            : ""}
                         </span>
                         {result.wildcard ? <Badge>WC</Badge> : null}
                       </Link>
