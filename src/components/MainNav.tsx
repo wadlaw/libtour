@@ -12,23 +12,40 @@ export async function MainNav() {
 
   return (
     <nav>
-      <ul className="inline-block">
-        <li className={`mr-4 inline`}>
+      <ul
+        className={`inline-block ${sessionClaims?.metadata.adminPermission ? "text-sm md:text-base" : ""}`}
+      >
+        <li
+          className={`${sessionClaims?.metadata.adminPermission ? "mr-2 md:mr-4" : "mr-4"} inline`}
+        >
           <Link href="/">Home</Link>
         </li>
-        <li className={`mr-4 inline`}>
+        <li
+          className={`${sessionClaims?.metadata.adminPermission ? "mr-2 md:mr-4" : "mr-4"} inline`}
+        >
           <Link href="/events">Events</Link>
         </li>
-        <li className={`mr-4 inline `}>
+        <li
+          className={`${sessionClaims?.metadata.adminPermission ? "mr-2 md:mr-4" : "mr-4"} inline`}
+        >
           <Link href="/teams">Teams</Link>
         </li>
+        <li
+          className={`${sessionClaims?.metadata.adminPermission ? "mr-2 md:mr-4" : "mr-4"} inline`}
+        >
+          <Link href="/halloffame">Hall of Fame</Link>
+        </li>
         <Protect condition={() => !!sessionClaims?.metadata?.financePermission}>
-          <li className={`mr-4 inline `}>
+          <li
+            className={`${sessionClaims?.metadata.adminPermission ? "mr-2 md:mr-4" : "mr-4"} inline`}
+          >
             <Link href="/accounts">Accounts</Link>
           </li>
         </Protect>
         <Protect condition={() => !!sessionClaims?.metadata?.adminPermission}>
-          <li className={`mr-4 inline `}>
+          <li
+            className={`${sessionClaims?.metadata.adminPermission ? "mr-2 md:mr-4" : "mr-4"} inline`}
+          >
             <Link href="/users">User Admin</Link>
           </li>
         </Protect>

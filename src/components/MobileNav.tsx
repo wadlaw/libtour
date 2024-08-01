@@ -46,6 +46,11 @@ export function MobileNav() {
             <Link href="/teams">Teams</Link>
           </SheetClose>
         </div>
+        <div className="mb-4 text-2xl">
+          <SheetClose asChild>
+            <Link href="/halloffame">Hall of Fame</Link>
+          </SheetClose>
+        </div>
         <Protect condition={() => !!sessionClaims?.metadata?.financePermission}>
           <div className="mb-4 text-2xl">
             <SheetClose asChild>

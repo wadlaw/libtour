@@ -21,6 +21,7 @@ import {
   CollapsibleTrigger,
 } from "~/components/ui/collapsible";
 import { Fragment } from "react";
+import { ScorecardDisplay } from "./scorecard";
 
 type ResultsProps = {
   compId: string;
@@ -84,12 +85,16 @@ export default async function Results({ compId }: ResultsProps) {
                   <TableRow key={result.position}>
                     <TableCell className="px-1 sm:px-2">
                       <CollapsibleTrigger asChild>
-                        <span>{result.position}</span>
+                        <span className="hover:cursor-pointer">
+                          {result.position}
+                        </span>
                       </CollapsibleTrigger>
                     </TableCell>
                     <TableCell className="hidden px-1 sm:px-2 lg:table-cell">
                       <CollapsibleTrigger asChild>
-                        <span>{result.igPosition}</span>
+                        <span className="hover:cursor-pointer">
+                          {result.igPosition}
+                        </span>
                       </CollapsibleTrigger>
                     </TableCell>
                     <TableCell className="px-1 font-medium sm:px-2">
@@ -118,14 +123,14 @@ export default async function Results({ compId }: ResultsProps) {
                     </TableCell>
                     <TableCell className="hidden px-1 text-center sm:px-2 md:table-cell">
                       <CollapsibleTrigger asChild>
-                        <span>
+                        <span className="hover:cursor-pointer">
                           {result.teamScore ? result.teamScore : "NR"}
                         </span>
                       </CollapsibleTrigger>
                     </TableCell>
                     <TableCell className="px-1 text-center sm:px-2">
                       <CollapsibleTrigger asChild>
-                        <span>
+                        <span className="hover:cursor-pointer">
                           {result.score ? result.score : "NR"}
                           {lowGross.entrantId.includes(result.entrantId)
                             ? "*"
@@ -145,7 +150,10 @@ export default async function Results({ compId }: ResultsProps) {
                   </TableRow>
                   <CollapsibleContent asChild>
                     <tr className="bg-slate-100">
-                      <ScorecardDisplay scorecard={result.scorecard} />
+                      <ScorecardDisplay
+                        colSpan={7}
+                        scorecard={result.scorecard}
+                      />
                     </tr>
                   </CollapsibleContent>
                 </Fragment>
@@ -155,136 +163,6 @@ export default async function Results({ compId }: ResultsProps) {
         </Table>
       </CardContent>
     </Card>
-  );
-}
-
-type ScorecardDisplayProps = {
-  scorecard: {
-    id: number;
-    compId: string;
-    entrantId: number;
-    handicap: number;
-    stableford: boolean;
-    holes: {
-      scorecardId: number;
-      strokeIndex: number;
-      holeNo: number;
-      strokes: number | null;
-      NR: boolean;
-      par: number;
-      points: number;
-      net: number | null;
-    }[];
-  } | null;
-};
-
-function ScorecardDisplay({ scorecard }: ScorecardDisplayProps) {
-  if (!scorecard) return null;
-  return (
-    <Fragment>
-      <TableCell colSpan={7}>
-        <div className="flex w-full flex-wrap justify-between gap-4 md:flex-nowrap">
-          {/* Front 9 */}
-          <div className="flex w-full flex-wrap gap-1">
-            <div className="grid w-full grid-cols-10 place-content-center justify-center gap-1">
-              {scorecard.holes
-                .filter((hole) => hole.holeNo <= 9)
-                .map((hole) => (
-                  <div
-                    key={hole.holeNo}
-                    className={`mx-auto aspect-square w-auto  py-1 text-center font-bold   ${hole.NR && "bg-black px-1 text-white"} ${hole.strokes && hole.strokes - hole.par <= -2 && "rounded-full bg-yellow-500 px-2.5  text-white"} ${hole.strokes && hole.strokes - hole.par === -1 && "rounded-full bg-red-500 px-2.5  text-white"} ${hole.strokes && hole.strokes - hole.par === 1 && "bg-blue-500 px-2.5  text-white"} ${hole.strokes && hole.strokes - hole.par >= 2 && "bg-black px-2.5 text-white"}`}
-                  >
-                    {hole.NR ? "NR" : hole.strokes}
-                  </div>
-                ))}
-            </div>
-            {
-              <div className="grid w-full grid-cols-10 place-content-center justify-center gap-1">
-                <Fragment key="front9">
-                  {scorecard.holes
-                    .filter((hole) => hole.holeNo <= 9)
-                    .map((hole) => (
-                      <div
-                        key={hole.holeNo}
-                        className={`mx-auto aspect-square px-2 py-1 text-center   `}
-                      >
-                        {scorecard.stableford
-                          ? hole.points
-                          : hole.NR
-                            ? "NR"
-                            : hole.net}
-                      </div>
-                    ))}
-                  {/* Front 9 total */}
-                  <div className="mx-auto aspect-square w-auto px-1.5 py-1 text-center ring-2 ring-slate-800">
-                    {scorecard.stableford
-                      ? scorecard.holes
-                          .filter((hole) => hole.holeNo <= 9)
-                          .reduce((acc, cur) => acc + cur.points, 0)
-                      : scorecard.holes.filter(
-                            (hole) => hole.holeNo <= 9 && hole.NR == true,
-                          ).length > 0
-                        ? "NR"
-                        : scorecard.holes
-                            .filter((hole) => hole.holeNo <= 9)
-                            .reduce((acc, cur) => acc + (cur.net ?? 0), 0)}
-                  </div>
-                </Fragment>
-              </div>
-            }
-          </div>
-
-          {/* Back 9 */}
-          <div className="flex w-full flex-wrap gap-1">
-            <div className="grid w-full grid-cols-10 gap-1">
-              {scorecard.holes
-                .filter((hole) => hole.holeNo >= 10)
-                .map((hole) => (
-                  <div
-                    key={hole.holeNo}
-                    className={`mx-auto aspect-square py-1 text-center font-bold  ${hole.NR && "bg-black px-1 text-white"} ${hole.strokes && hole.strokes - hole.par <= -2 && " rounded-full bg-yellow-500 px-2.5  text-white"} ${hole.strokes && hole.strokes - hole.par === -1 && " rounded-full bg-red-500 px-2.5  text-white"} ${hole.strokes && hole.strokes - hole.par === 1 && "bg-blue-500   px-2.5  text-white"} ${hole.strokes && hole.strokes - hole.par >= 2 && "bg-black   px-2.5  text-white"}`}
-                  >
-                    {hole.NR ? "NR" : hole.strokes}
-                  </div>
-                ))}
-            </div>
-
-            <Fragment key="back9">
-              <div className="grid w-full grid-cols-10 place-content-center justify-center gap-1">
-                {scorecard.holes
-                  .filter((hole) => hole.holeNo >= 10)
-                  .map((hole) => (
-                    <div
-                      key={hole.holeNo}
-                      className={`mx-auto aspect-square px-2 py-1 text-center   `}
-                    >
-                      {scorecard.stableford
-                        ? hole.points
-                        : hole.NR
-                          ? "NR"
-                          : hole.net}
-                    </div>
-                  ))}
-                {/* Back 9 Total */}
-                <div className="mx-auto aspect-square px-1.5 py-1 text-center ring-2 ring-slate-800">
-                  {scorecard.stableford
-                    ? scorecard.holes
-                        .filter((hole) => hole.holeNo >= 10)
-                        .reduce((acc, cur) => acc + cur.points, 0)
-                    : scorecard.holes.filter(
-                          (hole) => hole.holeNo >= 10 && hole.NR === true,
-                        ).length > 0
-                      ? "NR"
-                      : scorecard.holes
-                          .filter((hole) => hole.holeNo >= 10)
-                          .reduce((acc, cur) => acc + (cur.net ?? 0), 0)}
-                </div>
-              </div>
-            </Fragment>
-          </div>
-        </div>
-      </TableCell>
-    </Fragment>
   );
 }
 

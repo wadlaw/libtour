@@ -63,6 +63,46 @@ const config = {
             destination: '/teams',
             permanent: true,
           },
+          {
+            source: '/hof',
+            destination: '/halloffame',
+            permanent: true,
+          },
+          {
+            source: '/fame',
+            destination: '/halloffame',
+            permanent: true,
+          },
+          {
+            source: '/hall',
+            destination: '/halloffame',
+            permanent: true,
+          },
+          {
+            source: '/eagles',
+            destination: '/halloffame',
+            permanent: true,
+          },
+          {
+            source: '/best',
+            destination: '/halloffame',
+            permanent: true,
+          },
+          {
+            source: '/bestrounds',
+            destination: '/halloffame',
+            permanent: true,
+          },
+          {
+            source: '/beststableford',
+            destination: '/halloffame',
+            permanent: true,
+          },
+          {
+            source: '/bestmedal',
+            destination: '/halloffame',
+            permanent: true,
+          },
         ]
       },
 };

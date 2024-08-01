@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { createTRPCRouter, adminProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, adminProcedure, publicProcedure } from "~/server/api/trpc";
 
 const CalculatePoints = (strokes: number | undefined, par: number, si: number, hcp: number, nr: boolean) => {
     if (nr || typeof(strokes) === 'undefined') {return 0}
@@ -104,5 +104,201 @@ export const scorecardRouter = createTRPCRouter({
             
         
       
+        }),
+    
+    eagles: publicProcedure
+        .query(({ ctx }) => {
+            return ctx.db.hole.findMany({
+                where: {
+                    OR: [
+                        {
+                            NR: false,
+                            strokes: { lte: 3 },
+                            par: 5
+                        },
+                        {
+                            NR: false,
+                            strokes: { lte: 2 },
+                            par: 4
+                        },
+                        {
+                            NR: false,
+                            strokes: 1,
+                            par: 3
+                        },
+                    ]
+                    
+                },
+                orderBy: {
+                    scorecard: {
+                        compEntrant: {
+                            comp: 
+                                {date: 'desc'}
+                            
+                        }
+                    }
+                },
+                include: {
+                    scorecard: {
+                        include: {
+                            holes: {
+                                orderBy: {
+                                    holeNo: 'asc'
+                                }
+                            },
+                            compEntrant: {
+                                include: {
+                                    comp: true,
+                                    entrant: true
+                                }   
+                            }
+                        }
+                    }
+                }
+            })
+        }),
+
+    bestStablefordRounds: publicProcedure
+    .input(z.object({ numberOfRounds: z.number() }))
+        .query(async ({ ctx, input }) => {
+            const scorecards = await ctx.db.hole.groupBy({
+                by: ["scorecardId"],
+                _sum: {
+                    points: true,
+                    },
+                _count: {
+                    holeNo: true
+                },
+                where: {
+                    scorecard: {
+                        compEntrant: {
+                            comp: {
+                                stableford: true
+                            }
+                        }
+
+                    }
+                },
+                orderBy: [
+                    { _count: { holeNo: 'desc' }},
+                    { _sum: { points: 'desc' }}
+                ],
+                take: input.numberOfRounds
+            })
+
+            const scorecardIds = scorecards.map(sc => sc.scorecardId)
+
+            return ctx.db.scorecard.findMany({
+                include: {
+                    holes: true,
+                    compEntrant: {
+                        include: {
+                            comp: true,
+                            entrant: true
+                        }
+                    }
+                },
+                where: {
+                    id: { in: scorecardIds }
+                }
+            })
+        }),
+
+        bestMedalRounds: publicProcedure
+        .input(z.object({ numberOfRounds: z.number() }))
+        .query(async ({ ctx, input }) => {
+            const scorecards = await ctx.db.hole.groupBy({
+                by: ["scorecardId"],
+                _sum: {
+                    net: true,
+                    },
+                _count: {
+                    holeNo: true
+                },
+                where: {
+                    NR: false,
+                    scorecard: {
+                        compEntrant: {
+                            comp: {
+                                stableford: false
+                            }
+                        }
+
+                    }
+                },
+                orderBy: [
+                    { _count: { holeNo: 'desc' }},
+                    { _sum: { net: 'asc' }}
+                ],
+
+                take: input.numberOfRounds
+
+                
+            })
+            const scorecardIds = scorecards.map(sc => sc.scorecardId)
+
+            return ctx.db.scorecard.findMany({
+                include: {
+                    holes: true,
+                    compEntrant: {
+                        include: {
+                            comp: true,
+                            entrant: true
+                        }
+                    }
+                },
+                where: {
+                    id: { in: scorecardIds }
+                }
+            })
+        }),   
+
+    bestGrossRounds: publicProcedure
+        .input(z.object({ numberOfRounds: z.number() }))
+        .query(async ({ ctx, input }) => {
+            const scorecards = await ctx.db.hole.groupBy({
+                by: ["scorecardId"],
+                _sum: {
+                    strokes: true,
+                    },
+                _count: {
+                    holeNo: true
+                },
+                where: {
+                    NR: false,
+                    scorecard: {
+                        compEntrant: {
+                            comp: {
+                                stableford: false
+                            }
+                        }
+
+                    }
+                },
+                orderBy: [
+                    { _count: { holeNo: 'desc' }},
+                    { _sum: { strokes: 'asc' }}
+                ],
+
+                take: input.numberOfRounds
+
+                
+            })
+            const scorecardIds = scorecards.map(sc => sc.scorecardId)
+
+            return ctx.db.scorecard.findMany({
+                include: {
+                    holes: true,
+                    compEntrant: {
+                        include: {
+                            comp: true,
+                            entrant: true
+                        }
+                    }
+                },
+                where: {
+                    id: { in: scorecardIds }
+                }
+            })
         }),
 })
