@@ -85,14 +85,18 @@ export default async function Results({ compId }: ResultsProps) {
                   <TableRow key={result.position}>
                     <TableCell className="px-1 sm:px-2">
                       <CollapsibleTrigger asChild>
-                        <span className="hover:cursor-pointer">
+                        <span
+                          className={`${result.scorecard?.entrantId ? "hover:cursor-pointer" : ""}`}
+                        >
                           {result.position}
                         </span>
                       </CollapsibleTrigger>
                     </TableCell>
                     <TableCell className="hidden px-1 sm:px-2 lg:table-cell">
                       <CollapsibleTrigger asChild>
-                        <span className="hover:cursor-pointer">
+                        <span
+                          className={`${result.scorecard?.entrantId ? "hover:cursor-pointer" : ""}`}
+                        >
                           {result.igPosition}
                         </span>
                       </CollapsibleTrigger>
@@ -123,14 +127,18 @@ export default async function Results({ compId }: ResultsProps) {
                     </TableCell>
                     <TableCell className="hidden px-1 text-center sm:px-2 md:table-cell">
                       <CollapsibleTrigger asChild>
-                        <span className="hover:cursor-pointer">
+                        <span
+                          className={`${result.scorecard?.entrantId ? "hover:cursor-pointer" : ""}`}
+                        >
                           {result.teamScore ? result.teamScore : "NR"}
                         </span>
                       </CollapsibleTrigger>
                     </TableCell>
                     <TableCell className="px-1 text-center sm:px-2">
                       <CollapsibleTrigger asChild>
-                        <span className="hover:cursor-pointer">
+                        <span
+                          className={`${result.scorecard?.entrantId ? "hover:cursor-pointer" : ""}`}
+                        >
                           {result.score ? result.score : "NR"}
                           {lowGross.entrantId.includes(result.entrantId)
                             ? "*"
