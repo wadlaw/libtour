@@ -144,6 +144,8 @@ export async function BestRounds({ format, numberOfRounds }: BestRoundsProps) {
 export async function Eagles() {
   const eagles = await api.scorecard.eagles();
 
+  if (eagles.length === 0) return null;
+
   return (
     <LibCard title="Eagles">
       <Table>
