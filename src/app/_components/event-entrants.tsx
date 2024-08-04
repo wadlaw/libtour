@@ -14,7 +14,7 @@ import {
 import WildcardEntry from "./wildcard-entry";
 import { EnterSomeoneButton } from "./enter-button";
 import { WithdrawSomeoneButton } from "./withdraw-button";
-import { EntrantDisplay, TeamDisplay } from "./lib-elements";
+import { EntrantDisplay, LibCardNarrow, TeamDisplay } from "./lib-elements";
 import { ensure } from "~/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 
@@ -45,136 +45,131 @@ export default async function EventEntrants({
       </div>
     );
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Entrants</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Table>
-          {/* <TableCaption>Event Entrants</TableCaption> */}
-          <TableHeader>
-            <TableRow>
-              <TableHead className="px-1 sm:px-2">Name</TableHead>
-              {/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */}
-              <TableHead
-                className={`${(sessionClaims?.metadata.captain || sessionClaims?.metadata.entryPermission) && "hidden"} px-2 sm:table-cell sm:px-4`}
-              >
-                Team
-              </TableHead>
-              {/* eslint-enable @typescript-eslint/prefer-nullish-coalescing */}
-              <Protect
-                condition={() =>
-                  !!sessionClaims?.metadata?.captain ||
-                  !!sessionClaims?.metadata?.entryPermission
-                }
-              >
-                {isOpen ? (
-                  <TableHead className="px-1 sm:px-2">Wildcard</TableHead>
-                ) : null}
-              </Protect>
-              <Protect
-                condition={() =>
-                  !!sessionClaims?.metadata?.captain ||
-                  !!sessionClaims?.metadata?.entryPermission
-                }
-              >
-                {isOpen ? (
-                  <TableHead className="px-1 sm:px-2">Withdraw?</TableHead>
-                ) : null}
-              </Protect>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {entrants.map((entrant) => (
-              <TableRow key={entrant.entrantId}>
-                <TableCell className="px-1 font-medium sm:px-2">
-                  <EntrantDisplay
-                    entrant={{
-                      id: entrant.entrantId,
-                      name: entrant.entrant.name,
-                      wildcard: !!entrant.wildcard,
-                    }}
-                  />
-                  {/* <Link href={`/entrants/${entrant.entrantId}`}>
+    <LibCardNarrow title="Entrants">
+      <Table>
+        {/* <TableCaption>Event Entrants</TableCaption> */}
+        <TableHeader>
+          <TableRow>
+            <TableHead className="px-1 sm:px-2">Name</TableHead>
+            {/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */}
+            <TableHead
+              className={`${(sessionClaims?.metadata.captain || sessionClaims?.metadata.entryPermission) && "hidden"} px-2 sm:table-cell sm:px-4`}
+            >
+              Team
+            </TableHead>
+            {/* eslint-enable @typescript-eslint/prefer-nullish-coalescing */}
+            <Protect
+              condition={() =>
+                !!sessionClaims?.metadata?.captain ||
+                !!sessionClaims?.metadata?.entryPermission
+              }
+            >
+              {isOpen ? (
+                <TableHead className="px-1 sm:px-2">Wildcard</TableHead>
+              ) : null}
+            </Protect>
+            <Protect
+              condition={() =>
+                !!sessionClaims?.metadata?.captain ||
+                !!sessionClaims?.metadata?.entryPermission
+              }
+            >
+              {isOpen ? (
+                <TableHead className="px-1 sm:px-2">Withdraw?</TableHead>
+              ) : null}
+            </Protect>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {entrants.map((entrant) => (
+            <TableRow key={entrant.entrantId}>
+              <TableCell className="px-1 font-medium sm:px-2">
+                <EntrantDisplay
+                  entrant={{
+                    id: entrant.entrantId,
+                    name: entrant.entrant.name,
+                    wildcard: !!entrant.wildcard,
+                  }}
+                />
+                {/* <Link href={`/entrants/${entrant.entrantId}`}>
                     <span className="mr-1 sm:mr-2">{entrant.entrant.name}</span>
                     {entrant.wildcard ? <Badge>WC</Badge> : null}
                   </Link> */}
-                </TableCell>
-                {/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */}
-                <TableCell
-                  className={`${(sessionClaims?.metadata.captain || sessionClaims?.metadata.entryPermission) && "hidden"} px-1 sm:table-cell sm:px-2`}
-                >
-                  {/* eslint-enable @typescript-eslint/prefer-nullish-coalescing */}
-                  <TeamDisplay
-                    team={ensure(
-                      teams.filter(
-                        (team) => team.id == entrant.entrant.teamId,
-                      )[0],
-                    )}
-                    alwaysDisplayLogo={true}
-                  />
-                </TableCell>
-                <Protect
-                  condition={() =>
-                    !!sessionClaims?.metadata?.captain ||
-                    !!sessionClaims?.metadata?.entryPermission
-                  }
-                >
-                  {isOpen ? (
-                    <TableCell className="px-1 sm:px-2">
-                      <Protect
-                        condition={() =>
-                          (!!sessionClaims?.metadata?.captain &&
-                            sessionClaims?.metadata?.teamId ===
-                              entrant.entrant.teamId) ||
-                          !!sessionClaims?.metadata?.entryPermission
-                        }
-                      >
-                        <WildcardEntry
-                          compId={compId}
-                          wildcard={entrant.wildcard}
-                          entrantId={entrant.entrantId}
-                        />
-                      </Protect>
-                    </TableCell>
-                  ) : null}
-                </Protect>
-                <Protect
-                  condition={() =>
-                    !!sessionClaims?.metadata?.captain ||
-                    !!sessionClaims?.metadata?.entryPermission
-                  }
-                >
-                  {isOpen ? (
-                    <TableCell className="px-1 sm:px-2">
-                      <Protect
-                        condition={() =>
-                          (!!sessionClaims?.metadata?.captain &&
-                            sessionClaims?.metadata?.teamId ===
-                              entrant.entrant.teamId) ||
-                          !!sessionClaims?.metadata?.entryPermission
-                        }
-                      >
-                        <WithdrawSomeoneButton
-                          compId={compId}
-                          entrantId={entrant.entrantId}
-                        />
-                      </Protect>
-                    </TableCell>
-                  ) : null}
-                </Protect>
-              </TableRow>
-            ))}
-          </TableBody>
-          {/* <TableFooter>
+              </TableCell>
+              {/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */}
+              <TableCell
+                className={`${(sessionClaims?.metadata.captain || sessionClaims?.metadata.entryPermission) && "hidden"} px-1 sm:table-cell sm:px-2`}
+              >
+                {/* eslint-enable @typescript-eslint/prefer-nullish-coalescing */}
+                <TeamDisplay
+                  team={ensure(
+                    teams.filter(
+                      (team) => team.id == entrant.entrant.teamId,
+                    )[0],
+                  )}
+                  alwaysDisplayLogo={true}
+                />
+              </TableCell>
+              <Protect
+                condition={() =>
+                  !!sessionClaims?.metadata?.captain ||
+                  !!sessionClaims?.metadata?.entryPermission
+                }
+              >
+                {isOpen ? (
+                  <TableCell className="px-1 sm:px-2">
+                    <Protect
+                      condition={() =>
+                        (!!sessionClaims?.metadata?.captain &&
+                          sessionClaims?.metadata?.teamId ===
+                            entrant.entrant.teamId) ||
+                        !!sessionClaims?.metadata?.entryPermission
+                      }
+                    >
+                      <WildcardEntry
+                        compId={compId}
+                        wildcard={entrant.wildcard}
+                        entrantId={entrant.entrantId}
+                      />
+                    </Protect>
+                  </TableCell>
+                ) : null}
+              </Protect>
+              <Protect
+                condition={() =>
+                  !!sessionClaims?.metadata?.captain ||
+                  !!sessionClaims?.metadata?.entryPermission
+                }
+              >
+                {isOpen ? (
+                  <TableCell className="px-1 sm:px-2">
+                    <Protect
+                      condition={() =>
+                        (!!sessionClaims?.metadata?.captain &&
+                          sessionClaims?.metadata?.teamId ===
+                            entrant.entrant.teamId) ||
+                        !!sessionClaims?.metadata?.entryPermission
+                      }
+                    >
+                      <WithdrawSomeoneButton
+                        compId={compId}
+                        entrantId={entrant.entrantId}
+                      />
+                    </Protect>
+                  </TableCell>
+                ) : null}
+              </Protect>
+            </TableRow>
+          ))}
+        </TableBody>
+        {/* <TableFooter>
               <TableRow>
                 <TableCell colSpan={3}>Total</TableCell>
                 <TableCell className="text-right">$2,500.00</TableCell>
               </TableRow>
             </TableFooter> */}
-        </Table>
-      </CardContent>
-    </Card>
+      </Table>
+    </LibCardNarrow>
   );
 }
 
@@ -197,79 +192,74 @@ export async function EventNonEntrants({ compId, isOpen }: EventEntrantsProps) {
 
   return (
     <div className="xl:xm-0 mx-1 mb-1 grid w-[calc(100vw-8px)] grid-cols-1 sm:mx-2 sm:mb-2 sm:w-[calc(100vw-16px)] xl:mb-4 xl:w-[min(100vw,1280px)]">
-      <Card className="">
-        <CardHeader>
-          <CardTitle>Not Entered</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableCaption>Event Non Entrants</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Team</TableHead>
+      <LibCardNarrow title="Not Entered">
+        <Table>
+          <TableCaption>Event Non Entrants</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Team</TableHead>
+              <Protect
+                condition={() =>
+                  !!sessionClaims?.metadata?.captain ||
+                  !!sessionClaims?.metadata?.entryPermission
+                }
+              >
+                {isOpen ? <TableHead>Enter?</TableHead> : null}
+              </Protect>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {nonEntrants.map((entrant) => (
+              <TableRow key={entrant.id}>
+                <TableCell className="font-medium">
+                  <EntrantDisplay
+                    entrant={{ id: entrant.id, name: entrant.name }}
+                  />
+                  {/* {`${entrant.name}`} */}
+                </TableCell>
+                <TableCell>
+                  <TeamDisplay
+                    team={ensure(
+                      teams.filter((team) => team.id == entrant.teamId)[0],
+                    )}
+                  />
+                </TableCell>
                 <Protect
                   condition={() =>
                     !!sessionClaims?.metadata?.captain ||
                     !!sessionClaims?.metadata?.entryPermission
                   }
                 >
-                  {isOpen ? <TableHead>Enter?</TableHead> : null}
+                  {isOpen ? (
+                    <TableCell>
+                      <Protect
+                        condition={() =>
+                          (!!sessionClaims?.metadata?.captain &&
+                            entrant.teamId ===
+                              sessionClaims?.metadata?.teamId) ||
+                          !!sessionClaims?.metadata?.entryPermission
+                        }
+                      >
+                        <EnterSomeoneButton
+                          compId={compId}
+                          entrantId={entrant.id}
+                        />
+                      </Protect>
+                    </TableCell>
+                  ) : null}
                 </Protect>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {nonEntrants.map((entrant) => (
-                <TableRow key={entrant.id}>
-                  <TableCell className="font-medium">
-                    <EntrantDisplay
-                      entrant={{ id: entrant.id, name: entrant.name }}
-                    />
-                    {/* {`${entrant.name}`} */}
-                  </TableCell>
-                  <TableCell>
-                    <TeamDisplay
-                      team={ensure(
-                        teams.filter((team) => team.id == entrant.teamId)[0],
-                      )}
-                    />
-                  </TableCell>
-                  <Protect
-                    condition={() =>
-                      !!sessionClaims?.metadata?.captain ||
-                      !!sessionClaims?.metadata?.entryPermission
-                    }
-                  >
-                    {isOpen ? (
-                      <TableCell>
-                        <Protect
-                          condition={() =>
-                            (!!sessionClaims?.metadata?.captain &&
-                              entrant.teamId ===
-                                sessionClaims?.metadata?.teamId) ||
-                            !!sessionClaims?.metadata?.entryPermission
-                          }
-                        >
-                          <EnterSomeoneButton
-                            compId={compId}
-                            entrantId={entrant.id}
-                          />
-                        </Protect>
-                      </TableCell>
-                    ) : null}
-                  </Protect>
-                </TableRow>
-              ))}
-            </TableBody>
-            {/* <TableFooter>
+            ))}
+          </TableBody>
+          {/* <TableFooter>
                 <TableRow>
                   <TableCell colSpan={3}>Total</TableCell>
                   <TableCell className="text-right">$2,500.00</TableCell>
                 </TableRow>
               </TableFooter> */}
-          </Table>
-        </CardContent>
-      </Card>
+        </Table>
+      </LibCardNarrow>
     </div>
   );
 }

@@ -1,6 +1,9 @@
 import { api } from "~/trpc/server";
 import { auth } from "@clerk/nextjs/server";
-import LibMain, { LibH1 } from "~/app/_components/lib-elements";
+import LibMain, {
+  LibCardContainer,
+  LibH1,
+} from "~/app/_components/lib-elements";
 import Results from "~/app/_components/results";
 import { Protect } from "@clerk/nextjs";
 import EventEntrants, {
@@ -104,16 +107,14 @@ export default async function Event({
       )}
 
       {comp.completed ? (
-        <div className="mx-1 mt-4 grid grid-cols-1 gap-4 sm:mx-2 xl:mx-0">
+        <LibCardContainer>
           <Results compId={comp.igCompId} />
           <TeamResultsForComp compId={comp.igCompId} />
-        </div>
+        </LibCardContainer>
       ) : (
-        <div className="flex flex-col  items-stretch ">
-          <div className="mx-1  mt-4 grid grid-cols-1 gap-1 sm:mx-2  sm:gap-2  xl:mx-0  xl:gap-4">
-            <EventEntrants compId={comp.igCompId} isOpen={comp.open} />
-          </div>
-        </div>
+        <LibCardContainer>
+          <EventEntrants compId={comp.igCompId} isOpen={comp.open} />
+        </LibCardContainer>
       )}
 
       <div className="flex  flex-col items-center ">
