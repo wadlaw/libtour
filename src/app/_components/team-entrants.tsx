@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { api } from "~/trpc/server";
 import {
   Table,
@@ -11,6 +10,7 @@ import {
 } from "~/components/ui/table";
 import LibMoney from "./lib-money";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { EntrantDisplay } from "./lib-elements";
 
 type TeamEntrantProps = {
   teamId: string;
@@ -42,7 +42,10 @@ export async function TeamEntrants({ teamId }: TeamEntrantProps) {
             {entrants.map((entrant) => (
               <TableRow key={entrant.name}>
                 <TableCell className="sm:px2 px-1 font-medium">
-                  <Link href={`/entrants/${entrant.id}`}>{entrant.name}</Link>
+                  <EntrantDisplay
+                    entrant={{ id: entrant.id, name: entrant.name }}
+                  />
+                  {/* <Link href={`/entrants/${entrant.id}`}>{entrant.name}</Link> */}
                 </TableCell>
                 <TableCell className="sm:px2 px-1 text-center">
                   {entrant.comps.length}

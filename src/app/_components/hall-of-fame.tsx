@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { LibCard } from "./lib-elements";
+import { EntrantDisplay, LibCardNarrow } from "./lib-elements";
 
 import {
   Collapsible,
@@ -125,7 +125,7 @@ export async function BestRounds({ format, numberOfRounds }: BestRoundsProps) {
   const roundOrder = getSortedRounds();
 
   return (
-    <LibCard title={`${numberOfRounds} Best ${format} Rounds`}>
+    <LibCardNarrow title={`${numberOfRounds} Best ${format} Rounds`}>
       <Table>
         <TableHeader>
           <TableRow>
@@ -156,10 +156,16 @@ export async function BestRounds({ format, numberOfRounds }: BestRoundsProps) {
                       </TableCell>
                     </CollapsibleTrigger>
                     <TableCell>
-                      <Link href={`/entrants/${round.entrantId}`}>
+                      <EntrantDisplay
+                        entrant={{
+                          id: round.entrantId,
+                          name: round.compEntrant.entrant.name,
+                        }}
+                      />
+                      {/* <Link href={`/entrants/${round.entrantId}`}>
                         {round.compEntrant.entrant.name}
                         {` (${round.handicap})`}
-                      </Link>
+                      </Link> */}
                     </TableCell>
                     <TableCell>
                       <Link
@@ -196,7 +202,7 @@ export async function BestRounds({ format, numberOfRounds }: BestRoundsProps) {
           })}
         </TableBody>
       </Table>
-    </LibCard>
+    </LibCardNarrow>
   );
 }
 
@@ -206,7 +212,7 @@ export async function Eagles() {
   if (eagles.length === 0) return null;
 
   return (
-    <LibCard title="Eagles">
+    <LibCardNarrow title="Eagles">
       <Table>
         <TableHeader>
           <TableRow>
@@ -234,9 +240,15 @@ export async function Eagles() {
                       </TableCell>
                     </CollapsibleTrigger>
                     <TableCell>
-                      <Link href={`/entrants/${eagle.scorecard.entrantId}`}>
+                      <EntrantDisplay
+                        entrant={{
+                          id: eagle.scorecard.entrantId,
+                          name: eagle.scorecard.compEntrant.entrant.name,
+                        }}
+                      />
+                      {/* <Link href={`/entrants/${eagle.scorecard.entrantId}`}>
                         {eagle.scorecard.compEntrant.entrant.name}
-                      </Link>
+                      </Link> */}
                     </TableCell>
                     <CollapsibleTrigger asChild>
                       <TableCell className="text-center hover:cursor-pointer">
@@ -267,6 +279,6 @@ export async function Eagles() {
           })}
         </TableBody>
       </Table>
-    </LibCard>
+    </LibCardNarrow>
   );
 }

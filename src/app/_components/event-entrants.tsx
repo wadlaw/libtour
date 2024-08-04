@@ -1,5 +1,4 @@
 import { auth } from "@clerk/nextjs/server";
-import Link from "next/link";
 import { api } from "~/trpc/server";
 import { Protect } from "@clerk/nextjs";
 
@@ -15,9 +14,8 @@ import {
 import WildcardEntry from "./wildcard-entry";
 import { EnterSomeoneButton } from "./enter-button";
 import { WithdrawSomeoneButton } from "./withdraw-button";
-import { TeamDisplay } from "./lib-elements";
+import { EntrantDisplay, TeamDisplay } from "./lib-elements";
 import { ensure } from "~/lib/utils";
-import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 
 type EventEntrantsProps = {
@@ -90,10 +88,17 @@ export default async function EventEntrants({
             {entrants.map((entrant) => (
               <TableRow key={entrant.entrantId}>
                 <TableCell className="px-1 font-medium sm:px-2">
-                  <Link href={`/entrants/${entrant.entrantId}`}>
+                  <EntrantDisplay
+                    entrant={{
+                      id: entrant.entrantId,
+                      name: entrant.entrant.name,
+                      wildcard: !!entrant.wildcard,
+                    }}
+                  />
+                  {/* <Link href={`/entrants/${entrant.entrantId}`}>
                     <span className="mr-1 sm:mr-2">{entrant.entrant.name}</span>
                     {entrant.wildcard ? <Badge>WC</Badge> : null}
-                  </Link>
+                  </Link> */}
                 </TableCell>
                 {/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */}
                 <TableCell
@@ -216,7 +221,12 @@ export async function EventNonEntrants({ compId, isOpen }: EventEntrantsProps) {
             <TableBody>
               {nonEntrants.map((entrant) => (
                 <TableRow key={entrant.id}>
-                  <TableCell className="font-medium">{`${entrant.name}`}</TableCell>
+                  <TableCell className="font-medium">
+                    <EntrantDisplay
+                      entrant={{ id: entrant.id, name: entrant.name }}
+                    />
+                    {/* {`${entrant.name}`} */}
+                  </TableCell>
                   <TableCell>
                     <TeamDisplay
                       team={ensure(

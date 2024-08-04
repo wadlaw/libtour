@@ -1,7 +1,11 @@
 import { api } from "~/trpc/server";
-import LibMain, { LibCard, LibH1 } from "~/app/_components/lib-elements";
+import LibMain, {
+  LibCard,
+  LibH1,
+  TeamDisplay,
+} from "~/app/_components/lib-elements";
 import Link from "next/link";
-import Image from "next/image";
+
 import {
   Table,
   TableBody,
@@ -15,6 +19,7 @@ import { Suspense } from "react";
 import { Skeleton } from "~/components/ui/skeleton";
 import SkeletonTable from "~/app/_components/skeletons";
 import LibMoney from "~/app/_components/lib-money";
+import IdentityIcon from "~/app/_components/identicons";
 
 export async function generateMetadata({
   params,
@@ -93,26 +98,32 @@ async function Content({ entrantId }: ContentProps) {
     <LibMain>
       {entrant ? (
         <div className="flex flex-col items-center">
-          <div className="overflow-hidden rounded-full">
-            <Link href={`/teams/${entrant.team.linkName}`}>
-              <Image
+          <div className="overflow-hidden rounded-full ring-2 ring-slate-200">
+            <Link href={`/entrants/${entrant.id}`}>
+              <IdentityIcon username={entrant.name} width={100} />
+              {/* <Image
                 src={`/${entrant.team.linkName + ".png"}`}
                 height={100}
                 width={100}
                 alt={`${entrant.team.teamName} logo`}
-              ></Image>
+              ></Image> */}
             </Link>
           </div>
           <LibH1>{entrant?.name}</LibH1>
-          <p>
+          <p className="mt-1 sm:mt-2">
             {entrant?.captain ? (
               <Link href={`/teams/${entrant?.team.linkName}`}>
-                Captain of {`${entrant?.team.teamName}`}
+                <div className="flex items-center gap-2">
+                  Captain of{" "}
+                  <TeamDisplay team={entrant.team} alwaysDisplayLogo={true} />
+                </div>
+                {/* {`${entrant?.team.teamName}`} */}
               </Link>
             ) : (
-              <Link
-                href={`/teams/${entrant?.team.linkName}`}
-              >{`${entrant?.team.teamName}`}</Link>
+              <Link href={`/teams/${entrant?.team.linkName}`}>
+                <TeamDisplay team={entrant.team} alwaysDisplayLogo={true} />
+                {/* {`${entrant?.team.teamName}`} */}
+              </Link>
             )}
           </p>
         </div>

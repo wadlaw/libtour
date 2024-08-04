@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { api } from "~/trpc/server";
 import LibMoney from "./lib-money";
 import { ensure } from "~/lib/utils";
@@ -12,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { TeamDisplay } from "./lib-elements";
+import { EntrantDisplay, TeamDisplay } from "./lib-elements";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import {
@@ -102,7 +101,16 @@ export default async function Results({ compId }: ResultsProps) {
                       </CollapsibleTrigger>
                     </TableCell>
                     <TableCell className="px-1 font-medium sm:px-2">
-                      <Link href={`/entrants/${result.entrant.id}`}>
+                      <EntrantDisplay
+                        entrant={{
+                          id: result.entrantId,
+                          name: result.entrant.name,
+                          handicap: result.scorecard?.handicap,
+                          wildcard: result.wildcard,
+                        }}
+                        alwaysDisplayLogo={true}
+                      />
+                      {/* <Link href={`/entrants/${result.entrant.id}`}>
                         <span className="mr-1 sm:mr-2">
                           {result.entrant.name}
                           {result.scorecard?.id
@@ -110,7 +118,7 @@ export default async function Results({ compId }: ResultsProps) {
                             : ""}
                         </span>
                         {result.wildcard ? <Badge>WC</Badge> : null}
-                      </Link>
+                      </Link> */}
                     </TableCell>
                     <TableCell className="px-1 sm:px-2">
                       <TeamDisplay
@@ -119,6 +127,8 @@ export default async function Results({ compId }: ResultsProps) {
                             (team) => team.id == result.entrant.teamId,
                           )[0],
                         )}
+                        alwaysDisplayLogo={true}
+                        iconOnlyWhenSmall={true}
                       />
                       {/* {
                 teams.filter((team) => team.id == result.entrant.teamId)[0]
@@ -206,7 +216,10 @@ export async function Winners({ compId }: ResultsProps) {
               {result.igPosition}
             </TableCell>
             <TableCell className="px-1 font-medium sm:px-2">
-              <span className="mr-1 sm:mr-2">{result.entrant.name}</span>
+              {/* <span className="mr-1 sm:mr-2">{result.entrant.name}</span> */}
+              <EntrantDisplay
+                entrant={{ id: result.entrantId, name: result.entrant.name }}
+              />
               {result.wildcard ? <Badge>WC</Badge> : null}
             </TableCell>
             <TableCell className="px-1 sm:px-2">

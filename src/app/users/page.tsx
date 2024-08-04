@@ -1,9 +1,10 @@
 import { api } from "~/trpc/server";
 import LibMain, {
-  LibCard,
+  LibCardNarrow,
   LibCardContainer,
   LibH1,
   TeamDisplay,
+  EntrantDisplay,
 } from "~/app/_components/lib-elements";
 import UserSelect from "../_components/user-select";
 import {
@@ -30,7 +31,7 @@ export default async function Page() {
         <LibH1>Users</LibH1>
       </div>
       <LibCardContainer>
-        <LibCard title="User/Entrant Mapping">
+        <LibCardNarrow title="User/Entrant Mapping">
           <Table>
             <TableHeader>
               <TableHead className="px-1 sm:px-2">Entrant</TableHead>
@@ -42,7 +43,9 @@ export default async function Page() {
                 return (
                   <TableRow key={entrant.id}>
                     <TableCell className="px-1 sm:px-2">
-                      {entrant.name}
+                      <EntrantDisplay
+                        entrant={{ id: entrant.id, name: entrant.name }}
+                      />
                     </TableCell>
                     <TableCell className="px-1 sm:px-2">
                       <TeamDisplay
@@ -70,7 +73,7 @@ export default async function Page() {
               })}
             </TableBody>
           </Table>
-        </LibCard>
+        </LibCardNarrow>
       </LibCardContainer>
     </LibMain>
   );

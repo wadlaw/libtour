@@ -15,7 +15,7 @@ import {
 
 import Link from "next/link";
 import { TransactionPopover } from "./account-transactions";
-import { TeamDisplay } from "./lib-elements";
+import { EntrantDisplay, TeamDisplay } from "./lib-elements";
 
 export default function Balances() {
   const entrants = api.account.entrantsWithTransactions.useQuery();
@@ -40,7 +40,11 @@ export default function Balances() {
         {entrants.data.map((entrant) => (
           <TableRow key={entrant.id}>
             <TableCell className=" px-1 sm:px-2">
-              <Link href={`/accounts/${entrant.id}`}>{entrant.name}</Link>
+              <EntrantDisplay
+                entrant={{ id: entrant.id, name: entrant.name }}
+                linkUrl="/accounts/"
+              />
+              {/* <Link href={`/accounts/${entrant.id}`}>{entrant.name}</Link> */}
             </TableCell>
             <TableCell className="hidden px-1 sm:table-cell sm:px-2">
               <TeamDisplay team={entrant.team} />
