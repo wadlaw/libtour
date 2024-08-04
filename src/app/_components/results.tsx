@@ -152,13 +152,15 @@ export default async function Results({ compId }: ResultsProps) {
                     </CollapsibleTrigger>
                   </TableCell>
                   <TableCell className="px-1 text-right sm:px-2">
-                    <LibMoney
-                      hideZeros={true}
-                      amountInPence={result.transactions.reduce(
-                        (acc, cur) => acc + cur.netAmount,
-                        0,
-                      )}
-                    />
+                    <CollapsibleTrigger asChild>
+                      <LibMoney
+                        hideZeros={true}
+                        amountInPence={result.transactions.reduce(
+                          (acc, cur) => acc + cur.netAmount,
+                          0,
+                        )}
+                      />
+                    </CollapsibleTrigger>
                   </TableCell>
                 </TableRow>
                 <CollapsibleContent asChild>

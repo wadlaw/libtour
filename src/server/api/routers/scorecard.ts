@@ -121,11 +121,6 @@ export const scorecardRouter = createTRPCRouter({
                             strokes: { lte: 2 },
                             par: 4
                         },
-                        {
-                            NR: false,
-                            strokes: 1,
-                            par: 3
-                        },
                     ]
                     
                 },
@@ -135,6 +130,41 @@ export const scorecardRouter = createTRPCRouter({
                             comp: 
                                 {date: 'desc'}
                             
+                        }
+                    }
+                },
+                include: {
+                    scorecard: {
+                        include: {
+                            holes: {
+                                orderBy: {
+                                    holeNo: 'asc'
+                                }
+                            },
+                            compEntrant: {
+                                include: {
+                                    comp: true,
+                                    entrant: true
+                                }   
+                            }
+                        }
+                    }
+                }
+            })
+        }),
+
+        holesInOne: publicProcedure
+        .query(({ ctx }) => {
+            return ctx.db.hole.findMany({
+                where: {
+                            NR: false,
+                            strokes: 1,
+                },
+                orderBy: {
+                    scorecard: {
+                        compEntrant: {
+                            comp: 
+                                {date: 'desc'}
                         }
                     }
                 },

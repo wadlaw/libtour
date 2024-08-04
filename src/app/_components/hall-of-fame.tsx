@@ -124,6 +124,9 @@ export async function BestRounds({ format, numberOfRounds }: BestRoundsProps) {
   };
   const roundOrder = getSortedRounds();
 
+  if (rounds.length === 0)
+    return <NoScores numberOfRounds={numberOfRounds} format={format} />;
+
   return (
     <LibCardNarrow title={`${numberOfRounds} Best ${format} Rounds`}>
       <Table>
@@ -206,13 +209,60 @@ export async function BestRounds({ format, numberOfRounds }: BestRoundsProps) {
   );
 }
 
-export async function Eagles() {
-  const eagles = await api.scorecard.eagles();
+function NoScores({ format, numberOfRounds }: BestRoundsProps) {
+  return (
+    <LibCardNarrow title={`${numberOfRounds} Best ${format} Rounds`}>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>
+              {format === "Stableford"
+                ? "Points "
+                : format === "Medal"
+                  ? "Net"
+                  : "Strokes"}
+            </TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Comp</TableHead>
+            <TableHead className="hidden sm:table-cell lg:hidden">
+              Date
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell colSpan={3}>
+              Rounds will appear here when scores have been processed
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </LibCardNarrow>
+  );
+}
 
-  if (eagles.length === 0) return null;
+export async function Eagles() {
+  return <GreatScores type="Eagles" />;
+}
+
+export async function HolesInOne() {
+  return <GreatScores type="Holes In One" />;
+}
+
+type GreatScoresProps = {
+  type: "Eagles" | "Holes In One";
+};
+
+async function GreatScores({ type }: GreatScoresProps) {
+  const scores =
+    type === "Eagles"
+      ? await api.scorecard.eagles()
+      : await api.scorecard.holesInOne();
+
+  if (scores.length === 0) return null;
 
   return (
-    <LibCardNarrow title="Eagles">
+    <LibCardNarrow title={type}>
       <Table>
         <TableHeader>
           <TableRow>
@@ -223,15 +273,15 @@ export async function Eagles() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {eagles.map((eagle) => {
+          {scores.map((score) => {
             return (
-              <Collapsible key={`${eagle.scorecardId}-${eagle.holeNo}`} asChild>
-                <Fragment key={`${eagle.scorecardId}-${eagle.holeNo}`}>
-                  <TableRow key={`${eagle.scorecardId}-${eagle.holeNo}`}>
+              <Collapsible key={`${score.scorecardId}-${score.holeNo}`} asChild>
+                <Fragment key={`${score.scorecardId}-${score.holeNo}`}>
+                  <TableRow key={`${score.scorecardId}-${score.holeNo}`}>
                     <CollapsibleTrigger asChild>
                       <TableCell className="hover:cursor-pointer">
                         {new Date(
-                          eagle.scorecard.compEntrant.comp.date,
+                          score.scorecard.compEntrant.comp.date,
                         ).toLocaleDateString("en-GB", {
                           weekday: "short",
                           month: "long",
@@ -242,24 +292,24 @@ export async function Eagles() {
                     <TableCell>
                       <EntrantDisplay
                         entrant={{
-                          id: eagle.scorecard.entrantId,
-                          name: eagle.scorecard.compEntrant.entrant.name,
+                          id: score.scorecard.entrantId,
+                          name: score.scorecard.compEntrant.entrant.name,
                         }}
                       />
                       {/* <Link href={`/entrants/${eagle.scorecard.entrantId}`}>
-                        {eagle.scorecard.compEntrant.entrant.name}
-                      </Link> */}
+                          {eagle.scorecard.compEntrant.entrant.name}
+                        </Link> */}
                     </TableCell>
                     <CollapsibleTrigger asChild>
                       <TableCell className="text-center hover:cursor-pointer">
-                        {eagle.holeNo}
+                        {score.holeNo}
                       </TableCell>
                     </CollapsibleTrigger>
                     <TableCell>
                       <Link
-                        href={`/events/${eagle.scorecard.compEntrant.comp.shortName}`}
+                        href={`/events/${score.scorecard.compEntrant.comp.shortName}`}
                       >
-                        {eagle.scorecard.compEntrant.comp.name}
+                        {score.scorecard.compEntrant.comp.name}
                       </Link>
                     </TableCell>
                   </TableRow>
@@ -268,7 +318,7 @@ export async function Eagles() {
                       <ScorecardDisplay
                         colSpan={4}
                         formatForSplitView={true}
-                        scorecard={eagle.scorecard}
+                        scorecard={score.scorecard}
                         strokesOnly={true}
                       />
                     </tr>

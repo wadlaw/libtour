@@ -1,4 +1,4 @@
-import { BestRounds, Eagles } from "../_components/hall-of-fame";
+import { BestRounds, Eagles, HolesInOne } from "../_components/hall-of-fame";
 import LibMain, { LibCardContainer, LibH1 } from "../_components/lib-elements";
 
 export const metadata = {
@@ -16,6 +16,7 @@ export default function HallOfFame() {
         <BestRounds format="Medal" numberOfRounds={10} />
         <BestRounds format="Stableford" numberOfRounds={10} />
         <BestRounds format="Gross" numberOfRounds={10} />
+        <HolesInOne />
         <Eagles />
       </LibCardContainer>
     </LibMain>
