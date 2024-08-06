@@ -1,5 +1,4 @@
 
-import { Prisma, type Entrant } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 
 // import { error } from "console";
