@@ -61,11 +61,24 @@ const libbetsCard = [
 
 export const scorecardRouter = createTRPCRouter({
     addMany: adminProcedure
-        .input(z.object({compId: z.string(), entrantId: z.number(), handicap: z.number(), stableford: z.boolean(), holes: z.object({ holeNo: z.number(), strokes: z.number().optional(), NR: z.boolean() }).array()}).array())
+        .input(z.object({compId: z.string(), entrantId: z.number(), handicap: z.number(), stableford: z.boolean(), NR: z.boolean().optional().nullable().default(null), gross: z.number().optional().nullable().default(null), points: z.number().optional().default(0), net: z.number().optional().nullable().default(null), holes: z.object({ holeNo: z.number(), strokes: z.number().optional(), NR: z.boolean(), points: z.number().optional().default(0) , net: z.number().optional().nullable().default(null) }).array()}).array())
         .mutation(async ({ ctx, input }) => {
 
             await ctx.db.$transaction(input.map(sc => {
-                 return ctx.db.compEntrant.update({
+                //Calculate points and net score for each hole
+                sc.holes.forEach(hole => {
+                    hole.points = CalculatePoints(hole.strokes, libbetsCard[hole.holeNo - 1]?.par ?? 4, libbetsCard[hole.holeNo - 1]?.strokeIndex ?? 19, sc.handicap, hole.NR ),
+                    hole.net = CalculateNet(hole.strokes, libbetsCard[hole.holeNo - 1]?.par ?? 4, libbetsCard[hole.holeNo - 1]?.strokeIndex ?? 19, sc.handicap, hole.NR )
+                }) 
+                //Update scorecard properties with scores
+                sc.NR = sc.holes.filter(hole => hole.NR).length > 0
+                if (!sc.NR) {
+                    sc.gross = sc.holes.reduce((acc, cur) => acc + (cur.strokes ?? 0), 0)
+                    sc.net = sc.holes.reduce((acc, cur) => acc + (cur.net ?? 0), 0)
+                }
+                sc.points = sc.holes.reduce((acc, cur) => acc + (cur.points ?? 0), 0)
+
+                return ctx.db.compEntrant.update({
                     where: {
                         compId_entrantId: {
                             compId: sc.compId,
@@ -77,6 +90,29 @@ export const scorecardRouter = createTRPCRouter({
                             create: {
                                 handicap: sc.handicap,
                                 stableford: sc.stableford,
+                                NR: (sc.holes.filter(hole => hole.NR === true).length > 0),
+                                points: sc.points,
+                                net: sc.net,
+                                strokes: sc.gross,
+                                pointsCountback: 100_000_000 * sc.points +
+                                                   1_000_000 * sc.holes.filter(h => h.holeNo >= 10).reduce((acc, cur) => acc + cur.points,0) +
+                                                      10_000 * sc.holes.filter(h => h.holeNo >= 13).reduce((acc, cur) => acc + cur.points,0) +
+                                                         100 * sc.holes.filter(h => h.holeNo >= 16).reduce((acc, cur) => acc + cur.points,0) +
+                                                           1 * sc.holes.filter(h => h.holeNo >= 18).reduce((acc, cur) => acc + cur.points,0),
+                                strokesCountback: sc.gross ? 
+                                                100_000_000 * sc.gross +
+                                                  1_000_000 * sc.holes.filter(h => h.holeNo >= 10).reduce((acc, cur) => acc + (cur.strokes ?? 0),0) +
+                                                     10_000 * sc.holes.filter(h => h.holeNo >= 13).reduce((acc, cur) => acc + (cur.strokes ?? 0),0) +
+                                                        100 * sc.holes.filter(h => h.holeNo >= 16).reduce((acc, cur) => acc + (cur.strokes ?? 0),0) +
+                                                          1 * sc.holes.filter(h => h.holeNo >= 18).reduce((acc, cur) => acc + (cur.strokes ?? 0),0)
+                                         : null,
+                                netCountback: sc.net ? 
+                                                100_000_000 * sc.net +
+                                                  1_000_000 * sc.holes.filter(h => h.holeNo >= 10).reduce((acc, cur) => acc + (cur.net ?? 0),0) +
+                                                     10_000 * sc.holes.filter(h => h.holeNo >= 13).reduce((acc, cur) => acc + (cur.net ?? 0),0) +
+                                                        100 * sc.holes.filter(h => h.holeNo >= 16).reduce((acc, cur) => acc + (cur.net ?? 0),0) +
+                                                          1 * sc.holes.filter(h => h.holeNo >= 18).reduce((acc, cur) => acc + (cur.net ?? 0),0)
+                                  : null,
                                 holes: {
                                     createMany: {
                                         data: sc.holes.map(hole => {
@@ -86,8 +122,10 @@ export const scorecardRouter = createTRPCRouter({
                                                 strokeIndex: libbetsCard[hole.holeNo - 1]?.strokeIndex ?? 19,
                                                 strokes: hole.strokes,
                                                 NR: hole.NR,
-                                                points: CalculatePoints(hole.strokes, libbetsCard[hole.holeNo - 1]?.par ?? 4, libbetsCard[hole.holeNo - 1]?.strokeIndex ?? 19, sc.handicap, hole.NR ),
-                                                net: CalculateNet(hole.strokes, libbetsCard[hole.holeNo - 1]?.par ?? 4, libbetsCard[hole.holeNo - 1]?.strokeIndex ?? 19, sc.handicap, hole.NR )
+                                                // points: CalculatePoints(hole.strokes, libbetsCard[hole.holeNo - 1]?.par ?? 4, libbetsCard[hole.holeNo - 1]?.strokeIndex ?? 19, sc.handicap, hole.NR ),
+                                                // net: CalculateNet(hole.strokes, libbetsCard[hole.holeNo - 1]?.par ?? 4, libbetsCard[hole.holeNo - 1]?.strokeIndex ?? 19, sc.handicap, hole.NR )
+                                                points: hole.points,
+                                                net: hole.net
                                             }
                                         })
 
@@ -188,147 +226,78 @@ export const scorecardRouter = createTRPCRouter({
             })
         }),
 
-    bestStablefordRounds: publicProcedure
-    .input(z.object({ numberOfRounds: z.number() }))
-        .query(async ({ ctx, input }) => {
-            const scorecards = await ctx.db.hole.groupBy({
-                by: ["scorecardId"],
-                _sum: {
-                    points: true,
-                    },
-                _count: {
-                    holeNo: true
-                },
-                where: {
-                    scorecard: {
+        bestStablefordRounds: publicProcedure
+            .input(z.object({ numberOfRounds: z.number() }))
+            .query(async ({ ctx, input }) => {
+
+                return ctx.db.scorecard.findMany({
+                    include: {
+                        holes: true,
                         compEntrant: {
-                            comp: {
-                                stableford: true
+                            include: {
+                                comp: true,
+                                entrant: true
                             }
                         }
-
-                    }
-                },
-                orderBy: [
-                    { _count: { holeNo: 'desc' }},
-                    { _sum: { points: 'desc' }}
-                ],
-                take: input.numberOfRounds
-            })
-
-            const scorecardIds = scorecards.map(sc => sc.scorecardId)
-
-            return ctx.db.scorecard.findMany({
-                include: {
-                    holes: true,
-                    compEntrant: {
-                        include: {
-                            comp: true,
-                            entrant: true
-                        }
-                    }
-                },
-                where: {
-                    id: { in: scorecardIds }
-                }
-            })
-        }),
+                    },
+                    where: {
+                        stableford: true
+                    },
+                    orderBy: [
+                        { pointsCountback: `desc` }
+                    ],
+                    take: input.numberOfRounds
+                })
+            }),
 
         bestMedalRounds: publicProcedure
-        .input(z.object({ numberOfRounds: z.number() }))
-        .query(async ({ ctx, input }) => {
-            const scorecards = await ctx.db.hole.groupBy({
-                by: ["scorecardId"],
-                _sum: {
-                    net: true,
-                    },
-                _count: {
-                    holeNo: true
-                },
-                where: {
-                    NR: false,
-                    scorecard: {
+            .input(z.object({ numberOfRounds: z.number() }))
+            .query(async ({ ctx, input }) => {
+
+                return ctx.db.scorecard.findMany({
+                    include: {
+                        holes: true,
                         compEntrant: {
-                            comp: {
-                                stableford: false
+                            include: {
+                                comp: true,
+                                entrant: true
                             }
                         }
-
-                    }
-                },
-                orderBy: [
-                    { _count: { holeNo: 'desc' }},
-                    { _sum: { net: 'asc' }}
-                ],
-
-                take: input.numberOfRounds
-
-                
-            })
-            const scorecardIds = scorecards.map(sc => sc.scorecardId)
-
-            return ctx.db.scorecard.findMany({
-                include: {
-                    holes: true,
-                    compEntrant: {
-                        include: {
-                            comp: true,
-                            entrant: true
-                        }
-                    }
-                },
-                where: {
-                    id: { in: scorecardIds }
-                }
-            })
-        }),   
-
-    bestGrossRounds: publicProcedure
-        .input(z.object({ numberOfRounds: z.number() }))
-        .query(async ({ ctx, input }) => {
-            const scorecards = await ctx.db.hole.groupBy({
-                by: ["scorecardId"],
-                _sum: {
-                    strokes: true,
                     },
-                _count: {
-                    holeNo: true
-                },
-                where: {
-                    NR: false,
-                    scorecard: {
+                    where: {
+                        stableford: false,
+                        NR: false
+                    },
+                    orderBy: [
+                        { netCountback: `asc` }
+                    ],
+                    take: input.numberOfRounds
+                })
+            }),
+
+        bestGrossRounds: publicProcedure
+            .input(z.object({ numberOfRounds: z.number() }))
+            .query(async ({ ctx, input }) => {
+
+                return ctx.db.scorecard.findMany({
+                    include: {
+                        holes: true,
                         compEntrant: {
-                            comp: {
-                                stableford: false
+                            include: {
+                                comp: true,
+                                entrant: true
                             }
                         }
+                    },
+                    where: {
+                        NR: false
+                    },
+                    orderBy: [
+                        { strokesCountback: `asc` }
+                    ],
+                    take: input.numberOfRounds
+                })
+            }),   
 
-                    }
-                },
-                orderBy: [
-                    { _count: { holeNo: 'desc' }},
-                    { _sum: { strokes: 'asc' }}
-                ],
-
-                take: input.numberOfRounds
-
-                
-            })
-            const scorecardIds = scorecards.map(sc => sc.scorecardId)
-
-            return ctx.db.scorecard.findMany({
-                include: {
-                    holes: true,
-                    compEntrant: {
-                        include: {
-                            comp: true,
-                            entrant: true
-                        }
-                    }
-                },
-                where: {
-                    id: { in: scorecardIds }
-                }
-            })
-        }),
+    
 })

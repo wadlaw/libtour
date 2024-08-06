@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { ensure } from "~/lib/utils";
 
 import { createTRPCRouter, publicProcedure,  wildcardProcedure } from "~/server/api/trpc";
 
@@ -184,12 +185,60 @@ export const entrantRouter = createTRPCRouter({
         })
     }),
 
-    entrantsByPrizeMoney: publicProcedure
+    entrantsByPrizeMoneyOld: publicProcedure
         .input(z.object({ limit: z.number() }))
         .query(({ ctx, input }) => {
             return ctx.db.$queryRaw<{id: number, name: string, teamId: string, linkName: string, teamName: string, totalWinnings: number, prizeCount: number}[]>(
                 Prisma.sql`SELECT e.id, e.name, tm.id as "teamId", tm."linkName", tm."teamName", sum(t.amount) as "totalWinnings", count(t.amount) as "prizeCount" FROM "Entrant" e LEFT JOIN "Transaction" t ON e.id = t."entrantId" LEFT JOIN "Team" tm ON e."teamId" = tm.id WHERE t.winnings = true group by e.id, tm.id, tm."linkName", tm."teamName" order by sum(t.amount) desc, e.name LIMIT ${input.limit};`
             )
+        }),
+        
+
+        entrantsByPrizeMoney: publicProcedure
+        .input(z.object({ limit: z.number() }))
+        .query(async ({ ctx, input }) => {
+            //Get IDs of the biggest prizewinners then use that list to filter the return data.
+            //Will need to be sorted on the client side :(
+             const entrantIds = await ctx.db.transaction.groupBy({
+                by: ['entrantId'],
+                _sum: {
+                    netAmount: true
+                },
+                where: {
+                    winnings: true
+                },
+                orderBy: {
+                    _sum: {
+                        netAmount: 'desc'
+                    }
+                },
+                take: input.limit
+             })
+            
+             const entrants = await ctx.db.entrant.findMany({
+                include: {
+                    team: true,
+                    transactions: {
+                        where: {
+                            winnings: true 
+                        } 
+                    }
+                },
+                where: {
+
+                    id: { in: entrantIds.map(ent => ent.entrantId) }
+                    
+                },
+                    take: input.limit
+            })
+
+            return entrantIds.map(ent => {
+                return (ensure(entrants.filter(entrant => entrant.id === ent.entrantId)[0]))
+            })
+
+            // return ctx.db.$queryRaw<{id: number, name: string, teamId: string, linkName: string, teamName: string, totalWinnings: number, prizeCount: number}[]>(
+            //     Prisma.sql`SELECT e.id, e.name, tm.id as "teamId", tm."linkName", tm."teamName", sum(t.amount) as "totalWinnings", count(t.amount) as "prizeCount" FROM "Entrant" e LEFT JOIN "Transaction" t ON e.id = t."entrantId" LEFT JOIN "Team" tm ON e."teamId" = tm.id WHERE t.winnings = true group by e.id, tm.id, tm."linkName", tm."teamName" order by sum(t.amount) desc, e.name LIMIT ${input.limit};`
+            // )
         })
 
 });

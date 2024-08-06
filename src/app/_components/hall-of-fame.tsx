@@ -38,92 +38,6 @@ export async function BestRounds({ format, numberOfRounds }: BestRoundsProps) {
             numberOfRounds: numberOfRounds,
           });
 
-  const getSortedRounds = () => {
-    const unsortedScores: {
-      scorecardId: number;
-      score: number;
-      countbackScore: number;
-    }[] = [];
-    rounds.forEach((sc) => {
-      const score = sc.holes.reduce(
-        (acc, cur) =>
-          acc +
-          (format === "Stableford"
-            ? cur.points
-            : format === "Medal"
-              ? cur.net ?? 0
-              : cur.strokes ?? 0),
-        0,
-      );
-      const back9 = sc.holes
-        .filter((s) => s.holeNo >= 10)
-        .reduce(
-          (acc, cur) =>
-            acc +
-            (format === "Stableford"
-              ? cur.points
-              : format === "Medal"
-                ? cur.net ?? 0
-                : cur.strokes ?? 0),
-          0,
-        );
-      const back6 = sc.holes
-        .filter((s) => s.holeNo >= 13)
-        .reduce(
-          (acc, cur) =>
-            acc +
-            (format === "Stableford"
-              ? cur.points
-              : format === "Medal"
-                ? cur.net ?? 0
-                : cur.strokes ?? 0),
-          0,
-        );
-      const back3 = sc.holes
-        .filter((s) => s.holeNo >= 16)
-        .reduce(
-          (acc, cur) =>
-            acc +
-            (format === "Stableford"
-              ? cur.points
-              : format === "Medal"
-                ? cur.net ?? 0
-                : cur.strokes ?? 0),
-          0,
-        );
-      const back1 = sc.holes
-        .filter((s) => s.holeNo >= 18)
-        .reduce(
-          (acc, cur) =>
-            acc +
-            (format === "Stableford"
-              ? cur.points
-              : format === "Medal"
-                ? cur.net ?? 0
-                : cur.strokes ?? 0),
-          0,
-        );
-      unsortedScores.push({
-        scorecardId: sc.id,
-        score: score,
-        countbackScore:
-          score +
-          back9 / 100 +
-          back6 / 10000 +
-          back3 / 1000000 +
-          back1 / 100000000,
-      });
-    });
-    return unsortedScores.sort((a, b) => {
-      if (format === "Stableford") {
-        return b.countbackScore - a.countbackScore;
-      } else {
-        return a.countbackScore - b.countbackScore;
-      }
-    });
-  };
-  const roundOrder = getSortedRounds();
-
   if (rounds.length === 0)
     return <NoScores numberOfRounds={numberOfRounds} format={format} />;
 
@@ -147,15 +61,18 @@ export async function BestRounds({ format, numberOfRounds }: BestRoundsProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {roundOrder.map((rd) => {
-            const round = rounds.filter((rnd) => rnd.id === rd.scorecardId)[0]!;
+          {rounds.map((round) => {
             return (
               <Collapsible key={round.id} asChild>
                 <Fragment key={round.id}>
                   <TableRow key={round.id}>
                     <CollapsibleTrigger asChild>
                       <TableCell className="hover:cursor-pointer">
-                        {rd.score}
+                        {format === "Stableford"
+                          ? round.points
+                          : format === "Medal"
+                            ? round.net
+                            : round.strokes}
                       </TableCell>
                     </CollapsibleTrigger>
                     <TableCell>

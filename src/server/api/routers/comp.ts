@@ -291,10 +291,32 @@ export const compRouter = createTRPCRouter({
 
   getNonEntrants: publicProcedure
     .input(z.object({ comp: z.string().min(3) }))
-    .query(({ ctx, input }) => {
-      
-    return ctx.db.$queryRaw<Entrant[]>(Prisma.sql`SELECT e.* FROM "Entrant" e CROSS JOIN "Comp" c LEFT JOIN "CompEntrant" ce ON c."igCompId" = ce."compId" AND e."id" = ce."entrantId" LEFT JOIN "Team" t ON e."teamId" = t.id WHERE (c."igCompId" = ${input.comp} OR c."shortName" = ${input.comp}) AND ce."createdAt" is null ORDER BY t."teamName", e."name";`)
-    
+    .query(async ({ ctx, input }) => {
+
+      //Get list of entrant that ARE in the comp so we can exclude them from the returned data 
+      const enteredIds = await ctx.db.compEntrant.findMany({
+        select: {
+          entrantId: true
+        },
+        where: {
+          OR: [
+            { compId: input.comp },
+            { comp: { shortName: input.comp }}
+          ]
+          
+        }
+      })
+
+      //Return a list of entrants that are NOT entered into the competition
+      return ctx.db.entrant.findMany({
+        where: {
+          id: { notIn: enteredIds.map(entId => entId.entrantId) }
+        },
+        orderBy: [
+          { team: { teamName: 'asc' }},
+          { name: 'asc' }
+        ]
+      })
   }),
 
   getList: publicProcedure.query(({ ctx }) => {

@@ -55,19 +55,26 @@ export default async function PrizeMoneyTable({
                     <TeamDisplay
                       team={{
                         id: entrant.teamId,
-                        linkName: entrant.linkName,
-                        teamName: entrant.teamName,
+                        linkName: entrant.team.linkName,
+                        teamName: entrant.team.teamName,
                       }}
                       alwaysDisplayLogo={true}
                       iconOnlyWhenSmall={true}
                     />
                   </TableCell>
                   <TableCell className="hidden px-1 text-center sm:table-cell sm:px-2">
-                    {Number(entrant.prizeCount)}
+                    {Number(entrant.transactions.length)}
                   </TableCell>
                   <TableCell className="px-1 text-right sm:px-2">
                     <Link href={`/entrants/${entrant.id}`}>
-                      <LibMoney amountInPence={Number(entrant.totalWinnings)} />
+                      <LibMoney
+                        amountInPence={Number(
+                          entrant.transactions.reduce(
+                            (acc, cur) => acc + cur.netAmount,
+                            0,
+                          ),
+                        )}
+                      />
                     </Link>
                   </TableCell>
                 </TableRow>

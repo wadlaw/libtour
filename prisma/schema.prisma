@@ -109,13 +109,20 @@ model CompEntrant {
 }
 
 model Scorecard {
-    id          Int         @id @default(autoincrement())
-    compId      String
-    entrantId   Int
-    handicap    Int
-    stableford  Boolean
-    holes       Hole[]
-    compEntrant CompEntrant @relation(fields: [compId, entrantId], references: [compId, entrantId], onDelete: Cascade)
+    id               Int         @id @default(autoincrement())
+    compId           String
+    entrantId        Int
+    handicap         Int
+    stableford       Boolean
+    NR               Boolean     @default(false)
+    strokes          Int?
+    strokesCountback BigInt?
+    points           Int
+    pointsCountback  BigInt
+    net              Int?
+    netCountback     BigInt?
+    holes            Hole[]
+    compEntrant      CompEntrant @relation(fields: [compId, entrantId], references: [compId, entrantId], onDelete: Cascade)
 
     @@unique([compId, entrantId])
 }
