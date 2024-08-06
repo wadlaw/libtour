@@ -1,6 +1,7 @@
 import { api } from "~/trpc/server";
 import LibMain, {
   LibCard,
+  LibCardNarrow,
   LibH1,
   TeamDisplay,
 } from "~/app/_components/lib-elements";
@@ -61,7 +62,7 @@ function ContentSkeleton() {
         <Skeleton className="m-4 h-6 w-40" />
       </div>
       <div className="mx-1 mb-1 mt-4 grid w-full grid-cols-1 gap-4 sm:mx-2 sm:mb-2 xl:mx-0 xl:mb-4">
-        <LibCard title="Results">
+        <LibCardNarrow title="Results">
           <SkeletonTable
             rows={8}
             columnHeaders={[
@@ -71,7 +72,7 @@ function ContentSkeleton() {
               { title: "Winnings", width: "w-12" },
             ]}
           />
-        </LibCard>
+        </LibCardNarrow>
       </div>
     </LibMain>
   );
@@ -133,7 +134,7 @@ async function Content({ entrantId }: ContentProps) {
         </div>
       )}
       <div className="mx-1 mb-1 mt-4 grid grid-cols-1 gap-4 sm:mx-2 sm:mb-2 xl:mx-0 xl:mb-4">
-        <LibCard title={`Results for ${entrant?.name}`}>
+        <LibCardNarrow title={`Results for ${entrant?.name}`}>
           <Table>
             <TableHeader>
               <TableRow>
@@ -183,7 +184,7 @@ async function Content({ entrantId }: ContentProps) {
               })}
             </TableBody>
           </Table>
-        </LibCard>
+        </LibCardNarrow>
       </div>
     </LibMain>
   );
