@@ -1,6 +1,5 @@
 import { api } from "~/trpc/server";
 import LibMain, {
-  LibCard,
   LibCardNarrow,
   LibH1,
   TeamDisplay,
