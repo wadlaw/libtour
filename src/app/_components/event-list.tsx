@@ -154,7 +154,10 @@ function EventListDisplay({
                 comp.open ? (
                   <Protect
                     fallback={
-                      <EntrantCountDisplay entries={comp.entrants.length} />
+                      <EntrantCountDisplay
+                        entries={comp.entrants.length}
+                        href={`/events/${comp.shortName}`}
+                      />
                     }
                   >
                     <EnterWithdraw
@@ -163,7 +166,13 @@ function EventListDisplay({
                     />
                   </Protect>
                 ) : (
-                  <Protect fallback={<span>Not open</span>}>
+                  <Protect
+                    fallback={
+                      <Link href={`/events/${comp.shortName}`}>
+                        <span>Not open</span>
+                      </Link>
+                    }
+                  >
                     <ClosedEventStatus
                       compId={comp.igCompId}
                       entries={comp.entrants.length}

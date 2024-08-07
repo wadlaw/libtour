@@ -16,7 +16,7 @@ import { EnterSomeoneButton } from "./enter-button";
 import { WithdrawSomeoneButton } from "./withdraw-button";
 import { EntrantDisplay, LibCardNarrow, TeamDisplay } from "./lib-elements";
 import { ensure } from "~/lib/utils";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import Link from "next/link";
 
 type EventEntrantsProps = {
   compId: string;
@@ -270,15 +270,28 @@ type EntrantCountProps = {
 
 export async function EntrantCount({ compId }: EntrantCountProps) {
   const entrantCount = await api.comp.entrantCount({ comp: compId });
-  return <EntrantCountDisplay entries={entrantCount?._count.entrants ?? 0} />;
+  return (
+    <EntrantCountDisplay
+      entries={entrantCount?._count.entrants ?? 0}
+      href={`/events/${compId}`}
+    />
+  );
 }
 
 type EntrantCountDisplayProps = {
   entries: number;
+  href: string;
 };
 
-export function EntrantCountDisplay({ entries }: EntrantCountDisplayProps) {
-  return <span>{`${entries} ${entries === 1 ? "entry" : "entries"}`}</span>;
+export function EntrantCountDisplay({
+  entries,
+  href,
+}: EntrantCountDisplayProps) {
+  return (
+    <Link href={href}>
+      <span>{`${entries} ${entries === 1 ? "entry" : "entries"}`}</span>
+    </Link>
+  );
 }
 
 type ClosedEventStatusProps = {
@@ -293,12 +306,20 @@ export async function ClosedEventStatus({
   const entered = await api.comp.isEntered({ comp: compId });
 
   if (entered) {
-    return <span>Entered!</span>;
+    return (
+      <Link href={`/events/${compId}`}>
+        <span>Entered!</span>
+      </Link>
+    );
   }
 
   if (entries === 0) {
-    return <span>Not open</span>;
+    return (
+      <Link href={`/events/${compId}`}>
+        <span>Not open</span>
+      </Link>
+    );
   }
 
-  return <EntrantCountDisplay entries={entries} />;
+  return <EntrantCountDisplay entries={entries} href={`/events/${compId}`} />;
 }
