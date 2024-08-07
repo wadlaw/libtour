@@ -80,6 +80,7 @@ export async function BestRounds({ format, numberOfRounds }: BestRoundsProps) {
                         entrant={{
                           id: round.entrantId,
                           name: round.compEntrant.entrant.name,
+                          handicap: round.handicap,
                         }}
                       />
                       {/* <Link href={`/entrants/${round.entrantId}`}>
