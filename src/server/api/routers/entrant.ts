@@ -47,6 +47,16 @@ export const entrantRouter = createTRPCRouter({
                         },
                         include: {
                             comp: true,
+                            scorecard: {
+                                include: {
+                                    holes: {
+                                        orderBy: {
+                                            holeNo: 'asc'
+                                        }
+                                    }
+                                }
+                                
+                            },
                             transactions: {
                                 where: {
                                     winnings: true

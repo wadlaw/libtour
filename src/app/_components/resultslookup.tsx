@@ -36,7 +36,7 @@ import { EnterSomeoneButton } from "./enter-button";
 import { WithdrawSomeoneButton } from "./withdraw-button";
 import { Badge } from "~/components/ui/badge";
 import { toast } from "~/components/ui/use-toast";
-import { Spinner } from "./lib-elements";
+import { LibCardNarrow, Spinner } from "./lib-elements";
 type ScrapeResultProps = {
   eventId: string;
 };
@@ -252,34 +252,29 @@ function IGResults({ results }: IGResultsProps) {
   if (!results) return null;
 
   return (
-    <Card className="w-[350px_1fr]">
-      <CardHeader>
-        <CardTitle>IG Results</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Pos</TableHead>
+    <LibCardNarrow title="IG Results">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Pos</TableHead>
 
-              <TableHead>Name</TableHead>
-              <TableHead className="text-right">Score</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {results.scrapedResults.map((result) => {
-              return (
-                <TableRow key={result.entrantName}>
-                  <TableCell>{result.igPosition}</TableCell>
-                  <TableCell>{result.entrantName}</TableCell>
-                  <TableCell className="text-right">{result.score}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
+            <TableHead>Name</TableHead>
+            <TableHead className="text-right">Score</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {results.scrapedResults.map((result) => {
+            return (
+              <TableRow key={result.entrantName}>
+                <TableCell>{result.igPosition}</TableCell>
+                <TableCell>{result.entrantName}</TableCell>
+                <TableCell className="text-right">{result.score}</TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </LibCardNarrow>
   );
 }
 
@@ -382,35 +377,30 @@ function Prizes({ prizes }: PrizesProps) {
   if (!prizes) return null;
 
   return (
-    <Card className="w-[350px_1fr]">
-      <CardHeader>
-        <CardTitle>Prizes</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Entrant</TableHead>
-              <TableHead className="text-right">£</TableHead>
-              <TableHead>Desc</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {prizes.map((prize) => {
-              return (
-                <TableRow key={`${prize.entrantId}${prize.description}`}>
-                  <TableCell>{prize.entrantName}</TableCell>
-                  <TableCell className="text-right">
-                    <LibMoney amountInPence={prize.amount} />
-                  </TableCell>
-                  <TableCell>{prize.description}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
+    <LibCardNarrow title="Prizes">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Entrant</TableHead>
+            <TableHead className="text-right">£</TableHead>
+            <TableHead>Desc</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {prizes.map((prize) => {
+            return (
+              <TableRow key={`${prize.entrantId}${prize.description}`}>
+                <TableCell>{prize.entrantName}</TableCell>
+                <TableCell className="text-right">
+                  <LibMoney amountInPence={prize.amount} />
+                </TableCell>
+                <TableCell>{prize.description}</TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </LibCardNarrow>
   );
 }
 

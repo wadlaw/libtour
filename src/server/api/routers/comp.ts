@@ -431,7 +431,7 @@ export const compRouter = createTRPCRouter({
             { points: "desc" }
         ],
         include: {
-          team: true
+          team: true,
         }
       })
       

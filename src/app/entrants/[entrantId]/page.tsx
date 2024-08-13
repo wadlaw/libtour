@@ -15,11 +15,17 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { Badge } from "~/components/ui/badge";
-import { Suspense } from "react";
+import { Fragment, Suspense } from "react";
 import { Skeleton } from "~/components/ui/skeleton";
 import SkeletonTable from "~/app/_components/skeletons";
 import LibMoney from "~/app/_components/lib-money";
 import IdentityIcon from "~/app/_components/identicons";
+import { Collapsible } from "@radix-ui/react-collapsible";
+import {
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "~/components/ui/collapsible";
+import { ScorecardDisplay } from "~/app/_components/scorecard";
 
 export async function generateMetadata({
   params,
@@ -150,35 +156,62 @@ async function Content({ entrantId }: ContentProps) {
             <TableBody>
               {entrant?.comps.map((comp) => {
                 return (
-                  <TableRow key={comp.compId}>
-                    <TableCell className="px-1 sm:px-2">
-                      <Link href={`/events/${comp.comp.shortName}`}>
-                        <span className="mr-1 sm:mr-2">{comp.comp.name}</span>
-                        {comp.wildcard ? <Badge>WC</Badge> : null}
-                      </Link>
-                    </TableCell>
-                    <TableCell className="hidden px-1 sm:table-cell sm:px-2">
-                      {new Date(comp.comp.date).toLocaleDateString("en-GB", {
-                        weekday: "short",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </TableCell>
-                    <TableCell className="px-1 sm:px-2">
-                      {comp.position
-                        ? `${comp.position}${ordinal(comp.position)} (${comp.score ? comp.score : "NR"}${comp.comp.stableford ? !comp.noResult && "pts" : ""})`
-                        : "Entered"}
-                    </TableCell>
-                    <TableCell className="px-1 text-right sm:px-2">
-                      <LibMoney
-                        hideZeros={true}
-                        amountInPence={comp.transactions.reduce(
-                          (acc, cur) => acc + cur.netAmount,
-                          0,
-                        )}
-                      />
-                    </TableCell>
-                  </TableRow>
+                  <Collapsible key={comp.compId} asChild>
+                    <Fragment key={comp.compId}>
+                      <TableRow key={comp.compId}>
+                        <TableCell className="px-1 sm:px-2">
+                          <Link href={`/events/${comp.comp.shortName}`}>
+                            <span className="mr-1 sm:mr-2">
+                              {comp.comp.name}
+                            </span>
+                            {comp.wildcard ? <Badge>WC</Badge> : null}
+                          </Link>
+                        </TableCell>
+                        <CollapsibleTrigger asChild>
+                          <TableCell
+                            className={`hidden px-1 sm:table-cell sm:px-2 ${comp.scorecard && "cursor-pointer"}`}
+                          >
+                            {new Date(comp.comp.date).toLocaleDateString(
+                              "en-GB",
+                              {
+                                weekday: "short",
+                                month: "long",
+                                day: "numeric",
+                              },
+                            )}
+                          </TableCell>
+                        </CollapsibleTrigger>
+                        <CollapsibleTrigger asChild>
+                          <TableCell
+                            className={`px-1 sm:px-2 ${comp.scorecard && "cursor-pointer"}`}
+                          >
+                            {comp.position
+                              ? `${comp.position}${ordinal(comp.position)} (${comp.score ? comp.score : "NR"}${comp.comp.stableford ? !comp.noResult && "pts" : ""})`
+                              : "Entered"}
+                          </TableCell>
+                        </CollapsibleTrigger>
+                        <TableCell className="px-1 text-right sm:px-2">
+                          <LibMoney
+                            hideZeros={true}
+                            amountInPence={comp.transactions.reduce(
+                              (acc, cur) => acc + cur.netAmount,
+                              0,
+                            )}
+                          />
+                        </TableCell>
+                      </TableRow>
+                      <CollapsibleContent asChild>
+                        <tr className="bg-slate-100">
+                          <ScorecardDisplay
+                            colSpan={4}
+                            formatForSplitView={false}
+                            scorecard={comp.scorecard}
+                            strokesOnly={false}
+                          />
+                        </tr>
+                      </CollapsibleContent>
+                    </Fragment>
+                  </Collapsible>
                 );
               })}
             </TableBody>
