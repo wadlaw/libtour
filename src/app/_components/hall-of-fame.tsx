@@ -245,7 +245,9 @@ async function GreatScores({ type }: GreatScoresProps) {
                     </TableCell>
                     <CollapsibleTrigger asChild>
                       <TableCell className="text-center hover:cursor-pointer">
-                        {score.holeNo}
+                        {type === "Double Figures"
+                          ? `${score.strokes} on ${score.holeNo}`
+                          : score.holeNo}
                       </TableCell>
                     </CollapsibleTrigger>
                     <TableCell>
