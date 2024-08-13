@@ -43,18 +43,21 @@ export function ScorecardDisplay({
               {scorecard.holes
                 .filter((hole) => hole.holeNo <= 9)
                 .map((hole) => (
-                  <div
-                    key={hole.holeNo}
-                    className={`mx-auto aspect-square w-auto  py-1 text-center font-bold   ${hole.NR && "bg-black px-1 text-white"} ${hole.strokes && hole.strokes - hole.par <= -2 && "rounded-full bg-yellow-500 px-2.5  text-white"} ${hole.strokes && hole.strokes - hole.par === -1 && "rounded-full bg-red-500 px-2.5  text-white"} ${hole.strokes && hole.strokes - hole.par === 1 && "bg-blue-500 px-2.5  text-white"} ${hole.strokes && hole.strokes - hole.par >= 2 && "bg-black px-2.5 text-white"}`}
-                  >
-                    {hole.NR ? "NR" : hole.strokes}
+                  <div key={hole.holeNo} className="flex justify-center">
+                    <div
+                      className={`flex h-8  w-8 items-center justify-center  font-bold   ${hole.NR && "bg-black  text-white"} ${hole.strokes && hole.strokes - hole.par <= -2 && "rounded-full bg-yellow-500   text-white"} ${hole.strokes && hole.strokes - hole.par === -1 && "rounded-full bg-red-500   text-white"} ${hole.strokes && hole.strokes - hole.par === 1 && "bg-blue-500   text-white"} ${hole.strokes && hole.strokes - hole.par >= 2 && "bg-black  text-white"}`}
+                    >
+                      {hole.NR ? "NR" : hole.strokes}
+                    </div>
                   </div>
                 ))}
               {!!strokesOnly && (
-                <div className="mx-auto aspect-square px-1.5 py-1 text-center font-bold ring-2 ring-slate-800">
-                  {scorecard.holes
-                    .filter((hole) => hole.holeNo <= 9)
-                    .reduce((acc, cur) => acc + (cur.strokes ?? 0), 0)}
+                <div className=" flex justify-center">
+                  <div className="flex h-8  w-8 items-center justify-center font-bold ring-2 ring-slate-800">
+                    {scorecard.holes
+                      .filter((hole) => hole.holeNo <= 9)
+                      .reduce((acc, cur) => acc + (cur.strokes ?? 0), 0)}
+                  </div>
                 </div>
               )}
             </div>
@@ -65,30 +68,33 @@ export function ScorecardDisplay({
                   {scorecard.holes
                     .filter((hole) => hole.holeNo <= 9)
                     .map((hole) => (
-                      <div
-                        key={hole.holeNo}
-                        className={`mx-auto aspect-square px-2 py-1 text-center`}
-                      >
-                        {scorecard.stableford
-                          ? hole.points
-                          : hole.NR
-                            ? "NR"
-                            : hole.net}
+                      <div key={hole.holeNo} className="flex justify-center">
+                        <div
+                          className={`flex h-8  w-8 items-center justify-center`}
+                        >
+                          {scorecard.stableford
+                            ? hole.points
+                            : hole.NR
+                              ? "NR"
+                              : hole.net}
+                        </div>
                       </div>
                     ))}
                   {/* Front 9 total */}
-                  <div className="mx-auto aspect-square w-auto px-1.5 py-1 text-center font-bold ring-2 ring-slate-800">
-                    {scorecard.stableford
-                      ? scorecard.holes
-                          .filter((hole) => hole.holeNo <= 9)
-                          .reduce((acc, cur) => acc + cur.points, 0)
-                      : scorecard.holes.filter(
-                            (hole) => hole.holeNo <= 9 && hole.NR == true,
-                          ).length > 0
-                        ? "NR"
-                        : scorecard.holes
+                  <div className="flex justify-center">
+                    <div className="flex h-8  w-8 items-center justify-center font-bold ring-2 ring-slate-800">
+                      {scorecard.stableford
+                        ? scorecard.holes
                             .filter((hole) => hole.holeNo <= 9)
-                            .reduce((acc, cur) => acc + (cur.net ?? 0), 0)}
+                            .reduce((acc, cur) => acc + cur.points, 0)
+                        : scorecard.holes.filter(
+                              (hole) => hole.holeNo <= 9 && hole.NR == true,
+                            ).length > 0
+                          ? "NR"
+                          : scorecard.holes
+                              .filter((hole) => hole.holeNo <= 9)
+                              .reduce((acc, cur) => acc + (cur.net ?? 0), 0)}
+                    </div>
                   </div>
                 </Fragment>
               </div>
@@ -97,60 +103,65 @@ export function ScorecardDisplay({
 
           {/* Back 9 */}
           <div className="flex w-full flex-wrap gap-1">
-            <div className="grid w-full grid-cols-10 gap-1">
+            <div className="grid w-full grid-cols-10 place-content-center justify-center gap-1">
               {scorecard.holes
                 .filter((hole) => hole.holeNo >= 10)
                 .map((hole) => (
-                  <div
-                    key={hole.holeNo}
-                    className={`mx-auto aspect-square py-1 text-center font-bold  ${hole.NR && "bg-black px-1 text-white"} ${hole.strokes && hole.strokes - hole.par <= -2 && " rounded-full bg-yellow-500 px-2.5  text-white"} ${hole.strokes && hole.strokes - hole.par === -1 && " rounded-full bg-red-500 px-2.5  text-white"} ${hole.strokes && hole.strokes - hole.par === 1 && "bg-blue-500   px-2.5  text-white"} ${hole.strokes && hole.strokes - hole.par >= 2 && "bg-black   px-2.5  text-white"}`}
-                  >
-                    {hole.NR ? "NR" : hole.strokes}
+                  <div key={hole.holeNo} className="flex justify-center">
+                    <div
+                      className={`flex h-8  w-8 items-center justify-center  font-bold   ${hole.NR && "bg-black  text-white"} ${hole.strokes && hole.strokes - hole.par <= -2 && "rounded-full bg-yellow-500   text-white"} ${hole.strokes && hole.strokes - hole.par === -1 && "rounded-full bg-red-500   text-white"} ${hole.strokes && hole.strokes - hole.par === 1 && "bg-blue-500   text-white"} ${hole.strokes && hole.strokes - hole.par >= 2 && "bg-black  text-white"}`}
+                    >
+                      {hole.NR ? "NR" : hole.strokes}
+                    </div>
                   </div>
                 ))}
-
               {!!strokesOnly && (
-                <div className="mx-auto aspect-square px-1.5 py-1 text-center font-bold ring-2 ring-slate-800">
-                  {scorecard.holes
-                    .filter((hole) => hole.holeNo >= 10)
-                    .reduce((acc, cur) => acc + (cur.strokes ?? 0), 0)}
+                <div className=" flex justify-center">
+                  <div className="flex h-8  w-8 items-center justify-center font-bold ring-2 ring-slate-800">
+                    {scorecard.holes
+                      .filter((hole) => hole.holeNo >= 10)
+                      .reduce((acc, cur) => acc + (cur.strokes ?? 0), 0)}
+                  </div>
                 </div>
               )}
             </div>
 
             {!strokesOnly && (
-              <Fragment key="back9">
-                <div className="grid w-full grid-cols-10 place-content-center justify-center gap-1">
+              <div className="grid w-full grid-cols-10 place-content-center justify-center gap-1">
+                <Fragment key="front9">
                   {scorecard.holes
                     .filter((hole) => hole.holeNo >= 10)
                     .map((hole) => (
-                      <div
-                        key={hole.holeNo}
-                        className={`mx-auto aspect-square px-2 py-1 text-center   `}
-                      >
-                        {scorecard.stableford
-                          ? hole.points
-                          : hole.NR
-                            ? "NR"
-                            : hole.net}
+                      <div key={hole.holeNo} className="flex justify-center">
+                        <div
+                          className={`flex h-8  w-8 items-center justify-center`}
+                        >
+                          {scorecard.stableford
+                            ? hole.points
+                            : hole.NR
+                              ? "NR"
+                              : hole.net}
+                        </div>
                       </div>
                     ))}
-                  {/* Back 9 Total */}
-                  <div className="mx-auto aspect-square px-1.5 py-1 text-center font-bold ring-2 ring-slate-800">
-                    {scorecard.stableford
-                      ? scorecard.holes
-                          .filter((hole) => hole.holeNo >= 10)
-                          .reduce((acc, cur) => acc + cur.points, 0)
-                      : scorecard.holes.filter(
-                            (hole) => hole.holeNo >= 10 && hole.NR === true,
-                          ).length > 0
-                        ? "NR"
-                        : scorecard.holes
+                  {/* Front 9 total */}
+                  <div className="flex justify-center">
+                    <div className="flex h-8  w-8 items-center justify-center font-bold ring-2 ring-slate-800">
+                      {scorecard.stableford
+                        ? scorecard.holes
                             .filter((hole) => hole.holeNo >= 10)
-                            .reduce((acc, cur) => acc + (cur.net ?? 0), 0)}
+                            .reduce((acc, cur) => acc + cur.points, 0)
+                        : scorecard.holes.filter(
+                              (hole) => hole.holeNo <= 9 && hole.NR == true,
+                            ).length > 0
+                          ? "NR"
+                          : scorecard.holes
+                              .filter((hole) => hole.holeNo <= 9)
+                              .reduce((acc, cur) => acc + (cur.net ?? 0), 0)}
+                    </div>
                   </div>
-                </div>
-              </Fragment>
+                </Fragment>
+              </div>
             )}
           </div>
         </div>
