@@ -21,28 +21,47 @@ import { ScorecardDisplay } from "./scorecard";
 
 type BestRoundsProps = {
   format: "Stableford" | "Medal" | "Gross";
+  worst?: boolean;
   numberOfRounds: number;
 };
 
-export async function BestRounds({ format, numberOfRounds }: BestRoundsProps) {
+export async function BestRounds({
+  format,
+  worst = false,
+  numberOfRounds,
+}: BestRoundsProps) {
   const rounds =
     format === "Stableford"
-      ? await api.scorecard.bestStablefordRounds({
-          numberOfRounds: numberOfRounds,
-        })
-      : format === "Medal"
-        ? await api.scorecard.bestMedalRounds({
+      ? worst
+        ? await api.scorecard.worstStablefordRounds({
             numberOfRounds: numberOfRounds,
           })
-        : await api.scorecard.bestGrossRounds({
+        : await api.scorecard.bestStablefordRounds({
             numberOfRounds: numberOfRounds,
-          });
+          })
+      : format === "Medal"
+        ? worst
+          ? await api.scorecard.worstMedalRounds({
+              numberOfRounds: numberOfRounds,
+            })
+          : await api.scorecard.bestMedalRounds({
+              numberOfRounds: numberOfRounds,
+            })
+        : worst
+          ? await api.scorecard.worstGrossRounds({
+              numberOfRounds: numberOfRounds,
+            })
+          : await api.scorecard.bestGrossRounds({
+              numberOfRounds: numberOfRounds,
+            });
 
   if (rounds.length === 0)
     return <NoScores numberOfRounds={numberOfRounds} format={format} />;
 
   return (
-    <LibCardNarrow title={`${numberOfRounds} Best ${format} Rounds`}>
+    <LibCardNarrow
+      title={`${numberOfRounds} ${worst ? "Worst" : "Best"} ${format} Rounds`}
+    >
       <Table>
         <TableHeader>
           <TableRow>
@@ -167,15 +186,21 @@ export async function HolesInOne() {
   return <GreatScores type="Holes In One" />;
 }
 
+export async function DoubleFigures() {
+  return <GreatScores type="Double Figures" />;
+}
+
 type GreatScoresProps = {
-  type: "Eagles" | "Holes In One";
+  type: "Eagles" | "Holes In One" | "Double Figures";
 };
 
 async function GreatScores({ type }: GreatScoresProps) {
   const scores =
     type === "Eagles"
       ? await api.scorecard.eagles()
-      : await api.scorecard.holesInOne();
+      : type === "Holes In One"
+        ? await api.scorecard.holesInOne()
+        : await api.scorecard.doubleFigures();
 
   if (scores.length === 0) return null;
 

@@ -226,6 +226,41 @@ export const scorecardRouter = createTRPCRouter({
             })
         }),
 
+        doubleFigures: publicProcedure
+        .query(({ ctx }) => {
+            return ctx.db.hole.findMany({
+                where: {
+                            NR: false,
+                            strokes: {gte: 10},
+                },
+                orderBy: {
+                    scorecard: {
+                        compEntrant: {
+                            comp: 
+                                {date: 'desc'}
+                        }
+                    }
+                },
+                include: {
+                    scorecard: {
+                        include: {
+                            holes: {
+                                orderBy: {
+                                    holeNo: 'asc'
+                                }
+                            },
+                            compEntrant: {
+                                include: {
+                                    comp: true,
+                                    entrant: true
+                                }   
+                            }
+                        }
+                    }
+                }
+            })
+        }),
+
         bestStablefordRounds: publicProcedure
             .input(z.object({ numberOfRounds: z.number() }))
             .query(async ({ ctx, input }) => {
@@ -245,6 +280,31 @@ export const scorecardRouter = createTRPCRouter({
                     },
                     orderBy: [
                         { pointsCountback: `desc` }
+                    ],
+                    take: input.numberOfRounds
+                })
+            }),
+
+        worstStablefordRounds: publicProcedure
+            .input(z.object({ numberOfRounds: z.number() }))
+            .query(async ({ ctx, input }) => {
+
+                return ctx.db.scorecard.findMany({
+                    include: {
+                        holes: true,
+                        compEntrant: {
+                            include: {
+                                comp: true,
+                                entrant: true
+                            }
+                        }
+                    },
+                    where: {
+                        stableford: true,
+                        NR: false
+                    },
+                    orderBy: [
+                        { pointsCountback: `asc` }
                     ],
                     take: input.numberOfRounds
                 })
@@ -275,6 +335,31 @@ export const scorecardRouter = createTRPCRouter({
                 })
             }),
 
+        worstMedalRounds: publicProcedure
+            .input(z.object({ numberOfRounds: z.number() }))
+            .query(async ({ ctx, input }) => {
+
+                return ctx.db.scorecard.findMany({
+                    include: {
+                        holes: true,
+                        compEntrant: {
+                            include: {
+                                comp: true,
+                                entrant: true
+                            }
+                        }
+                    },
+                    where: {
+                        stableford: false,
+                        NR: false
+                    },
+                    orderBy: [
+                        { netCountback: `desc` }
+                    ],
+                    take: input.numberOfRounds
+                })
+            }),
+
         bestGrossRounds: publicProcedure
             .input(z.object({ numberOfRounds: z.number() }))
             .query(async ({ ctx, input }) => {
@@ -294,6 +379,30 @@ export const scorecardRouter = createTRPCRouter({
                     },
                     orderBy: [
                         { strokesCountback: `asc` }
+                    ],
+                    take: input.numberOfRounds
+                })
+            }),   
+        
+        worstGrossRounds: publicProcedure
+            .input(z.object({ numberOfRounds: z.number() }))
+            .query(async ({ ctx, input }) => {
+
+                return ctx.db.scorecard.findMany({
+                    include: {
+                        holes: true,
+                        compEntrant: {
+                            include: {
+                                comp: true,
+                                entrant: true
+                            }
+                        }
+                    },
+                    where: {
+                        NR: false
+                    },
+                    orderBy: [
+                        { strokesCountback: `desc` }
                     ],
                     take: input.numberOfRounds
                 })
