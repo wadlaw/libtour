@@ -156,7 +156,7 @@ export function ScorecardDisplay({
                             ).length > 0
                           ? "NR"
                           : scorecard.holes
-                              .filter((hole) => hole.holeNo <= 9)
+                              .filter((hole) => hole.holeNo >= 10)
                               .reduce((acc, cur) => acc + (cur.net ?? 0), 0)}
                     </div>
                   </div>
