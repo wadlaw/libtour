@@ -105,47 +105,57 @@ const config = {
           },
           {
             source: '/hoi',
-            destination: '/hallofshame',
+            destination: '/wallofshame',
             permanent: true,
           },
           {
             source: '/shame',
-            destination: '/hallofshame',
+            destination: '/wallofshame',
             permanent: true,
           },
           {
             source: '/infamy',
-            destination: '/hallofshame',
+            destination: '/wallofshame',
             permanent: true,
           },
           {
-            source: '/tess',
-            destination: '/hallofshame',
+            source: '/tens',
+            destination: '/wallofshame',
             permanent: true,
           },
           {
             source: '/worst',
-            destination: '/hallofshame',
+            destination: '/wallofshame',
             permanent: true,
           },
           {
             source: '/worstrounds',
-            destination: '/hallofshame',
+            destination: '/wallofshame',
             permanent: true,
           },
           {
             source: '/worststableford',
-            destination: '/hallofshame',
+            destination: '/wallofshame',
             permanent: true,
           },
           {
             source: '/worstmedal',
-            destination: '/hallofshame',
+            destination: '/wallofshame',
             permanent: true,
           },
           {
             source: '/hallofinfamy',
-            destination: '/hallofshame',
+            destination: '/wallofshame',
+            permanent: true,
+          },
+          {
+            source: '/hallofshame',
+            destination: '/wallofshame',
+            permanent: true,
+          },
+          {
+            source: '/wall',
+            destination: '/wallofshame',
             permanent: true,
           },
         ]

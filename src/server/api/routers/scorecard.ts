@@ -233,14 +233,15 @@ export const scorecardRouter = createTRPCRouter({
                             NR: false,
                             strokes: {gte: 10},
                 },
-                orderBy: {
-                    scorecard: {
+                orderBy: [
+                    { strokes: 'desc'},
+                    { scorecard: {
                         compEntrant: {
                             comp: 
                                 {date: 'desc'}
                         }
-                    }
-                },
+                    }}
+                ],
                 include: {
                     scorecard: {
                         include: {

@@ -1,16 +1,19 @@
 import { BestRounds, DoubleFigures } from "../_components/hall-of-fame";
-import LibMain, { LibCardContainer, LibH1 } from "../_components/lib-elements";
+import LibMain, {
+  LibCardContainer,
+  LibSadH1,
+} from "../_components/lib-elements";
 
 export const metadata = {
-  title: "Libtour - Hall of Fame",
-  description: "The best golf from the Libtour",
+  title: "Libtour - Wall of Shame",
+  description: "The worst golf from the Libtour",
 };
 
-export default function HallOfFame() {
+export default function WallOfShame() {
   return (
     <LibMain>
       <div className="flex flex-col items-center">
-        <LibH1>Hall of Shame</LibH1>
+        <LibSadH1>Wall of Shame</LibSadH1>
       </div>
       <LibCardContainer splitAtLargeSizes={true}>
         <BestRounds format="Medal" worst={true} numberOfRounds={10} />

@@ -21,6 +21,15 @@ export function LibH1(props: { children: React.ReactNode }) {
   );
 }
 
+export function LibSadH1(props: { children: React.ReactNode }) {
+  return (
+    // <h1 className="text-[3rem] font-extrabold tracking-tight text-[hsl(280,100%,70%)]">
+    <h1 className="bg-gradient-to-r from-[#1e130c] to-[#9a8478] bg-clip-text text-center  text-[3rem] font-extrabold leading-tight tracking-tight text-transparent">
+      {props.children}
+    </h1>
+  );
+}
+
 type TeamDisplayProps = {
   team: { id: string; linkName: string; teamName: string };
   alwaysDisplayLogo?: boolean;
