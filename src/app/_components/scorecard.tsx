@@ -45,7 +45,7 @@ export function ScorecardDisplay({
                 .map((hole) => (
                   <div key={hole.holeNo} className="flex justify-center">
                     <div
-                      className={`flex h-8  w-8 items-center justify-center  font-bold   ${hole.NR && "bg-black  text-white"} ${hole.strokes && hole.strokes - hole.par <= -2 && "rounded-full bg-yellow-500   text-white"} ${hole.strokes && hole.strokes - hole.par === -1 && "rounded-full bg-red-500   text-white"} ${hole.strokes && hole.strokes - hole.par === 1 && "bg-blue-500   text-white"} ${hole.strokes && hole.strokes - hole.par >= 2 && "bg-black  text-white"}`}
+                      className={`flex h-8 w-8 items-center justify-center  font-bold   ${hole.NR && "bg-black  text-white"} ${hole.strokes && hole.strokes - hole.par <= -2 && "rounded-full bg-yellow-500   text-white"} ${hole.strokes && hole.strokes - hole.par === -1 && "rounded-full bg-red-500   text-white"} ${hole.strokes && hole.strokes - hole.par === 1 && "bg-blue-500   text-white"} ${hole.strokes && hole.strokes - hole.par >= 2 && "bg-black  text-white"}`}
                     >
                       {hole.NR ? "NR" : hole.strokes}
                     </div>
@@ -53,7 +53,7 @@ export function ScorecardDisplay({
                 ))}
               {!!strokesOnly && (
                 <div className=" flex justify-center">
-                  <div className="flex h-8  w-8 items-center justify-center font-bold ring-2 ring-slate-800">
+                  <div className="flex h-8 w-8 items-center justify-center font-bold ring-2 ring-slate-800">
                     {scorecard.holes
                       .filter((hole) => hole.holeNo <= 9)
                       .reduce((acc, cur) => acc + (cur.strokes ?? 0), 0)}
@@ -70,7 +70,7 @@ export function ScorecardDisplay({
                     .map((hole) => (
                       <div key={hole.holeNo} className="flex justify-center">
                         <div
-                          className={`flex h-8  w-8 items-center justify-center`}
+                          className={`flex h-8 w-8 items-center justify-center`}
                         >
                           {scorecard.stableford
                             ? hole.points
@@ -82,7 +82,7 @@ export function ScorecardDisplay({
                     ))}
                   {/* Front 9 total */}
                   <div className="flex justify-center">
-                    <div className="flex h-8  w-8 items-center justify-center font-bold ring-2 ring-slate-800">
+                    <div className="flex h-8 w-8 items-center justify-center font-bold ring-2 ring-slate-800">
                       {scorecard.stableford
                         ? scorecard.holes
                             .filter((hole) => hole.holeNo <= 9)
@@ -109,7 +109,7 @@ export function ScorecardDisplay({
                 .map((hole) => (
                   <div key={hole.holeNo} className="flex justify-center">
                     <div
-                      className={`flex h-8  w-8 items-center justify-center  font-bold   ${hole.NR && "bg-black  text-white"} ${hole.strokes && hole.strokes - hole.par <= -2 && "rounded-full bg-yellow-500   text-white"} ${hole.strokes && hole.strokes - hole.par === -1 && "rounded-full bg-red-500   text-white"} ${hole.strokes && hole.strokes - hole.par === 1 && "bg-blue-500   text-white"} ${hole.strokes && hole.strokes - hole.par >= 2 && "bg-black  text-white"}`}
+                      className={`flex h-8 w-8 items-center justify-center  font-bold   ${hole.NR && "bg-black  text-white"} ${hole.strokes && hole.strokes - hole.par <= -2 && "rounded-full bg-yellow-500   text-white"} ${hole.strokes && hole.strokes - hole.par === -1 && "rounded-full bg-red-500   text-white"} ${hole.strokes && hole.strokes - hole.par === 1 && "bg-blue-500   text-white"} ${hole.strokes && hole.strokes - hole.par >= 2 && "bg-black  text-white"}`}
                     >
                       {hole.NR ? "NR" : hole.strokes}
                     </div>
@@ -117,7 +117,7 @@ export function ScorecardDisplay({
                 ))}
               {!!strokesOnly && (
                 <div className=" flex justify-center">
-                  <div className="flex h-8  w-8 items-center justify-center font-bold ring-2 ring-slate-800">
+                  <div className="flex h-8 w-8 items-center justify-center font-bold ring-2 ring-slate-800">
                     {scorecard.holes
                       .filter((hole) => hole.holeNo >= 10)
                       .reduce((acc, cur) => acc + (cur.strokes ?? 0), 0)}
@@ -134,7 +134,7 @@ export function ScorecardDisplay({
                     .map((hole) => (
                       <div key={hole.holeNo} className="flex justify-center">
                         <div
-                          className={`flex h-8  w-8 items-center justify-center`}
+                          className={`flex h-8 w-8 items-center justify-center`}
                         >
                           {scorecard.stableford
                             ? hole.points
@@ -146,7 +146,7 @@ export function ScorecardDisplay({
                     ))}
                   {/* Front 9 total */}
                   <div className="flex justify-center">
-                    <div className="flex h-8  w-8 items-center justify-center font-bold ring-2 ring-slate-800">
+                    <div className="flex h-8 w-8 items-center justify-center font-bold ring-2 ring-slate-800">
                       {scorecard.stableford
                         ? scorecard.holes
                             .filter((hole) => hole.holeNo >= 10)

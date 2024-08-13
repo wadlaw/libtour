@@ -198,9 +198,7 @@ export function ScrapeResults({ eventId }: ScrapeResultProps) {
         <Button className="" onClick={() => close.mutate(eventId)}>
           Close
         </Button>
-        {/* <Button className="" onClick={scrape}>
-          Scrape Results
-        </Button> */}
+
         <Button
           className=""
           onClick={processResults}
@@ -309,65 +307,6 @@ function IGLinks({ results }: IGLinksProps) {
     </div>
   );
 }
-
-// interface TeamResultsProps {
-//   teamResults: TeamPointsType[] | null;
-// }
-
-// function TeamResults({ teamResults }: TeamResultsProps) {
-//   if (!teamResults) return null;
-
-//   return (
-//     <Card className="w-[350px_1fr]">
-//       <CardHeader>
-//         <CardTitle>Team Results</CardTitle>
-//       </CardHeader>
-//       <CardContent>
-//         <Table>
-//           <TableHeader>
-//             <TableRow>
-//               <TableHead>Team</TableHead>
-
-//               <TableHead className="hidden text-center sm:table-cell">
-//                 Best
-//               </TableHead>
-//               <TableHead className="hidden text-center sm:table-cell">
-//                 2nd
-//               </TableHead>
-//               <TableHead className="text-center">Total</TableHead>
-//               <TableHead className="text-center">Best Pos</TableHead>
-//               <TableHead className="text-center">Points</TableHead>
-//             </TableRow>
-//           </TableHeader>
-//           <TableBody>
-//             {teamResults.map((teamResult) => {
-//               return (
-//                 <TableRow key={teamResult.teamId}>
-//                   <TableCell>{teamResult.teamName}</TableCell>
-//                   <TableCell className="hidden text-center sm:table-cell">
-//                     {teamResult.bestScore}
-//                   </TableCell>
-//                   <TableCell className="hidden text-center sm:table-cell">
-//                     {teamResult.secondScore}
-//                   </TableCell>
-//                   <TableCell className="text-center">
-//                     {teamResult.bestScore + teamResult.secondScore}
-//                   </TableCell>
-//                   <TableCell className="text-center">
-//                     {teamResult.bestFinish}
-//                   </TableCell>
-//                   <TableCell className="text-center">
-//                     {teamResult.points}
-//                   </TableCell>
-//                 </TableRow>
-//               );
-//             })}
-//           </TableBody>
-//         </Table>
-//       </CardContent>
-//     </Card>
-//   );
-// }
 
 interface PrizesProps {
   prizes: TransactionType[] | null;
