@@ -417,9 +417,42 @@ export const compRouter = createTRPCRouter({
         }
       })
   }),
-  getTeamResultsForComp: publicProcedure
+  // getTeamResultsForComp: publicProcedure
+  //   .input(z.object({ compId: z.string() }))
+  //   .query(({ ctx, input}) => {
+  //     return ctx.db.teamPoints.findMany({
+  //       where: {
+  //         OR: [
+  //           {comp: { shortName: input.compId }},
+  //           {comp: { igCompId: input.compId }}
+  //           ]
+  //         },
+  //       orderBy: [
+  //           { points: "desc" }
+  //       ],
+  //       include: {
+  //         team: true,
+  //       }
+  //     })
+      
+  //   }),
+
+    getTeamResultsForComp: publicProcedure
     .input(z.object({ compId: z.string() }))
-    .query(({ ctx, input}) => {
+    .query(async ({ ctx, input}) => {
+      //Check whether comp is stableford
+      const stab = await ctx.db.comp.findFirst({
+        where: {
+          OR: [
+            { shortName: input.compId },
+            { igCompId: input.compId }
+            ]
+          },
+          select: {
+            stableford: true
+          }
+      })
+
       return ctx.db.teamPoints.findMany({
         where: {
           OR: [
@@ -432,6 +465,19 @@ export const compRouter = createTRPCRouter({
         ],
         include: {
           team: true,
+          comp: {
+            include: {
+              entrants: {
+                orderBy: [
+                  { teamScore: `${stab?.stableford ?? false ? 'desc' : 'asc'}`},
+                  { igPosition: 'desc' }
+                ],
+                include: {
+                  entrant: true
+                }
+              }
+            }
+          }
         }
       })
       

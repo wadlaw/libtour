@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { api } from "~/trpc/server";
+import { z } from "zod";
 
 import {
   Table,
@@ -9,7 +10,15 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { LibCardNarrow, TeamDisplay } from "./lib-elements";
+import { EntrantDisplay, LibCardNarrow, TeamDisplay } from "./lib-elements";
+
+const ScoresSchema = z
+  .object({
+    teamScore: z.number().nullable(),
+    wildcard: z.boolean(),
+    entrant: z.object({ id: z.number(), name: z.string(), teamId: z.string() }),
+  })
+  .array();
 
 type TeamResultsProps = {
   compId: string;
@@ -66,6 +75,9 @@ export default async function TeamResultsForComp({ compId }: TeamResultsProps) {
         <TableHeader>
           <TableRow>
             <TableHead>Team</TableHead>
+            <TableHead className="hidden lg:table-cell"></TableHead>
+            <TableHead className="hidden lg:table-cell"></TableHead>
+            <TableHead className="text-center">Score</TableHead>
             <TableHead className="text-center">Points</TableHead>
           </TableRow>
         </TableHeader>
@@ -75,6 +87,10 @@ export default async function TeamResultsForComp({ compId }: TeamResultsProps) {
               <TableCell>
                 <TeamDisplay team={result.team} alwaysDisplayLogo={true} />
               </TableCell>
+              <TopTwoTeamScores
+                teamId={result.teamId}
+                scores={ScoresSchema.parse(result.comp.entrants)}
+              />
               <TableCell className="text-center">{result.points}</TableCell>
             </TableRow>
           ))}
@@ -87,6 +103,51 @@ export default async function TeamResultsForComp({ compId }: TeamResultsProps) {
             </TableFooter> */}
       </Table>
     </LibCardNarrow>
+  );
+}
+
+type TopTwoTeamScoresProps = {
+  teamId: string;
+  scores: z.infer<typeof ScoresSchema>;
+};
+
+function TopTwoTeamScores({ teamId, scores }: TopTwoTeamScoresProps) {
+  const fScores = scores.filter((score) => score.entrant.teamId == teamId);
+
+  return (
+    <>
+      <TableCell className="hidden lg:table-cell">
+        {fScores[0] && (
+          <EntrantDisplay
+            entrant={{
+              id: fScores[0]?.entrant.id ?? 0,
+              name: fScores[0]?.entrant.name ?? "",
+              score: fScores[0]?.teamScore
+                ? fScores[0]?.teamScore.toString()
+                : "",
+              wildcard: fScores[0]?.wildcard,
+            }}
+          />
+        )}
+      </TableCell>
+      <TableCell className="hidden lg:table-cell">
+        {fScores[1] && (
+          <EntrantDisplay
+            entrant={{
+              id: fScores[1]?.entrant.id ?? 0,
+              name: fScores[1]?.entrant.name ?? "",
+              score: fScores[1]?.teamScore
+                ? fScores[1]?.teamScore.toString()
+                : "",
+              wildcard: fScores[1]?.wildcard,
+            }}
+          />
+        )}
+      </TableCell>
+      <TableCell className="text-center">
+        {(fScores[0]?.teamScore ?? 0) + (fScores[1]?.teamScore ?? 0)}
+      </TableCell>
+    </>
   );
 }
 
