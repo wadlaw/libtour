@@ -108,7 +108,7 @@ export default async function Event({
 
       {comp.completed ? (
         <LibCardContainer>
-          <Results compId={comp.igCompId} />
+          <Results compId={comp.igCompId} stableford={comp.stableford} />
           <TeamResultsForComp compId={comp.igCompId} />
         </LibCardContainer>
       ) : (

@@ -11,7 +11,12 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { EntrantDisplay, LibCardNarrow, TeamDisplay } from "./lib-elements";
+import {
+  EntrantDisplay,
+  LibCardNarrow,
+  ScoreDisplay,
+  TeamDisplay,
+} from "./lib-elements";
 import { Badge } from "~/components/ui/badge";
 import {
   Collapsible,
@@ -23,9 +28,13 @@ import { ScorecardDisplay } from "./scorecard";
 
 type ResultsProps = {
   compId: string;
+  stableford?: boolean;
 };
 
-export default async function Results({ compId }: ResultsProps) {
+export default async function Results({
+  compId,
+  stableford = false,
+}: ResultsProps) {
   const compResults = await api.comp.getResults({ comp: compId });
   const teams = await api.team.getAll();
 
@@ -69,6 +78,7 @@ export default async function Results({ compId }: ResultsProps) {
               Team Score
             </TableHead>
             <TableHead className="px-1 text-center sm:px-2">Score</TableHead>
+            <TableHead className="hidden px-1 text-center sm:table-cell sm:px-2"></TableHead>
             <TableHead className="px-1 text-right sm:px-2 ">£</TableHead>
           </TableRow>
         </TableHeader>
@@ -105,15 +115,6 @@ export default async function Results({ compId }: ResultsProps) {
                       }}
                       alwaysDisplayLogo={true}
                     />
-                    {/* <Link href={`/entrants/${result.entrant.id}`}>
-                        <span className="mr-1 sm:mr-2">
-                          {result.entrant.name}
-                          {result.scorecard?.id
-                            ? ` (${result.scorecard.handicap})`
-                            : ""}
-                        </span>
-                        {result.wildcard ? <Badge>WC</Badge> : null}
-                      </Link> */}
                   </TableCell>
                   <TableCell className="px-1 sm:px-2">
                     <TeamDisplay
@@ -125,10 +126,6 @@ export default async function Results({ compId }: ResultsProps) {
                       alwaysDisplayLogo={true}
                       iconOnlyWhenSmall={true}
                     />
-                    {/* {
-                teams.filter((team) => team.id == result.entrant.teamId)[0]
-                ?.teamName
-                } */}
                   </TableCell>
                   <TableCell className="hidden px-1 text-center sm:px-2 md:table-cell">
                     <CollapsibleTrigger asChild>
@@ -142,12 +139,37 @@ export default async function Results({ compId }: ResultsProps) {
                   <TableCell className="px-1 text-center sm:px-2">
                     <CollapsibleTrigger asChild>
                       <span
-                        className={`${result.scorecard?.entrantId ? "hover:cursor-pointer" : ""}`}
+                        className={`${result.scorecard?.entrantId && "hover:cursor-pointer"}`}
                       >
-                        {result.score ? result.score : "NR"}
+                        {result.score ? (
+                          <ScoreDisplay
+                            score={result.score}
+                            stableford={stableford}
+                            displayOption="ScoreOnly"
+                          />
+                        ) : (
+                          "NR"
+                        )}
                         {lowGross.entrantId.includes(result.entrantId)
                           ? "*"
                           : ""}
+                      </span>
+                    </CollapsibleTrigger>
+                  </TableCell>
+                  <TableCell className="hidden px-1 text-center sm:table-cell sm:px-2">
+                    <CollapsibleTrigger asChild>
+                      <span
+                        className={`${result.scorecard?.entrantId && "hover:cursor-pointer"}`}
+                      >
+                        {result.score ? (
+                          <ScoreDisplay
+                            score={result.score}
+                            stableford={stableford}
+                            displayOption="OverUnder"
+                          />
+                        ) : (
+                          "NR"
+                        )}
                       </span>
                     </CollapsibleTrigger>
                   </TableCell>
@@ -166,7 +188,7 @@ export default async function Results({ compId }: ResultsProps) {
                 <CollapsibleContent asChild>
                   <tr className="bg-slate-100">
                     <ScorecardDisplay
-                      colSpan={7}
+                      colSpan={8}
                       scorecard={result.scorecard}
                     />
                   </tr>

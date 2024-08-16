@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { EntrantDisplay, LibCardNarrow } from "./lib-elements";
+import { EntrantDisplay, LibCardNarrow, ScoreDisplay } from "./lib-elements";
 
 import {
   Collapsible,
@@ -65,13 +65,15 @@ export async function BestRounds({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>
+            <TableHead className="hidden sm:table-cell"></TableHead>
+            <TableHead className="text-left sm:text-center">
               {format === "Stableford"
                 ? "Points "
                 : format === "Medal"
                   ? "Net"
                   : "Strokes"}
             </TableHead>
+
             <TableHead>Name</TableHead>
             <TableHead>Comp</TableHead>
             <TableHead className="hidden sm:table-cell lg:hidden">
@@ -86,14 +88,48 @@ export async function BestRounds({
                 <Fragment key={round.id}>
                   <TableRow key={round.id}>
                     <CollapsibleTrigger asChild>
-                      <TableCell className="hover:cursor-pointer">
-                        {format === "Stableford"
-                          ? round.points
-                          : format === "Medal"
-                            ? round.net
-                            : round.strokes}
+                      <TableCell className="hidden text-left hover:cursor-pointer sm:table-cell">
+                        {format === "Stableford" ? (
+                          <ScoreDisplay
+                            score={round.points}
+                            stableford={true}
+                            displayOption="OverUnder"
+                          />
+                        ) : format === "Medal" ? (
+                          <ScoreDisplay
+                            score={round.net ?? 0}
+                            displayOption="OverUnder"
+                          />
+                        ) : (
+                          <ScoreDisplay
+                            score={round.strokes ?? 0}
+                            displayOption="OverUnder"
+                          />
+                        )}
                       </TableCell>
                     </CollapsibleTrigger>
+                    <CollapsibleTrigger asChild>
+                      <TableCell className="text-left hover:cursor-pointer sm:text-center">
+                        {format === "Stableford" ? (
+                          <ScoreDisplay
+                            score={round.points}
+                            stableford={true}
+                            displayOption="ScoreOnly"
+                          />
+                        ) : format === "Medal" ? (
+                          <ScoreDisplay
+                            score={round.net ?? 0}
+                            displayOption="ScoreOnly"
+                          />
+                        ) : (
+                          <ScoreDisplay
+                            score={round.strokes ?? 0}
+                            displayOption="ScoreOnly"
+                          />
+                        )}
+                      </TableCell>
+                    </CollapsibleTrigger>
+
                     <TableCell>
                       <EntrantDisplay
                         entrant={{
@@ -129,7 +165,7 @@ export async function BestRounds({
                   <CollapsibleContent asChild>
                     <tr className="bg-slate-100">
                       <ScorecardDisplay
-                        colSpan={4}
+                        colSpan={5}
                         formatForSplitView={true}
                         scorecard={round}
                         strokesOnly={format === "Gross"}

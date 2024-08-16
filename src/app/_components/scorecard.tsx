@@ -24,6 +24,19 @@ type ScorecardDisplayProps = {
   strokesOnly?: boolean;
 };
 
+const scoreFormat = {
+  albatross:
+    "rounded-full bg-yellow-500 text-white shadow-[inset_0px_0px_0px_2px_rgba(234,179,8,1),inset_0px_0px_0px_3px_white]",
+  eagle: "rounded-full bg-yellow-500 text-white",
+  birdie: "rounded-full bg-red-500 text-white",
+  par: "",
+  bogey: "bg-blue-500 text-white",
+  doubleBogey: "bg-black text-white",
+  tripleBogeyPlus:
+    "bg-black text-white shadow-[inset_0px_0px_0px_2px_black,inset_0px_0px_0px_3px_white]",
+  NR: "bg-black text-white",
+};
+
 export function ScorecardDisplay({
   scorecard,
   colSpan,
@@ -45,7 +58,7 @@ export function ScorecardDisplay({
                 .map((hole) => (
                   <div key={hole.holeNo} className="flex justify-center">
                     <div
-                      className={`flex h-8 w-8 items-center justify-center  font-bold   ${hole.NR && "bg-black  text-white"} ${hole.strokes && hole.strokes - hole.par <= -2 && "rounded-full bg-yellow-500   text-white"} ${hole.strokes && hole.strokes - hole.par === -1 && "rounded-full bg-red-500   text-white"} ${hole.strokes && hole.strokes - hole.par === 1 && "bg-blue-500   text-white"} ${hole.strokes && hole.strokes - hole.par >= 2 && "bg-black  text-white"}`}
+                      className={`flex h-8 w-8 items-center justify-center font-bold ${hole.NR && scoreFormat.NR} ${hole.strokes && hole.strokes - hole.par <= -3 && scoreFormat.albatross} ${hole.strokes && hole.strokes - hole.par === -2 && scoreFormat.eagle} ${hole.strokes && hole.strokes - hole.par === -1 && scoreFormat.birdie} ${hole.strokes && hole.strokes - hole.par === 1 && scoreFormat.bogey} ${hole.strokes && hole.strokes - hole.par === 2 && scoreFormat.doubleBogey} ${hole.strokes && hole.strokes - hole.par >= 3 && scoreFormat.tripleBogeyPlus}`}
                     >
                       {hole.NR ? "NR" : hole.strokes}
                     </div>
@@ -109,7 +122,7 @@ export function ScorecardDisplay({
                 .map((hole) => (
                   <div key={hole.holeNo} className="flex justify-center">
                     <div
-                      className={`flex h-8 w-8 items-center justify-center  font-bold   ${hole.NR && "bg-black  text-white"} ${hole.strokes && hole.strokes - hole.par <= -2 && "rounded-full bg-yellow-500   text-white"} ${hole.strokes && hole.strokes - hole.par === -1 && "rounded-full bg-red-500   text-white"} ${hole.strokes && hole.strokes - hole.par === 1 && "bg-blue-500   text-white"} ${hole.strokes && hole.strokes - hole.par >= 2 && "bg-black  text-white"}`}
+                      className={`flex h-8 w-8 items-center justify-center font-bold ${hole.NR && scoreFormat.NR} ${hole.strokes && hole.strokes - hole.par <= -3 && scoreFormat.albatross} ${hole.strokes && hole.strokes - hole.par === -2 && scoreFormat.eagle} ${hole.strokes && hole.strokes - hole.par === -1 && scoreFormat.birdie} ${hole.strokes && hole.strokes - hole.par === 1 && scoreFormat.bogey} ${hole.strokes && hole.strokes - hole.par === 2 && scoreFormat.doubleBogey} ${hole.strokes && hole.strokes - hole.par >= 3 && scoreFormat.tripleBogeyPlus}`}
                     >
                       {hole.NR ? "NR" : hole.strokes}
                     </div>

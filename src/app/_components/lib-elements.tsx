@@ -112,6 +112,57 @@ type LibCardProps = {
   children: React.ReactNode;
 };
 
+type ScoreDisplayProps = {
+  stableford?: boolean;
+  score?: number;
+  NR?: boolean;
+  displayOption?: "ScoreOnly" | "OverUnder" | "Both" | "Smart";
+};
+
+export function ScoreDisplay({
+  stableford = false,
+  score = 0,
+  NR = false,
+  displayOption = "Smart",
+}: ScoreDisplayProps) {
+  const overUnder = stableford ? 36 - score : score - 72;
+  return (
+    <>
+      {NR && "NR"}
+      {displayOption === "ScoreOnly" && (
+        <span className={`${overUnder < 0 ? "text-red-500" : ""}`}>
+          {score}
+        </span>
+      )}
+      {displayOption === "OverUnder" && (
+        <span
+          className={`${overUnder < 0 ? "text-red-500" : ""}`}
+        >{`${overUnder > 0 ? "+" : ""}${overUnder === 0 ? "E" : overUnder}`}</span>
+      )}
+      {displayOption === "Both" && (
+        <>
+          <span className={`${overUnder < 0 ? "text-red-500" : ""} mr-1`}>
+            {score}
+          </span>
+          <span
+            className={`${overUnder < 0 ? "text-red-500" : ""}`}
+          >{`(${overUnder > 0 && "+"}${overUnder === 0 ? "E" : overUnder})`}</span>
+        </>
+      )}
+      {displayOption === "Smart" && (
+        <>
+          <span className={`${overUnder < 0 ? "text-red-500" : ""} sm:mr-1`}>
+            {score}
+          </span>
+          <span
+            className={`${overUnder < 0 ? "text-red-500" : ""} hidden sm:inline`}
+          >{`(${overUnder > 0 ? "+" : ""}${overUnder === 0 ? "E" : overUnder})`}</span>
+        </>
+      )}
+    </>
+  );
+}
+
 export function LibCard({ title, url, children }: LibCardProps) {
   return (
     <Card>

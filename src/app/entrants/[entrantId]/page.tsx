@@ -148,6 +148,7 @@ async function Content({ entrantId }: ContentProps) {
                   Date
                 </TableHead>
                 <TableHead className="px-1 sm:px-2">Results</TableHead>
+                <TableHead className="px-1 sm:px-2">Score</TableHead>
                 <TableHead className="px-1 text-right sm:px-2">
                   Winnings
                 </TableHead>
@@ -186,8 +187,17 @@ async function Content({ entrantId }: ContentProps) {
                             className={`px-1 sm:px-2 ${comp.scorecard && "cursor-pointer"}`}
                           >
                             {comp.position
-                              ? `${comp.position}${ordinal(comp.position)} (${comp.score ? comp.score : "NR"}${comp.comp.stableford ? !comp.noResult && "pts" : ""})`
+                              ? `${comp.position}${ordinal(comp.position)}`
                               : "Entered"}
+                          </TableCell>
+                        </CollapsibleTrigger>
+                        <CollapsibleTrigger asChild>
+                          <TableCell
+                            className={`px-1 sm:px-2 ${comp.scorecard && "cursor-pointer"}`}
+                          >
+                            {comp.position
+                              ? `${comp.score ? comp.score : "NR"}${comp.comp.stableford ? !comp.noResult && "pts" : ""}`
+                              : ""}
                           </TableCell>
                         </CollapsibleTrigger>
                         <TableCell className="px-1 text-right sm:px-2">
@@ -203,7 +213,7 @@ async function Content({ entrantId }: ContentProps) {
                       <CollapsibleContent asChild>
                         <tr className="bg-slate-100">
                           <ScorecardDisplay
-                            colSpan={4}
+                            colSpan={5}
                             formatForSplitView={false}
                             scorecard={comp.scorecard}
                             strokesOnly={false}
