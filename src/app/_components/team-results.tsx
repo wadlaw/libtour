@@ -75,8 +75,8 @@ export default async function TeamResultsForComp({ compId }: TeamResultsProps) {
         <TableHeader>
           <TableRow>
             <TableHead>Team</TableHead>
-            <TableHead className="hidden lg:table-cell"></TableHead>
-            <TableHead className="hidden lg:table-cell"></TableHead>
+            <TableHead className="hidden lg:table-cell">First Score</TableHead>
+            <TableHead className="hidden lg:table-cell">Second Score</TableHead>
             <TableHead className="text-center">Score</TableHead>
             <TableHead className="text-center">Points</TableHead>
           </TableRow>
