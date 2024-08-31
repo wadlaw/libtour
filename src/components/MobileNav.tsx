@@ -30,7 +30,7 @@ export function MobileNav() {
         <SheetHeader className="mb-4">
           <SheetTitle>Menu</SheetTitle>
         </SheetHeader>
-        <div className="mb-4 text-2xl">
+        <div className="mb-4 hidden text-2xl ">
           <SheetClose asChild>
             <Link href="/">Home</Link>
           </SheetClose>
@@ -49,6 +49,11 @@ export function MobileNav() {
         <div className="mb-4 text-2xl">
           <SheetClose asChild>
             <Link href="/halloffame">Hall of Fame</Link>
+          </SheetClose>
+        </div>
+        <div className="mb-4 text-2xl">
+          <SheetClose asChild>
+            <Link href="/eclectic">Eclectic</Link>
           </SheetClose>
         </div>
         <Protect condition={() => !!sessionClaims?.metadata?.financePermission}>
