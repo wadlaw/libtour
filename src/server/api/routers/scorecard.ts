@@ -408,6 +408,28 @@ export const scorecardRouter = createTRPCRouter({
                     take: input.numberOfRounds
                 })
             }),   
+        
+        EclecticScores: publicProcedure
+            .query(async ({ ctx }) => {
+                return ctx.db.entrant.findMany({
+                    include: {
+                        team: true,
+                        comps: {
+                            include: {
+                                scorecard: {
+                                    include: {
+                                        holes: {
+                                            where: {
+                                                NR: false
+                                            },
+                                            
+                                        }
+                                    }
+                                }
+                            }
 
-    
+                        }
+                    }
+                })
+            }),
 })

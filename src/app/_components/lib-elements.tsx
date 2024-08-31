@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 // import IdentityIcon from "./identicons";
 import { Badge } from "~/components/ui/badge";
+import { CollapsibleTrigger } from "~/components/ui/collapsible";
 
 export default function LibMain(props: { children: React.ReactNode }) {
   return (
@@ -117,6 +118,7 @@ type ScoreDisplayProps = {
   score?: number;
   NR?: boolean;
   displayOption?: "ScoreOnly" | "OverUnder" | "Both" | "Smart";
+  collapsibleTrigger?: boolean;
 };
 
 export function ScoreDisplay({
@@ -124,7 +126,111 @@ export function ScoreDisplay({
   score = 0,
   NR = false,
   displayOption = "Smart",
+  collapsibleTrigger = false,
 }: ScoreDisplayProps) {
+  const overUnder = stableford ? 36 - score : score - 72;
+  return (
+    <>
+      {NR && "NR"}
+      {displayOption === "ScoreOnly" &&
+        (collapsibleTrigger ? (
+          <CollapsibleTrigger>
+            <span className={`${overUnder < 0 ? "text-red-500" : ""}`}>
+              {score}
+            </span>
+          </CollapsibleTrigger>
+        ) : (
+          <span className={`${overUnder < 0 ? "text-red-500" : ""}`}>
+            {score}
+          </span>
+        ))}
+      {displayOption === "OverUnder" &&
+        (collapsibleTrigger ? (
+          <CollapsibleTrigger>
+            <span
+              className={`${overUnder < 0 ? "text-red-500" : ""}`}
+            >{`${overUnder > 0 ? "+" : ""}${overUnder === 0 ? "E" : overUnder}`}</span>
+          </CollapsibleTrigger>
+        ) : (
+          <span
+            className={`${overUnder < 0 ? "text-red-500" : ""}`}
+          >{`${overUnder > 0 ? "+" : ""}${overUnder === 0 ? "E" : overUnder}`}</span>
+        ))}
+      {displayOption === "Both" && (
+        <>
+          {collapsibleTrigger ? (
+            <>
+              <CollapsibleTrigger>
+                <span className={`${overUnder < 0 ? "text-red-500" : ""} mr-1`}>
+                  {score}
+                </span>
+              </CollapsibleTrigger>
+              <CollapsibleTrigger>
+                <span
+                  className={`${overUnder < 0 ? "text-red-500" : ""}`}
+                >{`(${overUnder > 0 ? "+" : ""}${overUnder === 0 ? "E" : overUnder})`}</span>
+              </CollapsibleTrigger>
+            </>
+          ) : (
+            <>
+              <span className={`${overUnder < 0 ? "text-red-500" : ""} mr-1`}>
+                {score}
+              </span>
+              <span
+                className={`${overUnder < 0 ? "text-red-500" : ""}`}
+              >{`(${overUnder > 0 ? "+" : ""}${overUnder === 0 ? "E" : overUnder})`}</span>
+            </>
+          )}
+        </>
+      )}
+      {displayOption === "Smart" && (
+        <>
+          {collapsibleTrigger ? (
+            <>
+              <CollapsibleTrigger>
+                <span
+                  className={`${overUnder < 0 ? "text-red-500" : ""} sm:mr-1`}
+                >
+                  {score}
+                </span>
+              </CollapsibleTrigger>
+              <CollapsibleTrigger>
+                <span
+                  className={`${overUnder < 0 ? "text-red-500" : ""} hidden sm:inline`}
+                >{`(${overUnder > 0 ? "+" : ""}${overUnder === 0 ? "E" : overUnder})`}</span>
+              </CollapsibleTrigger>
+            </>
+          ) : (
+            <>
+              <span
+                className={`${overUnder < 0 ? "text-red-500" : ""} sm:mr-1`}
+              >
+                {score}
+              </span>
+              <span
+                className={`${overUnder < 0 ? "text-red-500" : ""} hidden sm:inline`}
+              >{`(${overUnder > 0 ? "+" : ""}${overUnder === 0 ? "E" : overUnder})`}</span>
+            </>
+          )}
+        </>
+      )}
+    </>
+  );
+}
+
+type TeamScoreDisplayProps = {
+  stableford?: boolean;
+  score?: number;
+  NR?: boolean;
+  displayOption?: "ScoreOnly" | "OverUnder" | "Both" | "Smart";
+};
+
+export function TeamScoreDisplay({
+  stableford = false,
+  score = 0,
+  NR = false,
+  displayOption = "Smart",
+}: TeamScoreDisplayProps) {
   const overUnder = stableford ? 36 - score : score - 72;
   return (
     <>

@@ -1,15 +1,17 @@
+"use client";
+
 import { Fragment } from "react";
 import { TableCell } from "~/components/ui/table";
 
 type ScorecardDisplayProps = {
   scorecard: {
     id: number;
-    compId: string;
-    entrantId: number;
+    // compId: string;
+    // entrantId: number;
     handicap: number;
     stableford: boolean;
     holes: {
-      scorecardId: number;
+      // scorecardId: number;
       strokeIndex: number;
       holeNo: number;
       strokes: number | null;
