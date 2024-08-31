@@ -158,6 +158,61 @@ const config = {
             destination: '/wallofshame',
             permanent: true,
           },
+          {
+            source: '/wos',
+            destination: '/wallofshame',
+            permanent: true,
+          },
+          {
+            source: '/igiveup',
+            destination: '/wallofshame',
+            permanent: true,
+          },
+          {
+            source: '/whereisit',
+            destination: '/wallofshame',
+            permanent: true,
+          },
+          {
+            source: '/whatisit',
+            destination: '/wallofshame',
+            permanent: true,
+          },
+          {
+            source: '/secretsquirrel',
+            destination: '/wallofshame',
+            permanent: true,
+          },
+          {
+            source: '/supersecretpage',
+            destination: '/wallofshame',
+            permanent: true,
+          },
+          {
+            source: '/hackers',
+            destination: '/wallofshame',
+            permanent: true,
+          },
+          {
+            source: '/poop',
+            destination: '/wallofshame',
+            permanent: true,
+          },
+          {
+            source: '/cantfindit',
+            destination: '/wallofshame',
+            permanent: true,
+          },
+          {
+            source: '/notveryhidden',
+            destination: '/wallofshame',
+            permanent: true,
+          },
+          {
+            source: '/hiddeninplainsight',
+            destination: '/wallofshame',
+            permanent: true,
+          },
         ]
       },
 };
