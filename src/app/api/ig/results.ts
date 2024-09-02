@@ -109,7 +109,7 @@ export async function GetResults(compId: string): Promise<ScrapedResultsType> {
     //wait for page to finish loading
     await page.waitForSelector('.main-footer')
     const format = await page.$eval('thead>tr>td:nth-child(2)', el => {return el.innerText})
-    format === "Nett" ? returnData.compFormat = "Medal" : returnData.compFormat = "Stableford"
+    format === "Points" ? returnData.compFormat = "Stableford" : returnData.compFormat = "Medal"
     const results: string[][]  = await page.$$eval('tbody>tr', rows => {
         return Array.from(rows, row => {
             const columns = row.querySelectorAll('td');
