@@ -1,5 +1,5 @@
 import { api } from "~/trpc/server";
-import { TeamDisplay } from "./lib-elements";
+import { LibBanner, TeamDisplay } from "./lib-elements";
 
 export async function WinningBanner() {
   const [events, teams] = await Promise.all([
@@ -28,10 +28,14 @@ export async function WinningBanner() {
 
   return (
     <div className="">
-      <p className="text-center font-extrabold">
+      {/* <p className="text-center font-extrabold">
         Congratulations to {winningTeams.join(" and ")} - winners of the
         Libtour!
-      </p>
+      </p> */}
+      <LibBanner>
+        Congratulations to {winningTeams.join(" and ")} - winners of the
+        Libtour!
+      </LibBanner>
     </div>
   );
 }
