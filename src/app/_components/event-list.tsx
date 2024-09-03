@@ -33,6 +33,7 @@ export async function UpcomingEventList() {
       comps={comps}
       title="Upcoming Events"
       lastHeaderText="Status"
+      emptyListText="No more events for this year. See you next year!"
     />
   );
 }
@@ -47,6 +48,7 @@ export async function RecentEventList() {
       comps={comps}
       title="Recent Events"
       lastHeaderText="Winner"
+      emptyListText="Event results will appear here"
     />
   );
 }
@@ -72,12 +74,14 @@ type EventListDisplayProps = {
   }>;
   title?: string;
   lastHeaderText?: string;
+  emptyListText?: string;
 };
 
 function EventListDisplay({
   comps,
   title,
   lastHeaderText = "",
+  emptyListText = "No events to display",
 }: EventListDisplayProps) {
   return (
     <LibCardNarrow title={title} url="/events">
@@ -93,6 +97,13 @@ function EventListDisplay({
           </TableRow>
         </TableHeader>
         <TableBody>
+          {comps.length === 0 ? (
+            <TableRow>
+              <TableCell className="text-center italic" colSpan={4}>
+                {emptyListText}
+              </TableCell>
+            </TableRow>
+          ) : null}
           {comps.map((comp) => (
             <TableRow key={comp.igCompId}>
               <TableCell className="px-1 font-medium sm:px-2">
