@@ -186,7 +186,7 @@ export default async function Results({
                   </TableCell>
                 </TableRow>
                 <CollapsibleContent asChild>
-                  <tr className="bg-slate-100">
+                  <tr className="bg-slate-100 px-1 sm:px-2">
                     <ScorecardDisplay
                       colSpan={8}
                       scorecard={result.scorecard}

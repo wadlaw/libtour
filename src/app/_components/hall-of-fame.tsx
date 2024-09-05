@@ -81,7 +81,7 @@ export async function BestRounds({
             </TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody className="px-1 sm:px-2">
           {rounds.map((round) => {
             return (
               <Collapsible key={round.id} asChild>
@@ -163,7 +163,7 @@ export async function BestRounds({
                     </CollapsibleTrigger>
                   </TableRow>
                   <CollapsibleContent asChild>
-                    <tr className="bg-slate-100">
+                    <tr className="bg-slate-100 px-1 sm:px-2">
                       <ScorecardDisplay
                         colSpan={5}
                         formatForSplitView={true}
