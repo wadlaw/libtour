@@ -213,6 +213,21 @@ const config = {
             destination: '/wallofshame',
             permanent: true,
           },
+          {
+            source: '/boards',
+            destination: '/honourboards',
+            permanent: true,
+          },
+          {
+            source: '/winners',
+            destination: '/honourboards',
+            permanent: true,
+          },
+          {
+            source: '/losers',
+            destination: '/honourboards',
+            permanent: true,
+          },
         ]
       },
 };
