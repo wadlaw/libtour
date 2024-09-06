@@ -219,6 +219,46 @@ const config = {
             permanent: true,
           },
           {
+            source: '/board',
+            destination: '/honourboards',
+            permanent: true,
+          },
+          {
+            source: '/honourboard',
+            destination: '/honourboards',
+            permanent: true,
+          },
+          {
+            source: '/honours',
+            destination: '/honourboards',
+            permanent: true,
+          },
+          {
+            source: '/honour',
+            destination: '/honourboards',
+            permanent: true,
+          },
+          {
+            source: '/honors',
+            destination: '/honourboards',
+            permanent: true,
+          },
+          {
+            source: '/honor',
+            destination: '/honourboards',
+            permanent: true,
+          },
+          {
+            source: '/honorboards',
+            destination: '/honourboards',
+            permanent: true,
+          },
+          {
+            source: '/honorboard',
+            destination: '/honourboards',
+            permanent: true,
+          },
+          {
             source: '/winners',
             destination: '/honourboards',
             permanent: true,
