@@ -46,6 +46,12 @@ type TeamDisplayProps = {
   iconOnlyWhenSmall?: boolean;
 };
 
+type TeamDisplayCollapsibleProps = {
+  team: { id: string; linkName: string; teamName: string };
+  // alwaysDisplayLogo?: boolean;
+  // iconOnlyWhenSmall?: boolean;
+};
+
 export function TeamDisplay({
   team,
   alwaysDisplayLogo = false,
@@ -70,6 +76,27 @@ export function TeamDisplay({
         </div>
       </div>
     </Link>
+  );
+}
+
+export function TeamDisplayCollapsible({ team }: TeamDisplayCollapsibleProps) {
+  if (!team) return null;
+  return (
+    <div className="flex items-center justify-start">
+      <div className={`mr-2 overflow-hidden rounded-full`}>
+        <CollapsibleTrigger asChild>
+          <Image
+            src={`/${team.linkName}.png`}
+            width={30}
+            height={30}
+            alt={`${team.teamName} Team Logo`}
+          ></Image>
+        </CollapsibleTrigger>
+      </div>
+      <CollapsibleTrigger asChild>
+        <div className="hover:cursor-pointer">{team.teamName}</div>
+      </CollapsibleTrigger>
+    </div>
   );
 }
 
