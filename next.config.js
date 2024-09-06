@@ -259,6 +259,16 @@ const config = {
             permanent: true,
           },
           {
+            source: '/honoursboard',
+            destination: '/honourboards',
+            permanent: true,
+          },
+          {
+            source: '/honorsboard',
+            destination: '/honourboards',
+            permanent: true,
+          },
+          {
             source: '/winners',
             destination: '/honourboards',
             permanent: true,
