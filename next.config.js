@@ -215,7 +215,7 @@ const config = {
           },
           {
             source: '/boards',
-            destination: '/honourboards',
+            destination: '/honoursboards',
             permanent: true,
           },
           {
@@ -225,57 +225,62 @@ const config = {
           },
           {
             source: '/honourboard',
-            destination: '/honourboards',
+            destination: '/honoursboards',
             permanent: true,
           },
           {
             source: '/honours',
-            destination: '/honourboards',
+            destination: '/honoursboards',
             permanent: true,
           },
           {
             source: '/honour',
-            destination: '/honourboards',
+            destination: '/honoursboards',
             permanent: true,
           },
           {
             source: '/honors',
-            destination: '/honourboards',
+            destination: '/honoursboards',
             permanent: true,
           },
           {
             source: '/honor',
-            destination: '/honourboards',
+            destination: '/honoursboards',
             permanent: true,
           },
           {
             source: '/honorboards',
-            destination: '/honourboards',
+            destination: '/honoursboards',
             permanent: true,
           },
           {
             source: '/honorboard',
-            destination: '/honourboards',
+            destination: '/honoursboards',
             permanent: true,
           },
           {
             source: '/honoursboard',
-            destination: '/honourboards',
+            destination: '/honoursboards',
+            permanent: true,
+          },
+          {
+            source: '/honourboards',
+            destination: '/honoursboards',
             permanent: true,
           },
           {
             source: '/honorsboard',
-            destination: '/honourboards',
+            destination: '/honoursboards',
             permanent: true,
           },
           {
             source: '/winners',
-            destination: '/honourboards',
+            destination: '/honoursboards',
             permanent: true,
           },
           {
             source: '/losers',
-            destination: '/honourboards',
+            destination: '/honoursboards',
             permanent: true,
           },
         ]

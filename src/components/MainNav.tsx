@@ -44,7 +44,7 @@ export async function MainNav() {
         <li
           className={`${sessionClaims?.metadata.adminPermission ? "mr-2 md:mr-4" : "mr-4"} inline`}
         >
-          <Link href="/honourboards">Honour Boards</Link>
+          <Link href="/honoursboards">Honours Boards</Link>
         </li>
         <Protect condition={() => !!sessionClaims?.metadata?.financePermission}>
           <li

@@ -15,7 +15,7 @@ import {
 import { Fragment } from "react";
 
 export const metadata = {
-  title: "Libtour - Honour Boards",
+  title: "Libtour - Honours Boards",
   description: "Celebrating the winners (and losers) of the Libtour",
 };
 

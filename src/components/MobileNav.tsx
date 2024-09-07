@@ -59,7 +59,7 @@ export function MobileNav() {
         </div>
         <div className="mb-4 text-2xl">
           <SheetClose asChild>
-            <Link href="/honourboards">Honour Boards</Link>
+            <Link href="/honoursboards">Honours Boards</Link>
           </SheetClose>
         </div>
         <Protect condition={() => !!sessionClaims?.metadata?.financePermission}>
