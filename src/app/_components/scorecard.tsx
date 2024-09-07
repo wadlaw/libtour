@@ -128,7 +128,7 @@ export function ScorecardDisplay({
                             .filter((hole) => hole.holeNo <= 9)
                             .reduce((acc, cur) => acc + cur.points, 0)
                         : scorecard.holes.filter(
-                              (hole) => hole.holeNo <= 9 && hole.NR == true,
+                              (hole) => hole.holeNo <= 9 && hole.NR,
                             ).length > 0
                           ? "NR"
                           : scorecard.holes
@@ -229,7 +229,7 @@ export function ScorecardDisplay({
                         </div>
                       </div>
                     ))}
-                  {/* Front 9 total */}
+                  {/* Back 9 total */}
                   <div className="flex justify-center">
                     <div className="flex h-7 w-7 items-center justify-center font-bold ring-2 ring-slate-800">
                       {scorecard.stableford
@@ -237,7 +237,7 @@ export function ScorecardDisplay({
                             .filter((hole) => hole.holeNo >= 10)
                             .reduce((acc, cur) => acc + cur.points, 0)
                         : scorecard.holes.filter(
-                              (hole) => hole.holeNo <= 9 && hole.NR == true,
+                              (hole) => hole.holeNo >= 10 && hole.NR,
                             ).length > 0
                           ? "NR"
                           : scorecard.holes
