@@ -1,4 +1,4 @@
-import { Losers, Winners } from "../_components/honours-board";
+import { HoleInOneBoard, Losers, Winners } from "../_components/honours-board";
 import LibMain, { LibCardContainer, LibH1 } from "../_components/lib-elements";
 
 export default function HonoursBoards() {
@@ -10,6 +10,7 @@ export default function HonoursBoards() {
       <LibCardContainer splitAtLargeSizes={true}>
         <Winners />
         <Losers />
+        <HoleInOneBoard />
       </LibCardContainer>
     </LibMain>
   );

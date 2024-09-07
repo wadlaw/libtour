@@ -19,6 +19,12 @@ export const metadata = {
   description: "Celebrating the winners (and losers) of the Libtour",
 };
 
+type HoleAchievement = {
+  holeNo: number;
+  name: string;
+  comp: string;
+};
+
 type Team = {
   year: number;
   teamName: string;
@@ -95,12 +101,20 @@ const losers: Team[] = [
   },
 ];
 
+const holesInOne: HoleAchievement[] = [
+  { holeNo: 17, name: "Tom Whitelaw", comp: "OCO 2023" },
+];
+
 export function Winners() {
   return <HonourBoard teams={winners} title="Winners" />;
 }
 
 export function Losers() {
   return <HonourBoard teams={losers} title="Losers" />;
+}
+
+export function HoleInOneBoard() {
+  return <AchievementBoard title="Hole In One" entries={holesInOne} />;
 }
 
 type HonourBoardProps = {
@@ -151,6 +165,37 @@ function HonourBoard({ teams, title }: HonourBoardProps) {
                 </CollapsibleContent>
               </Fragment>
             </Collapsible>
+          ))}
+        </TableBody>
+      </Table>
+    </LibCardNarrow>
+  );
+}
+
+type AchievementBoardProps = {
+  entries: HoleAchievement[];
+  title: string;
+};
+
+function AchievementBoard({ entries, title }: AchievementBoardProps) {
+  return (
+    <LibCardNarrow title={title}>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Hole</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Competition</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {entries.map((entry, index) => (
+            <TableRow key={index}>
+              <TableCell className={"font-semibold"}>{entry.holeNo}</TableCell>
+
+              <TableCell className={"font-semibold"}>{entry.name}</TableCell>
+              <TableCell className={"font-semibold"}>{entry.comp}</TableCell>
+            </TableRow>
           ))}
         </TableBody>
       </Table>
