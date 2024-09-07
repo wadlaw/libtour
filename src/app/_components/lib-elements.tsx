@@ -86,6 +86,7 @@ export function TeamDisplayCollapsible({ team }: TeamDisplayCollapsibleProps) {
       <div className={`mr-2 overflow-hidden rounded-full`}>
         <CollapsibleTrigger asChild>
           <Image
+            className="hover:cursor-pointer"
             src={`/${team.linkName}.png`}
             width={30}
             height={30}
