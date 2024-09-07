@@ -67,7 +67,7 @@ export function ScorecardDisplay({
             {/* Strokes row */}
             <div className="grid w-full grid-cols-11 place-content-center justify-center gap-1">
               <div className="flex flex-col justify-center">
-                <div className=" text-[0.65rem] text-slate-500 sm:text-xs">
+                <div className="text-[0.65rem] text-slate-500 sm:text-xs">
                   Score
                 </div>
               </div>
@@ -87,9 +87,12 @@ export function ScorecardDisplay({
                 <div
                   className={`flex h-7 w-7 items-center justify-center font-bold ${!!strokesOnly && "ring-2 ring-slate-800"}`}
                 >
-                  {scorecard.holes
-                    .filter((hole) => hole.holeNo <= 9)
-                    .reduce((acc, cur) => acc + (cur.strokes ?? 0), 0)}
+                  {scorecard.holes.filter((hole) => hole.holeNo <= 9 && hole.NR)
+                    .length > 0
+                    ? "NR"
+                    : scorecard.holes
+                        .filter((hole) => hole.holeNo <= 9)
+                        .reduce((acc, cur) => acc + (cur.strokes ?? 0), 0)}
                 </div>
               </div>
             </div>
@@ -185,9 +188,13 @@ export function ScorecardDisplay({
                 <div
                   className={`flex h-7 w-7 items-center justify-center font-bold ${!!strokesOnly && "ring-2 ring-slate-800"}`}
                 >
-                  {scorecard.holes
-                    .filter((hole) => hole.holeNo >= 10)
-                    .reduce((acc, cur) => acc + (cur.strokes ?? 0), 0)}
+                  {scorecard.holes.filter(
+                    (hole) => hole.holeNo >= 10 && hole.NR,
+                  ).length > 0
+                    ? "NR"
+                    : scorecard.holes
+                        .filter((hole) => hole.holeNo >= 10)
+                        .reduce((acc, cur) => acc + (cur.strokes ?? 0), 0)}
                 </div>
               </div>
             </div>
