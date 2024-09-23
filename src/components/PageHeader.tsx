@@ -3,8 +3,8 @@ import { MobileNav } from "./MobileNav";
 import { MainNav } from "./MainNav";
 import { UserButton } from "@clerk/nextjs";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
-import Image from "next/image";
-import { Suspense } from "react";
+import { ModeToggle, ThemedLogo } from "~/app/_components/theme";
+import { DropdownMenu } from "./DropdownMenu";
 
 export async function PageHeader() {
   return (
@@ -12,22 +12,19 @@ export async function PageHeader() {
       <div className="sm:hidden">
         <MobileNav />
       </div>
-      <Suspense fallback={<h1 className="pr-1 text-4xl">Libtour</h1>}>
-        <Link className="px-2 xl:px-0" href="/">
-          <div className="flex">
-            <Image
-              src="/lib_l_black_crop.png"
-              alt="Libtour badge"
-              height="36"
-              width="24"
-            />
-            <h1 className="pr-1 text-4xl">ibtour</h1>
-          </div>
-        </Link>
-      </Suspense>
+
+      <Link className="px-2 xl:px-0" href="/">
+        <ThemedLogo />
+      </Link>
+      <nav className="hidden sm:inline-block lg:hidden">
+        <DropdownMenu />
+      </nav>
       <div className="flex items-center gap-2">
         <div className="hidden sm:block">
           <MainNav />
+        </div>
+        <div className="hidden sm:block">
+          <ModeToggle />
         </div>
         <div className="px-2">
           <SignedOut>

@@ -163,7 +163,7 @@ export async function BestRounds({
                     </CollapsibleTrigger>
                   </TableRow>
                   <CollapsibleContent asChild>
-                    <tr className="bg-slate-100 px-1 sm:px-2">
+                    <tr className="bg-muted px-1 sm:px-2">
                       <ScorecardDisplay
                         colSpan={5}
                         formatForSplitView={true}
@@ -295,7 +295,7 @@ async function GreatScores({ type }: GreatScoresProps) {
                     </TableCell>
                   </TableRow>
                   <CollapsibleContent asChild>
-                    <tr className="bg-slate-100">
+                    <tr className="bg-muted">
                       <ScorecardDisplay
                         colSpan={4}
                         formatForSplitView={true}

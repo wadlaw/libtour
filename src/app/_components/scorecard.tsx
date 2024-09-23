@@ -28,14 +28,14 @@ type ScorecardDisplayProps = {
 
 const scoreFormat = {
   albatross:
-    "rounded-full bg-yellow-500 text-white shadow-[inset_0px_0px_0px_2px_rgba(234,179,8,1),inset_0px_0px_0px_3px_white]",
+    "rounded-full bg-yellow-500 text-white shadow-[inset_0px_0px_0px_2px_rgba(234,179,8,1),inset_0px_0px_0px_3px_hsl(var(--scorecard-ring))]",
   eagle: "rounded-full bg-yellow-500 text-white",
   birdie: "rounded-full bg-red-500 text-white",
   par: "",
   bogey: "bg-blue-500 text-white",
   doubleBogey: "bg-black text-white",
   tripleBogeyPlus:
-    "bg-black text-white shadow-[inset_0px_0px_0px_2px_black,inset_0px_0px_0px_3px_white]",
+    "bg-black text-white shadow-[inset_0px_0px_0px_2px_black,inset_0px_0px_0px_3px_hsl(var(--scorecard-ring))]",
   NR: "bg-black text-white",
 };
 
@@ -85,7 +85,7 @@ export function ScorecardDisplay({
               {/* Strokes Total */}
               <div className=" flex justify-center">
                 <div
-                  className={`flex h-7 w-7 items-center justify-center font-bold ${!!strokesOnly && "ring-2 ring-slate-800"}`}
+                  className={`flex h-7 w-7 items-center justify-center font-bold ${!!strokesOnly && "ring-2"}`}
                 >
                   {scorecard.holes.filter((hole) => hole.holeNo <= 9 && hole.NR)
                     .length > 0
@@ -122,7 +122,7 @@ export function ScorecardDisplay({
                     ))}
                   {/* Front 9 total */}
                   <div className="flex justify-center">
-                    <div className="flex h-7 w-7 items-center justify-center font-bold ring-2 ring-slate-800">
+                    <div className="flex h-7 w-7 items-center justify-center font-bold ring-2">
                       {scorecard.stableford
                         ? scorecard.holes
                             .filter((hole) => hole.holeNo <= 9)
@@ -186,7 +186,7 @@ export function ScorecardDisplay({
               {/* Strokes total */}
               <div className=" flex justify-center">
                 <div
-                  className={`flex h-7 w-7 items-center justify-center font-bold ${!!strokesOnly && "ring-2 ring-slate-800"}`}
+                  className={`flex h-7 w-7 items-center justify-center font-bold ${!!strokesOnly && "ring-2"}`}
                 >
                   {scorecard.holes.filter(
                     (hole) => hole.holeNo >= 10 && hole.NR,
@@ -231,7 +231,7 @@ export function ScorecardDisplay({
                     ))}
                   {/* Back 9 total */}
                   <div className="flex justify-center">
-                    <div className="flex h-7 w-7 items-center justify-center font-bold ring-2 ring-slate-800">
+                    <div className="flex h-7 w-7 items-center justify-center font-bold ring-2">
                       {scorecard.stableford
                         ? scorecard.holes
                             .filter((hole) => hole.holeNo >= 10)

@@ -13,7 +13,7 @@ export async function MainNav() {
   return (
     <nav>
       <ul
-        className={`inline-block ${sessionClaims?.metadata.adminPermission ? "text-sm md:text-base" : ""}`}
+        className={`hidden lg:inline-block ${sessionClaims?.metadata.adminPermission ? "text-sm md:text-base" : ""}`}
       >
         <li
           className={`${sessionClaims?.metadata.adminPermission ? "mr-2 md:mr-4" : "mr-4"} hidden lg:inline`}
@@ -60,12 +60,12 @@ export async function MainNav() {
             <Link href="/users">User Admin</Link>
           </li>
         </Protect>
-        <Protect>
-          <Link href="/account">
-            <Balance />
-          </Link>
-        </Protect>
       </ul>
+      <Protect>
+        <Link href="/account">
+          <Balance />
+        </Link>
+      </Protect>
     </nav>
   );
 }

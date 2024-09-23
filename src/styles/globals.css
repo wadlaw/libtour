@@ -31,16 +31,8 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
- 
+    --scorecard-ring: 210 40% 96.1%;
     --radius: 0.5rem;
-    --chart-ballsdeep: 252 100% 37%;
-    --chart-bigsticks: 179 65% 46%;
-    --chart-bogeyboys: 123 64% 35%;
-    --chart-eurekas: 360 0% 0%;
-    --chart-regularflex: 43 74% 66%;
-    --chart-shanksandbighook: 0 100% 50%;
-    --chart-swingers: 316 100% 40%;
-    --chart-twoballers: 316 82% 68%;
   }
  
   .dark {
@@ -71,6 +63,7 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+    --scorecard-ring: 215 20.2% 65.1%;
   }
 }
  

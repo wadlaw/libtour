@@ -156,7 +156,7 @@ function HonourBoard({ teams, title }: HonourBoardProps) {
                 <CollapsibleContent asChild>
                   <Fragment key={team.year}>
                     {team.entrants.map((entrant) => (
-                      <TableRow key={entrant.name} className="bg-slate-100">
+                      <TableRow key={entrant.name} className="bg-muted">
                         <TableCell></TableCell>
                         <TableCell className="">{entrant.name}</TableCell>
                       </TableRow>

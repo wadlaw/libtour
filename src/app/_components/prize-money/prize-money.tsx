@@ -63,7 +63,9 @@ export default async function PrizeMoneyTable({
                     />
                   </TableCell>
                   <TableCell className="hidden px-1 text-center sm:table-cell sm:px-2">
-                    {Number(entrant.transactions.length)}
+                    <Link href={`/entrants/${entrant.id}`}>
+                      {Number(entrant.transactions.length)}
+                    </Link>
                   </TableCell>
                   <TableCell className="px-1 text-right sm:px-2">
                     <Link href={`/entrants/${entrant.id}`}>

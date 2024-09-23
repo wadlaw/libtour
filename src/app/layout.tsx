@@ -7,7 +7,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { PageHeader } from "~/components/PageHeader";
 import { Separator } from "~/components/ui/separator";
 import { Toaster } from "~/components/ui/toaster";
-import { CSPostHogProvider } from "./providers";
+import { CSPostHogProvider, ThemeProvider } from "./providers";
 import dynamic from "next/dynamic";
 
 const inter = Inter({
@@ -44,16 +44,23 @@ export default function RootLayout({
         },
       }}
     >
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <CSPostHogProvider>
           <body className={`font-sans ${inter.variable}`}>
-            <PostHogPageView />
-            <TRPCReactProvider>
-              <PageHeader />
-              <Separator />
-              {children}
-              <Toaster />
-            </TRPCReactProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <PostHogPageView />
+              <TRPCReactProvider>
+                <PageHeader />
+                <Separator />
+                {children}
+                <Toaster />
+              </TRPCReactProvider>
+            </ThemeProvider>
           </body>
         </CSPostHogProvider>
       </html>

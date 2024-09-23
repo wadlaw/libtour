@@ -10,6 +10,7 @@ import {
 } from "./ui/sheet";
 import { MobileBalance } from "~/app/_components/balance";
 import { Protect } from "@clerk/nextjs";
+import { ModeToggle } from "~/app/_components/theme";
 
 export function MobileNav() {
   const { sessionClaims } = auth();
@@ -28,8 +29,10 @@ export function MobileNav() {
       </SheetTrigger>
       <SheetContent side="left">
         <SheetHeader className="mb-4">
+          <ModeToggle />
           <SheetTitle>Menu</SheetTitle>
         </SheetHeader>
+
         <div className="mb-4 hidden text-2xl ">
           <SheetClose asChild>
             <Link href="/">Home</Link>

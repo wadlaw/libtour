@@ -211,7 +211,7 @@ async function Content({ entrantId }: ContentProps) {
                         </TableCell>
                       </TableRow>
                       <CollapsibleContent asChild>
-                        <tr className="bg-slate-100">
+                        <tr className="bg-muted">
                           <ScorecardDisplay
                             colSpan={5}
                             formatForSplitView={false}

@@ -397,7 +397,7 @@ export default function Eclectic({ scores }: EclecticProps) {
                     </TableCell>
                   </TableRow>
                   <CollapsibleContent asChild>
-                    <tr className="bg-slate-100">
+                    <tr className="bg-muted">
                       <ScorecardDisplay
                         colSpan={4}
                         scorecard={{
