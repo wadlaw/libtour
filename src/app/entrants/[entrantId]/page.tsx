@@ -104,7 +104,7 @@ async function Content({ entrantId }: ContentProps) {
     <LibMain>
       {entrant ? (
         <div className="flex flex-col items-center">
-          <div className="overflow-hidden rounded-full ring-2 ring-slate-200">
+          <div className="overflow-hidden rounded-full ring-2 ring-[hsl(var(--muted))]">
             <Link href={`/entrants/${entrant.id}`}>
               <IdentityIcon username={entrant.name} width={100} />
               {/* <Image
