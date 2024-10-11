@@ -1,5 +1,7 @@
 # LIB Tour 2024
 
+## https://libtour.net
+
 LIB Tour is a fun competition involving 18 individual competitions (listed below) and an overall team event. Prizes can be won as an individual or as a team at each event and at the end of the season for the top 3 teams.
 
 ## Summary of Changes for 2024
