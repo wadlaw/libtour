@@ -206,8 +206,8 @@ export function ScrapeResults({ eventId }: ScrapeResultProps) {
         >
           <div className="flex gap-2">
             {isScrapePending ? <Spinner /> : null}
+            <span>Process Results</span>
           </div>
-          <span>Process Results</span>
         </Button>
         <Button
           onClick={() => {

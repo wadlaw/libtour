@@ -360,7 +360,7 @@ export function LibCardContainer({
 export function Spinner() {
   return (
     <svg
-      className="h-5 w-5 animate-spin text-white"
+      className="h-5 w-5 animate-spin text-primary-foreground"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

@@ -50,6 +50,18 @@ export type TeamPointsType = {
   bestFinish: number
 }
 
+type TeamResultsType = {
+  team: string,
+  teamName: string,
+  bestFinish: number,
+  bestScore: number,
+  secondScore: number,
+  position: number,
+  points: number,
+  wildcard: string
+
+}
+
 export type TransactionType = {
   entrantId: number,
   entrantName: string,
@@ -157,17 +169,29 @@ export async function ProcessResults(compId: string): Promise<ScrapedResultsChec
   
   // Set variables to hold
   const results: typeof compEntrants = []
-  const teamResults = [
-    {team: 'BB', teamName: "Bogey Boys", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
-    {team: 'BD', teamName: "Balls Deep", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
-    {team: 'BS', teamName: "Big Sticks", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
-    {team: 'EU', teamName: "Eurekas", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
-    {team: 'RF', teamName: "Regular Flex", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
-    {team: 'SH', teamName: "Shanks and Big Hook", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
-    {team: 'SW', teamName: "Swingers", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
-    {team: '2B', teamName: "Two Ballers", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
+  const teams = await api.team.getList()
+  const teamResults: TeamResultsType[] = []
+  teams.map(team => teamResults.push({
+    team: team.id,
+    teamName: team.teamName,
+    bestFinish: 0,
+    bestScore: wildcardAdjustment > 0 ? 0 : 200,
+    secondScore: wildcardAdjustment > 0 ? 0 : 200,
+    position: 0,
+    points: 0,
+    wildcard: ""
+  }))
+  // const teamResults = [
+  //   {team: 'BB', teamName: "Bogey Boys", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
+  //   {team: 'BD', teamName: "Balls Deep", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
+  //   {team: 'BS', teamName: "Big Sticks", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
+  //   {team: 'EU', teamName: "Eurekas", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
+  //   {team: 'RF', teamName: "Regular Flex", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
+  //   {team: 'SH', teamName: "Shanks and Big Hook", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
+  //   {team: 'SW', teamName: "Swingers", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
+  //   {team: '2B', teamName: "Two Ballers", bestFinish: 0, bestScore: wildcardAdjustment > 0 ? 0 : 200, secondScore: wildcardAdjustment > 0 ? 0 : 200, position: 0, points: 0, wildcard: ""},
 
-  ]
+  // ]
   const missingEntrants: typeof allEntrants = []
   const noShows: typeof allEntrants= []
   
@@ -249,7 +273,8 @@ export async function ProcessResults(compId: string): Promise<ScrapedResultsChec
   })
   teamResults.forEach((team, index) => {
     team.position = index + 1
-    team.points = 8 - index
+    // team.points = 8 - index
+    team.points = teams.length - index
   })
   
 
