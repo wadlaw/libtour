@@ -39,8 +39,8 @@ async function main() {
     update: {},
     create: {
         id: 'BD',
-        teamName: 'Balls Deep',
-        linkName: 'ballsdeep',
+        teamName: 'Lost Balls',
+        linkName: 'lostballs',
     },
   })
 
