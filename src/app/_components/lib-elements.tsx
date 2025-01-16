@@ -7,9 +7,19 @@ import { CollapsibleTrigger } from "~/components/ui/collapsible";
 
 export default function LibMain(props: { children: React.ReactNode }) {
   return (
-    <main className="mx-auto flex min-h-[calc(100vh-41px)] max-w-screen-xl flex-col items-stretch justify-evenly pb-1 pt-4 sm:pb-2 xl:pb-4">
+    <div className="mx-auto flex min-h-[calc(100%-41px)] w-full max-w-screen-2xl flex-col items-stretch justify-evenly pb-1 pt-4 @container/main sm:pb-2 xl:pb-4">
+      {/* <main className="mx-auto flex min-h-[calc(100vh-41px)] w-full max-w-screen-xl flex-col items-stretch justify-evenly pb-1 pt-4 sm:pb-2 xl:pb-4"> */}
       {props.children}
-    </main>
+    </div>
+  );
+}
+
+export function LibMainFixed(props: { children: React.ReactNode }) {
+  return (
+    <div className="mx-auto flex min-h-[calc(100%-41px)] w-full max-w-screen-2xl flex-col items-stretch justify-start gap-8 pb-1 pt-4 @container/main sm:pb-2 xl:pb-4">
+      {/* <main className="mx-auto flex min-h-[calc(100vh-41px)] w-full max-w-screen-xl flex-col items-stretch justify-evenly pb-1 pt-4 sm:pb-2 xl:pb-4"> */}
+      {props.children}
+    </div>
   );
 }
 
@@ -308,7 +318,7 @@ export function TeamScoreDisplay({
 
 export function LibCard({ title, url, children }: LibCardProps) {
   return (
-    <Card>
+    <Card className="@container/libcard">
       <CardHeader>
         {url ? (
           <Link href={url}>
@@ -325,8 +335,8 @@ export function LibCard({ title, url, children }: LibCardProps) {
 
 export function LibCardNarrow({ title, url, children }: LibCardProps) {
   return (
-    <Card>
-      <CardHeader className="px-2 sm:px-6">
+    <Card className="@container/libcard">
+      <CardHeader className="px-2 @2xl/libcard:px-6">
         {url ? (
           <Link href={url}>
             <CardTitle>{title}</CardTitle>
@@ -335,7 +345,7 @@ export function LibCardNarrow({ title, url, children }: LibCardProps) {
           title && <CardTitle>{title}</CardTitle>
         )}
       </CardHeader>
-      <CardContent className="px-2 sm:px-6">{children}</CardContent>
+      <CardContent className="px-2 @2xl/libcard:px-6">{children}</CardContent>
     </Card>
   );
 }
@@ -350,17 +360,21 @@ export function LibCardContainer({
 }: LibCardContainerProps) {
   return (
     <div
-      className={`mx-1 mt-4 grid grid-cols-1 gap-1 sm:mx-2 sm:gap-2 ${splitAtLargeSizes && "lg:grid-cols-2"} xl:mx-0  xl:gap-4`}
+      className={`mx-1 mt-4 grid grid-cols-1 gap-1 @2xl/main:mx-2 @2xl/main:gap-2 ${splitAtLargeSizes && "@4xl/main:grid-cols-2"} @8xl/main:mx-0  @8xl/main:gap-4`}
     >
       {children}
     </div>
   );
 }
 
-export function Spinner() {
+type SpinnerProps = {
+  sidebar?: boolean;
+};
+
+export function Spinner({ sidebar = false }: SpinnerProps) {
   return (
     <svg
-      className="h-5 w-5 animate-spin text-primary-foreground"
+      className={`h-5 w-5 animate-spin ${sidebar ? "text-sidebar-primary-foreground" : "text-primary-foreground"}`}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

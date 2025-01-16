@@ -5,6 +5,7 @@ import LibMain, {
   TeamDisplay,
 } from "~/app/_components/lib-elements";
 import Link from "next/link";
+import Image from "next/image";
 
 import {
   Table,
@@ -104,32 +105,29 @@ async function Content({ entrantId }: ContentProps) {
     <LibMain>
       {entrant ? (
         <div className="flex flex-col items-center">
-          <div className="overflow-hidden rounded-full ring-2 ring-[hsl(var(--muted))]">
+          <div className="h-[100px] w-[100px] overflow-hidden rounded-full ring-2 ring-[hsl(var(--muted))]">
             <Link href={`/entrants/${entrant.id}`}>
-              <IdentityIcon username={entrant.name} width={100} />
-              {/* <Image
-                src={`/${entrant.team.linkName + ".png"}`}
-                height={100}
-                width={100}
-                alt={`${entrant.team.teamName} logo`}
-              ></Image> */}
+              {entrant?.user?.avatarUrl ? (
+                <Image
+                  src={entrant.user.avatarUrl}
+                  height={100}
+                  width={100}
+                  alt="avatar"
+                />
+              ) : (
+                <IdentityIcon username={entrant.name} width={100} />
+              )}
             </Link>
           </div>
           <LibH1>{entrant?.name}</LibH1>
           <p className="mt-1 sm:mt-2">
             {entrant?.captain ? (
-              <Link href={`/teams/${entrant?.team.linkName}`}>
-                <div className="flex items-center gap-2">
-                  Captain of{" "}
-                  <TeamDisplay team={entrant.team} alwaysDisplayLogo={true} />
-                </div>
-                {/* {`${entrant?.team.teamName}`} */}
-              </Link>
-            ) : (
-              <Link href={`/teams/${entrant?.team.linkName}`}>
+              <div className="flex items-center gap-2">
+                Captain of{" "}
                 <TeamDisplay team={entrant.team} alwaysDisplayLogo={true} />
-                {/* {`${entrant?.team.teamName}`} */}
-              </Link>
+              </div>
+            ) : (
+              <TeamDisplay team={entrant.team} alwaysDisplayLogo={true} />
             )}
           </p>
         </div>

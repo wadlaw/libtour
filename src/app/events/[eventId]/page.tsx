@@ -1,7 +1,9 @@
 import { api } from "~/trpc/server";
 import { auth } from "@clerk/nextjs/server";
-import LibMain, {
+import {
+  LibMainFixed,
   LibCardContainer,
+  LibCardNarrow,
   LibH1,
 } from "~/app/_components/lib-elements";
 import Results from "~/app/_components/results";
@@ -11,14 +13,16 @@ import EventEntrants, {
 } from "~/app/_components/event-entrants";
 
 import { ScrapeResults } from "~/app/_components/resultslookup";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "~/components/ui/accordion";
+// import {
+//   Accordion,
+//   AccordionContent,
+//   AccordionItem,
+//   AccordionTrigger,
+// } from "~/components/ui/accordion";
 import EnterWithdraw from "~/app/_components/entry-buttons";
 import TeamResultsForComp from "~/app/_components/team-results";
+import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { TabsContent } from "@radix-ui/react-tabs";
 
 export async function generateMetadata({
   params,
@@ -65,9 +69,29 @@ export default async function Event({
   const { sessionClaims } = auth();
   const comp = await api.comp.get({ comp: params.eventId });
 
+  const tabColumns = () => {
+    const cols = [];
+    if (!sessionClaims) return 1;
+    if (comp?.completed) cols.push("results");
+    if (!comp?.completed) {
+      cols.push("entries");
+      if (
+        comp?.open &&
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        (!!sessionClaims?.metadata?.captain ||
+          !!sessionClaims?.metadata?.entryPermission ||
+          !!sessionClaims?.metadata?.adminPermission)
+      ) {
+        cols.push("nonentries");
+      }
+    }
+    if (!!sessionClaims?.metadata?.adminPermission) cols.push("admin");
+    return cols.length;
+  };
+
   if (!comp) return;
   return (
-    <LibMain>
+    <LibMainFixed>
       <div className="flex flex-col items-center ">
         <LibH1>{comp.name}</LibH1>
         <div>Format: {comp.stableford ? "Stableford" : "Medal"}</div>
@@ -81,19 +105,6 @@ export default async function Event({
         </div>
       </div>
 
-      <Protect condition={() => !!sessionClaims?.metadata?.adminPermission}>
-        <div className="flex flex-col items-center ">
-          <Accordion className="px-2" type="single" collapsible>
-            <AccordionItem value="item-1">
-              <AccordionTrigger>Admin</AccordionTrigger>
-              <AccordionContent>
-                <ScrapeResults eventId={comp.igCompId} />
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
-      </Protect>
-
       {comp.open && (
         <Protect>
           <div className="mt-4 flex flex-col items-center ">
@@ -106,7 +117,84 @@ export default async function Event({
         </Protect>
       )}
 
-      {comp.completed ? (
+      {tabColumns() == 1 ? (
+        <LibCardContainer>
+          {comp.completed ? (
+            <>
+              <Results compId={comp.igCompId} stableford={comp.stableford} />
+              <TeamResultsForComp compId={comp.igCompId} />
+            </>
+          ) : (
+            <EventEntrants compId={comp.igCompId} isOpen={comp.open} />
+          )}
+        </LibCardContainer>
+      ) : (
+        <LibCardContainer>
+          <Tabs defaultValue={comp.completed ? "results" : "entries"}>
+            <TabsList
+              className={`mb-2 grid w-full ${["", "grid-cols-1", "grid-cols-2", "grid-cols-3"][tabColumns()]}`}
+            >
+              <TabsTrigger
+                value="entries"
+                className={`${comp.completed && "hidden"}`}
+              >
+                Entries
+              </TabsTrigger>
+              <TabsTrigger
+                value="nonentries"
+                // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+                className={`${comp.completed && "hidden"} ${!comp.open && "hidden"} ${sessionClaims?.metadata.adminPermission || sessionClaims?.metadata.captain || sessionClaims?.metadata.entryPermission ? "" : "hidden"}`}
+              >
+                Not Entered
+              </TabsTrigger>
+              <TabsTrigger
+                value="results"
+                className={`${!comp.completed && "hidden"}`}
+              >
+                Results
+              </TabsTrigger>
+              <TabsTrigger
+                value="admin"
+                className={`${!sessionClaims?.metadata.adminPermission && "hidden"}`}
+              >
+                Admin
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="entries">
+              <EventEntrants compId={comp.igCompId} isOpen={comp.open} />
+            </TabsContent>
+            <TabsContent value="nonentries">
+              <EventNonEntrants compId={comp.igCompId} isOpen={comp.open} />
+            </TabsContent>
+            <TabsContent value="results">
+              <div className="flex flex-col gap-2">
+                <Results compId={comp.igCompId} stableford={comp.stableford} />
+                <TeamResultsForComp compId={comp.igCompId} />
+              </div>
+            </TabsContent>
+            <TabsContent value="admin">
+              <LibCardNarrow title="Admin Panel">
+                <ScrapeResults eventId={comp.igCompId} />
+              </LibCardNarrow>
+            </TabsContent>
+          </Tabs>
+        </LibCardContainer>
+      )}
+
+      {/* <Protect condition={() => !!sessionClaims?.metadata?.adminPermission}>
+        <div className="flex flex-col items-center ">
+          <Accordion className="px-2" type="single" collapsible>
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Admin</AccordionTrigger>
+              <AccordionContent>
+                <ScrapeResults eventId={comp.igCompId} />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+      </Protect> */}
+
+      {/* {comp.completed ? (
         <LibCardContainer>
           <Results compId={comp.igCompId} stableford={comp.stableford} />
           <TeamResultsForComp compId={comp.igCompId} />
@@ -115,9 +203,9 @@ export default async function Event({
         <LibCardContainer>
           <EventEntrants compId={comp.igCompId} isOpen={comp.open} />
         </LibCardContainer>
-      )}
+      )} */}
 
-      <div className="flex  flex-col items-center ">
+      {/* <div className="flex  flex-col items-center ">
         <Protect
           condition={() =>
             !!sessionClaims?.metadata?.captain ||
@@ -138,7 +226,7 @@ export default async function Event({
             </Accordion>
           )}
         </Protect>
-      </div>
-    </LibMain>
+      </div> */}
+    </LibMainFixed>
   );
 }

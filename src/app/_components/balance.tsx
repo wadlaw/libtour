@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { api } from "~/trpc/react";
 import LibMoney from "./lib-money";
+import { Spinner } from "./lib-elements";
 
 export default function Balance() {
   const balance = api.account.myBalance.useQuery();
@@ -10,15 +11,11 @@ export default function Balance() {
     balance.isLoading ||
     (!balance.data?._sum.netAmount && balance.data?._sum.netAmount !== 0)
   )
-    return <span>Loading...</span>;
+    // return <span className="text-muted-foreground">..loading..</span>;
+    return <Spinner sidebar={true} />;
 
   return (
-    <li className={`mr-4 inline`}>
-      <BalanceDisplay
-        balance={balance.data._sum.netAmount}
-        negativeRed={true}
-      />
-    </li>
+    <BalanceDisplay balance={balance.data._sum.netAmount} negativeRed={true} />
   );
 }
 

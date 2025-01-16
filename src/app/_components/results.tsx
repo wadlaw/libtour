@@ -68,18 +68,22 @@ export default async function Results({
         ) : null}
         <TableHeader>
           <TableRow>
-            <TableHead className="px-1 sm:px-2">Pos</TableHead>
-            <TableHead className="hidden px-1 sm:px-2 lg:table-cell">
+            <TableHead className="@2xl/libcard:px-2 px-1">Pos</TableHead>
+            <TableHead className="@2xl/libcard:px-2 @5xl/libcard:table-cell hidden px-1">
               IG Position
             </TableHead>
-            <TableHead className="px-1 sm:px-2">Name</TableHead>
-            <TableHead className="px-1 sm:px-2">Team</TableHead>
-            <TableHead className="hidden px-1 text-center sm:px-2 md:table-cell">
+            <TableHead className="@2xl/libcard:px-2 px-1">Name</TableHead>
+            <TableHead className="@2xl/libcard:px-2 px-1">Team</TableHead>
+            <TableHead className="@2xl/libcard:px-2 @3xl/libcard:table-cell hidden px-1 text-center">
               Team Score
             </TableHead>
-            <TableHead className="px-1 text-center sm:px-2">Score</TableHead>
-            <TableHead className="hidden px-1 text-center sm:table-cell sm:px-2"></TableHead>
-            <TableHead className="px-1 text-right sm:px-2 ">£</TableHead>
+            <TableHead className="@2xl/libcard:px-2 px-1 text-center">
+              Score
+            </TableHead>
+            <TableHead className="@2xl/libcard:table-cell @2xl/libcard:px-2 hidden px-1 text-center"></TableHead>
+            <TableHead className="@2xl/libcard:px-2 px-1 text-right ">
+              £
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -87,7 +91,7 @@ export default async function Results({
             <Collapsible key={result.position} asChild>
               <Fragment key={result.position}>
                 <TableRow key={result.position}>
-                  <TableCell className="px-1 sm:px-2">
+                  <TableCell className="@2xl/libcard:px-2 px-1">
                     <CollapsibleTrigger asChild>
                       <span
                         className={`${result.scorecard?.entrantId ? "hover:cursor-pointer" : ""}`}
@@ -96,7 +100,7 @@ export default async function Results({
                       </span>
                     </CollapsibleTrigger>
                   </TableCell>
-                  <TableCell className="hidden px-1 sm:px-2 lg:table-cell">
+                  <TableCell className="@2xl/libcard:px-2 @5xl/libcard:table-cell hidden px-1">
                     <CollapsibleTrigger asChild>
                       <span
                         className={`${result.scorecard?.entrantId ? "hover:cursor-pointer" : ""}`}
@@ -105,7 +109,7 @@ export default async function Results({
                       </span>
                     </CollapsibleTrigger>
                   </TableCell>
-                  <TableCell className="px-1 font-medium sm:px-2">
+                  <TableCell className="@2xl/libcard:px-2 px-1 font-medium">
                     <EntrantDisplay
                       entrant={{
                         id: result.entrantId,
@@ -116,7 +120,7 @@ export default async function Results({
                       alwaysDisplayLogo={true}
                     />
                   </TableCell>
-                  <TableCell className="px-1 sm:px-2">
+                  <TableCell className="@2xl/libcard:px-2 px-1">
                     <TeamDisplay
                       team={ensure(
                         teams.filter(
@@ -127,7 +131,7 @@ export default async function Results({
                       iconOnlyWhenSmall={true}
                     />
                   </TableCell>
-                  <TableCell className="hidden px-1 text-center sm:px-2 md:table-cell">
+                  <TableCell className="@2xl/libcard:px-2 @3xl/libcard:table-cell hidden px-1 text-center">
                     <CollapsibleTrigger asChild>
                       <span
                         className={`${result.scorecard?.entrantId ? "hover:cursor-pointer" : ""}`}
@@ -136,7 +140,7 @@ export default async function Results({
                       </span>
                     </CollapsibleTrigger>
                   </TableCell>
-                  <TableCell className="px-1 text-center sm:px-2">
+                  <TableCell className="@2xl/libcard:px-2 px-1 text-center">
                     <CollapsibleTrigger asChild>
                       <span
                         className={`${result.scorecard?.entrantId && "hover:cursor-pointer"}`}
@@ -156,7 +160,7 @@ export default async function Results({
                       </span>
                     </CollapsibleTrigger>
                   </TableCell>
-                  <TableCell className="hidden px-1 text-center sm:table-cell sm:px-2">
+                  <TableCell className="@2xl/libcard:table-cell @2xl/libcard:px-2 hidden px-1 text-center">
                     <CollapsibleTrigger asChild>
                       <span
                         className={`${result.scorecard?.entrantId && "hover:cursor-pointer"}`}
@@ -173,7 +177,7 @@ export default async function Results({
                       </span>
                     </CollapsibleTrigger>
                   </TableCell>
-                  <TableCell className="px-1 text-right sm:px-2">
+                  <TableCell className="@2xl/libcard:px-2 px-1 text-right">
                     <CollapsibleTrigger asChild>
                       <LibMoney
                         hideZeros={true}
@@ -186,7 +190,7 @@ export default async function Results({
                   </TableCell>
                 </TableRow>
                 <CollapsibleContent asChild>
-                  <tr className=" bg-muted px-1 sm:px-2">
+                  <tr className=" @2xl/libcard:px-2 bg-muted px-1">
                     <ScorecardDisplay
                       colSpan={8}
                       scorecard={result.scorecard}
@@ -213,47 +217,51 @@ export async function Winners({ compId }: ResultsProps) {
       {/* <TableCaption>Event Results</TableCaption> */}
       <TableHeader>
         <TableRow>
-          <TableHead className="px-1 sm:px-2">Pos</TableHead>
-          <TableHead className="hidden px-1 sm:px-2 lg:table-cell">
+          <TableHead className="@2xl/libcard:px-2 px-1">Pos</TableHead>
+          <TableHead className="@2xl/libcard:px-2 @5xl/libcard:table-cell hidden px-1">
             IG Position
           </TableHead>
-          <TableHead className="px-1 sm:px-2">Name</TableHead>
-          <TableHead className="px-1 sm:px-2">Team</TableHead>
-          <TableHead className="hidden px-1 text-center sm:px-2 md:table-cell">
+          <TableHead className="@2xl/libcard:px-2 px-1">Name</TableHead>
+          <TableHead className="@2xl/libcard:px-2 px-1">Team</TableHead>
+          <TableHead className="@2xl/libcard:px-2 @3xl/libcard:table-cell hidden px-1 text-center">
             Team Score
           </TableHead>
-          <TableHead className="px-1 text-center sm:px-2">Score</TableHead>
-          <TableHead className="px-1 text-right sm:px-2">£</TableHead>
+          <TableHead className="@2xl/libcard:px-2 px-1 text-center">
+            Score
+          </TableHead>
+          <TableHead className="@2xl/libcard:px-2 px-1 text-right">£</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {compResults.map((result) => (
           <TableRow key={result.position}>
-            <TableCell className="px-1 sm:px-2">{result.position}</TableCell>
-            <TableCell className="hidden px-1 sm:px-2 lg:block">
+            <TableCell className="@2xl/libcard:px-2 px-1">
+              {result.position}
+            </TableCell>
+            <TableCell className="@2xl/libcard:px-2 @5xl/libcard:block hidden px-1">
               {result.igPosition}
             </TableCell>
-            <TableCell className="px-1 font-medium sm:px-2">
+            <TableCell className="@2xl/libcard:px-2 px-1 font-medium">
               {/* <span className="mr-1 sm:mr-2">{result.entrant.name}</span> */}
               <EntrantDisplay
                 entrant={{ id: result.entrantId, name: result.entrant.name }}
               />
               {result.wildcard ? <Badge>WC</Badge> : null}
             </TableCell>
-            <TableCell className="px-1 sm:px-2">
+            <TableCell className="@2xl/libcard:px-2 px-1">
               <TeamDisplay
                 team={ensure(
                   teams.filter((team) => team.id == result.entrant.teamId)[0],
                 )}
               ></TeamDisplay>
             </TableCell>
-            <TableCell className="hidden px-1 text-center sm:px-2 md:table-cell">
+            <TableCell className="@2xl/libcard:px-2 @3xl/libcard:table-cell hidden px-1 text-center">
               {result.teamScore ? result.teamScore : "NR"}
             </TableCell>
-            <TableCell className="px-1 text-center sm:px-2">
+            <TableCell className="@2xl/libcard:px-2 px-1 text-center">
               {result.score ? result.score : "NR"}
             </TableCell>
-            <TableCell className="px-1 text-right sm:px-2">
+            <TableCell className="@2xl/libcard:px-2 px-1 text-right">
               <LibMoney
                 hideZeros={true}
                 amountInPence={result.transactions.reduce(

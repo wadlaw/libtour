@@ -5,7 +5,7 @@ import LibMain, {
 } from "~/app/_components/lib-elements";
 
 export const metadata = {
-  title: "Libtour - Events",
+  title: "Libtour - Teams",
   description: "A Summer-long series of events at Redlibbets",
 };
 

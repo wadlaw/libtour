@@ -48,26 +48,31 @@ export function ScorecardDisplay({
   if (!scorecard) return null;
   return (
     <Fragment>
-      <TableCell colSpan={colSpan} className="px-1 sm:px-2 lg:px-4">
+      <TableCell
+        colSpan={colSpan}
+        className="@2xl/libcard:px-2 @5xl/libcard:px-4 px-1"
+      >
         <div
-          className={`flex w-full flex-wrap justify-between gap-6 md:flex-nowrap ${!!formatForSplitView && "lg:flex-wrap"}`}
+          className={`@3xl/libcard:flex-nowrap flex w-full flex-wrap justify-between gap-6 ${!!formatForSplitView && "lg:flex-wrap"}`}
         >
           {/* Front 9 */}
           <div className="flex w-full flex-wrap gap-1">
             <div className="grid w-full grid-cols-11 place-content-center justify-center gap-1 text-slate-500">
               {/* Hole Numbering */}
 
-              <div className="text-[0.65rem] sm:text-xs">Hole</div>
+              <div className="@2xl/libcard:text-xs text-[0.65rem]">Hole</div>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, "Out"].map((hole) => (
                 <div key={hole} className="flex justify-center">
-                  <div className="text-[0.65rem] sm:text-xs">{hole}</div>
+                  <div className="@2xl/libcard:text-xs text-[0.65rem]">
+                    {hole}
+                  </div>
                 </div>
               ))}
             </div>
             {/* Strokes row */}
             <div className="grid w-full grid-cols-11 place-content-center justify-center gap-1">
               <div className="flex flex-col justify-center">
-                <div className="text-[0.65rem] text-slate-500 sm:text-xs">
+                <div className="@2xl/libcard:text-xs text-[0.65rem] text-slate-500">
                   Score
                 </div>
               </div>
@@ -100,7 +105,7 @@ export function ScorecardDisplay({
             {!strokesOnly && (
               <div className="grid w-full grid-cols-11 place-content-center justify-center gap-1">
                 <div className="flex flex-col justify-center">
-                  <div className="text-[0.65rem] text-slate-500 sm:text-xs">
+                  <div className="@2xl/libcard:text-xs text-[0.65rem] text-slate-500">
                     {scorecard.stableford ? "Pts" : "Net"}
                   </div>
                 </div>
@@ -144,29 +149,31 @@ export function ScorecardDisplay({
           {/* Back 9 */}
           <div className="flex w-full flex-wrap gap-1">
             <div
-              className={`grid w-full grid-cols-11 place-content-center justify-center gap-1 text-slate-500 md:grid-cols-10 ${!!formatForSplitView && "lg:grid-cols-11"}`}
+              className={`@3xl/libcard:grid-cols-10 grid w-full grid-cols-11 place-content-center justify-center gap-1 text-slate-500 ${!!formatForSplitView && "@5xl/libcard:grid-cols-11"}`}
             >
               {/* Hole numbering */}
               <div
-                className={`text-[0.65rem] sm:text-xs md:hidden ${!!formatForSplitView && "lg:block"}`}
+                className={`@2xl/libcard:text-xs @3xl/libcard:hidden text-[0.65rem] ${!!formatForSplitView && "@5xl/libcard:block"}`}
               >
                 Hole
               </div>
               {[10, 11, 12, 13, 14, 15, 16, 17, 18, "In"].map((hole) => (
                 <div key={hole} className="flex justify-center">
-                  <div className="text-[0.65rem] sm:text-xs">{hole}</div>
+                  <div className="@2xl/libcard:text-xs text-[0.65rem]">
+                    {hole}
+                  </div>
                 </div>
               ))}
             </div>
             <div
-              className={`grid w-full grid-cols-11 place-content-center justify-center gap-1 md:grid-cols-10 ${!!formatForSplitView && "lg:grid-cols-11"}`}
+              className={`@3xl/libcard:grid-cols-10 grid w-full grid-cols-11 place-content-center justify-center gap-1 ${!!formatForSplitView && "@5xl/libcard:grid-cols-11"}`}
             >
               {/* Strokes row */}
               <div
-                className={`flex flex-col justify-center md:hidden ${!!formatForSplitView && "lg:flex"}`}
+                className={`@3xl/libcard:hidden flex flex-col justify-center ${!!formatForSplitView && "@5xl/libcard:flex"}`}
               >
                 <div
-                  className={`text-[0.65rem] text-slate-500 sm:text-xs md:hidden ${!!formatForSplitView && "lg:block"}`}
+                  className={`@2xl/libcard:text-xs @3xl/libcard:hidden text-[0.65rem] text-slate-500 ${!!formatForSplitView && "@5xl/libcard:block"}`}
                 >
                   Score
                 </div>
@@ -202,13 +209,13 @@ export function ScorecardDisplay({
             {/* Derived scores row (net/points etc) */}
             {!strokesOnly && (
               <div
-                className={`grid w-full grid-cols-11 place-content-center justify-center gap-1 md:grid-cols-10 ${!!formatForSplitView && "lg:grid-cols-11"}`}
+                className={`@3xl/libcard:grid-cols-10 grid w-full grid-cols-11 place-content-center justify-center gap-1 ${!!formatForSplitView && "@5xl/libcard:grid-cols-11"}`}
               >
                 <div
-                  className={`flex flex-col justify-center md:hidden ${!!formatForSplitView && "lg:flex"}`}
+                  className={`@3xl/libcard:hidden flex flex-col justify-center ${!!formatForSplitView && "@5xl/libcard:flex"}`}
                 >
                   <div
-                    className={`text-[0.65rem] text-slate-500 sm:text-xs md:hidden ${!!formatForSplitView && "lg:block"}`}
+                    className={`@2xl/libcard:text-xs @3xl/libcard:hidden text-[0.65rem] text-slate-500 ${!!formatForSplitView && "@5xl/libcard:block"}`}
                   >
                     {scorecard.stableford ? "Pts" : "Net"}
                   </div>
