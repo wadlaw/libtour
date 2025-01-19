@@ -12,6 +12,8 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import { Button } from "~/components/ui/button";
+import { Skeleton } from "~/components/ui/skeleton";
 
 import Link from "next/link";
 import { TransactionPopover } from "./account-transactions";
@@ -19,8 +21,8 @@ import { EntrantDisplay, TeamDisplay } from "./lib-elements";
 
 export default function Balances() {
   const entrants = api.account.entrantsWithTransactions.useQuery();
-  if (!entrants.data || entrants.isLoading)
-    return <div className="flex justify-center">Loading...</div>;
+  // if (true) return <BalancesSkeleton />;
+  if (!entrants.data || entrants.isLoading) return <BalancesSkeleton />;
 
   return (
     <Table>
@@ -75,6 +77,54 @@ export default function Balances() {
                   negativeRed={true}
                 />
               </Link>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+
+export function BalancesSkeleton() {
+  return (
+    <Table>
+      <TableCaption>Account Balances</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="px-1 @2xl/libcard:px-2">Name</TableHead>
+          <TableHead className="hidden px-1 @2xl/libcard:table-cell @2xl/libcard:px-2">
+            Team
+          </TableHead>
+          <TableHead className=" px-1 @2xl/libcard:px-2">Credit</TableHead>
+          <TableHead className=" px-1 @2xl/libcard:px-2">Debit</TableHead>
+          <TableHead className="px-1 text-right @2xl/libcard:px-2">
+            Balance
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {Array.from(Array(40).keys()).map((entrant) => (
+          <TableRow key={entrant}>
+            <TableCell className=" px-1 @2xl/libcard:px-2">
+              <Skeleton className="h-4 w-36 " />
+              {/* <Link href={`/accounts/${entrant.id}`}>{entrant.name}</Link> */}
+            </TableCell>
+            <TableCell className="hidden px-1 @2xl/libcard:table-cell @2xl/libcard:px-2">
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-8 w-8 rounded-full" />
+                <Skeleton className="hidden h-4 w-32 sm:block" />
+              </div>
+            </TableCell>
+            <TableCell className=" px-1 @2xl/libcard:px-2">
+              <Button>Credit</Button>
+            </TableCell>
+            <TableCell className=" px-1 @2xl/libcard:px-2">
+              <Button variant="destructive">Debit</Button>
+            </TableCell>
+            <TableCell className="px-1 text-right font-medium @2xl/libcard:px-2 ">
+              <div className="flex w-full justify-end">
+                <Skeleton className="h-4 w-14 " />
+              </div>
             </TableCell>
           </TableRow>
         ))}
