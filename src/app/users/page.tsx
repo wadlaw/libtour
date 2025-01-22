@@ -35,28 +35,30 @@ export default async function Page() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="px-1 sm:px-2">Entrant</TableHead>
-                <TableHead className="px-1 sm:px-2">Team</TableHead>
-                <TableHead className="px-1  sm:px-2">Mapped User</TableHead>
+                <TableHead className="px-1 @2xl/main:px-2">Entrant</TableHead>
+                <TableHead className="px-1 @2xl/main:px-2">Team</TableHead>
+                <TableHead className="px-1  @2xl/main:px-2">
+                  Mapped User
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {entrants.map((entrant) => {
                 return (
                   <TableRow key={entrant.id}>
-                    <TableCell className="px-1 sm:px-2">
+                    <TableCell className="px-1 @2xl/main:px-2">
                       <EntrantDisplay
                         entrant={{ id: entrant.id, name: entrant.name }}
                       />
                     </TableCell>
-                    <TableCell className="px-1 sm:px-2">
+                    <TableCell className="px-1 @2xl/main:px-2">
                       <TeamDisplay
                         team={entrant.team}
                         iconOnlyWhenSmall={true}
                         alwaysDisplayLogo={true}
                       />
                     </TableCell>
-                    <TableCell className="px-1  sm:px-2">
+                    <TableCell className="px-1  @2xl/main:px-2">
                       <UserSelect
                         users={users.map((user) => {
                           return {
