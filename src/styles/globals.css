@@ -178,6 +178,10 @@
   }
 }
 
-.cl-organizationSwitcherPopoverRootBox {
-  pointer-events: auto;
+.title {
+  view-transition-name:title-move
+}
+
+.libcard {
+  view-transition-name:libcard-move
 }

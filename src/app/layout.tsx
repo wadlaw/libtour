@@ -2,7 +2,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
-
+import { ViewTransitions } from "next-view-transitions";
 import { TRPCReactProvider } from "~/trpc/react";
 import { PageHeader } from "~/components/PageHeader";
 import { Separator } from "~/components/ui/separator";
@@ -46,34 +46,36 @@ export default function RootLayout({
         },
       }}
     >
-      <html lang="en" suppressHydrationWarning>
-        <CSPostHogProvider>
-          <body className={`font-sans ${inter.variable}`}>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <TRPCReactProvider>
-                <SidebarProvider>
-                  <AppSidebar />
+      <ViewTransitions>
+        <html lang="en" suppressHydrationWarning>
+          <CSPostHogProvider>
+            <body className={`font-sans ${inter.variable}`}>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <TRPCReactProvider>
+                  <SidebarProvider>
+                    <AppSidebar />
 
-                  <SidebarInset>
-                    <PostHogPageView />
-                    {/* <div className="w-full"> */}
-                    <PageHeader />
-                    <Separator />
-                    {children}
-                    <Toaster />
-                    {/* </div> */}
-                  </SidebarInset>
-                </SidebarProvider>
-              </TRPCReactProvider>
-            </ThemeProvider>
-          </body>
-        </CSPostHogProvider>
-      </html>
+                    <SidebarInset>
+                      <PostHogPageView />
+                      {/* <div className="w-full"> */}
+                      <PageHeader />
+                      <Separator />
+                      {children}
+                      <Toaster />
+                      {/* </div> */}
+                    </SidebarInset>
+                  </SidebarProvider>
+                </TRPCReactProvider>
+              </ThemeProvider>
+            </body>
+          </CSPostHogProvider>
+        </html>
+      </ViewTransitions>
     </ClerkProvider>
   );
 }

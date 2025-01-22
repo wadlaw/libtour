@@ -6,7 +6,7 @@ import LibMain, {
 } from "~/app/_components/lib-elements";
 import { EntrantTransactions } from "~/app/_components/transactions";
 import { BalanceDisplay } from "~/app/_components/balance";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { TransactionPopover } from "~/app/_components/account-transactions";
 
 export async function generateMetadata({

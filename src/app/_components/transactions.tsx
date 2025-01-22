@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import LibMoney from "./lib-money";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { DeleteTransactionPopover } from "./account-transactions";
 
 export default function Transactions() {

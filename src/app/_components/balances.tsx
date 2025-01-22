@@ -15,7 +15,7 @@ import {
 import { Button } from "~/components/ui/button";
 import { Skeleton } from "~/components/ui/skeleton";
 
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { TransactionPopover } from "./account-transactions";
 import { EntrantDisplay, TeamDisplay } from "./lib-elements";
 

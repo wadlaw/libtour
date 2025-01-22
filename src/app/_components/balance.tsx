@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { api } from "~/trpc/react";
 import LibMoney from "./lib-money";
 import { Spinner } from "./lib-elements";

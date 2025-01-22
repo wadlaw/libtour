@@ -8,7 +8,7 @@ import {
 } from "~/components/ui/table";
 import { api } from "~/trpc/server";
 import LibMoney from "../lib-money";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { EntrantDisplay, LibCardNarrow, TeamDisplay } from "../lib-elements";
 import { Skeleton } from "~/components/ui/skeleton";
 

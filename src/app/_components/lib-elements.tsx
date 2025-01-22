@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 // import IdentityIcon from "./identicons";
 import { Badge } from "~/components/ui/badge";
@@ -26,7 +26,7 @@ export function LibMainFixed(props: { children: React.ReactNode }) {
 export function LibH1(props: { children: React.ReactNode }) {
   return (
     // <h1 className="text-[3rem] font-extrabold tracking-tight text-[hsl(280,100%,70%)]">
-    <h1 className="bg-gradient-to-r from-blue-700  to-red-700 bg-clip-text text-center  text-[3rem] font-extrabold leading-tight tracking-tight text-transparent">
+    <h1 className="title bg-gradient-to-r from-blue-700  to-red-700 bg-clip-text text-center  text-[3rem] font-extrabold leading-tight tracking-tight text-transparent">
       {props.children}
     </h1>
   );
@@ -35,7 +35,7 @@ export function LibH1(props: { children: React.ReactNode }) {
 export function LibSadH1(props: { children: React.ReactNode }) {
   return (
     // <h1 className="text-[3rem] font-extrabold tracking-tight text-[hsl(280,100%,70%)]">
-    <h1 className="bg-gradient-to-r from-[#1e130c] to-[#9a8478] bg-clip-text text-center  text-[3rem] font-extrabold leading-tight tracking-tight text-transparent">
+    <h1 className="title bg-gradient-to-r from-[#1e130c] to-[#9a8478] bg-clip-text text-center  text-[3rem] font-extrabold leading-tight tracking-tight text-transparent">
       {props.children}
     </h1>
   );
@@ -318,7 +318,7 @@ export function TeamScoreDisplay({
 
 export function LibCard({ title, url, children }: LibCardProps) {
   return (
-    <Card className="@container/libcard">
+    <Card className="libcard @container/libcard">
       <CardHeader>
         {url ? (
           <Link href={url}>
@@ -335,7 +335,7 @@ export function LibCard({ title, url, children }: LibCardProps) {
 
 export function LibCardNarrow({ title, url, children }: LibCardProps) {
   return (
-    <Card className="@container/libcard">
+    <Card className="libcard @container/libcard">
       <CardHeader className="px-2 @2xl/libcard:px-6">
         {url ? (
           <Link href={url}>

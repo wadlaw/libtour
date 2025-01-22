@@ -4,7 +4,7 @@ import LibMain, {
   LibH1,
   TeamDisplay,
 } from "~/app/_components/lib-elements";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 
 import {

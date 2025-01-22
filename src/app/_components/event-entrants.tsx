@@ -16,7 +16,7 @@ import { EnterSomeoneButton } from "./enter-button";
 import { WithdrawSomeoneButton } from "./withdraw-button";
 import { EntrantDisplay, LibCardNarrow, TeamDisplay } from "./lib-elements";
 import { ensure } from "~/lib/utils";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 type EventEntrantsProps = {
   compId: string;
