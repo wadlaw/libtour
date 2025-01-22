@@ -2,7 +2,6 @@ import { api } from "~/trpc/server";
 import {
   UserButton,
   SignInButton,
-  SignOutButton,
   SignedIn,
   SignedOut,
   currentUser,
@@ -34,7 +33,6 @@ import {
   SidebarMenuSub,
   SidebarHeader,
   SidebarSeparator,
-  SidebarFooter,
 } from "~/components/ui/sidebar";
 import { MenuItem, MenuSubItem, MyAccountButton } from "./app-sidebar-button";
 import { Protect } from "@clerk/nextjs";
