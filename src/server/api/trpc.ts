@@ -85,11 +85,12 @@ const isAuthed = t.middleware(async ({ next, ctx }) => {
   if (!ctx.auth.userId) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
+ 
   const user = await ctx.db.entrant.findUniqueOrThrow({ 
     where: { userId: ctx.auth.userId },
     include: { team: true}
   })
-  
+
   return next({
     ctx: {
       auth: ctx.auth,

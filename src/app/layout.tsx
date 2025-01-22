@@ -8,6 +8,8 @@ import { PageHeader } from "~/components/PageHeader";
 import { Separator } from "~/components/ui/separator";
 import { Toaster } from "~/components/ui/toaster";
 import { CSPostHogProvider, ThemeProvider } from "./providers";
+import { SidebarProvider, SidebarInset } from "~/components/ui/sidebar";
+import { AppSidebar } from "~/components/app-sidebar";
 import dynamic from "next/dynamic";
 
 const inter = Inter({
@@ -53,12 +55,20 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <PostHogPageView />
               <TRPCReactProvider>
-                <PageHeader />
-                <Separator />
-                {children}
-                <Toaster />
+                <SidebarProvider>
+                  <AppSidebar />
+
+                  <SidebarInset>
+                    <PostHogPageView />
+                    {/* <div className="w-full"> */}
+                    <PageHeader />
+                    <Separator />
+                    {children}
+                    <Toaster />
+                    {/* </div> */}
+                  </SidebarInset>
+                </SidebarProvider>
               </TRPCReactProvider>
             </ThemeProvider>
           </body>

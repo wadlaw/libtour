@@ -34,9 +34,11 @@ export default async function Page() {
         <LibCardNarrow title="User/Entrant Mapping">
           <Table>
             <TableHeader>
-              <TableHead className="px-1 sm:px-2">Entrant</TableHead>
-              <TableHead className="px-1 sm:px-2">Team</TableHead>
-              <TableHead className="px-1  sm:px-2">Mapped User</TableHead>
+              <TableRow>
+                <TableHead className="px-1 sm:px-2">Entrant</TableHead>
+                <TableHead className="px-1 sm:px-2">Team</TableHead>
+                <TableHead className="px-1  sm:px-2">Mapped User</TableHead>
+              </TableRow>
             </TableHeader>
             <TableBody>
               {entrants.map((entrant) => {

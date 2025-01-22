@@ -65,8 +65,8 @@ export async function BestRounds({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="hidden sm:table-cell"></TableHead>
-            <TableHead className="text-left sm:text-center">
+            <TableHead className="@md/libcard:table-cell hidden"></TableHead>
+            <TableHead className="@2xl/libcard:text-center text-left">
               {format === "Stableford"
                 ? "Points "
                 : format === "Medal"
@@ -76,19 +76,19 @@ export async function BestRounds({
 
             <TableHead>Name</TableHead>
             <TableHead>Comp</TableHead>
-            <TableHead className="hidden sm:table-cell lg:hidden">
+            <TableHead className="@2xl/libcard:table-cell hidden">
               Date
             </TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody className="px-1 sm:px-2">
+        <TableBody className="@2xl/libcard:px-2 px-1">
           {rounds.map((round) => {
             return (
               <Collapsible key={round.id} asChild>
                 <Fragment key={round.id}>
                   <TableRow key={round.id}>
                     <CollapsibleTrigger asChild>
-                      <TableCell className="hidden text-left hover:cursor-pointer sm:table-cell">
+                      <TableCell className="@md/libcard:table-cell hidden text-left hover:cursor-pointer">
                         {format === "Stableford" ? (
                           <ScoreDisplay
                             score={round.points}
@@ -109,7 +109,7 @@ export async function BestRounds({
                       </TableCell>
                     </CollapsibleTrigger>
                     <CollapsibleTrigger asChild>
-                      <TableCell className="text-left hover:cursor-pointer sm:text-center">
+                      <TableCell className="@2xl/libcard:text-center text-left hover:cursor-pointer">
                         {format === "Stableford" ? (
                           <ScoreDisplay
                             score={round.points}
@@ -151,7 +151,7 @@ export async function BestRounds({
                       </Link>
                     </TableCell>
                     <CollapsibleTrigger asChild>
-                      <TableCell className="hidden hover:cursor-pointer sm:table-cell lg:hidden">
+                      <TableCell className="@2xl/libcard:table-cell hidden hover:cursor-pointer">
                         {new Date(
                           round.compEntrant.comp.date,
                         ).toLocaleDateString("en-GB", {
@@ -163,7 +163,7 @@ export async function BestRounds({
                     </CollapsibleTrigger>
                   </TableRow>
                   <CollapsibleContent asChild>
-                    <tr className="bg-muted px-1 sm:px-2">
+                    <tr className="@2xl/libcard:px-2 bg-muted px-1">
                       <ScorecardDisplay
                         colSpan={5}
                         formatForSplitView={true}
@@ -197,7 +197,7 @@ function NoScores({ format, numberOfRounds }: BestRoundsProps) {
             </TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Comp</TableHead>
-            <TableHead className="hidden sm:table-cell lg:hidden">
+            <TableHead className="@3xl/libcard:table-cell hidden">
               Date
             </TableHead>
           </TableRow>

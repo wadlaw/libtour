@@ -1,7 +1,10 @@
 import { api } from "~/trpc/server";
 import Image from "next/image";
 import { TeamEntrants } from "~/app/_components/team-entrants";
-import LibMain, { LibH1 } from "~/app/_components/lib-elements";
+import LibMain, {
+  LibH1,
+  LibCardContainer,
+} from "~/app/_components/lib-elements";
 import { TeamResultsByTeam } from "~/app/_components/team-results";
 
 export async function generateMetadata({
@@ -42,10 +45,11 @@ export default async function Team({
         <LibH1>{team.teamName}</LibH1>
         <p>{`${teamPoints} point${teamPoints != 1 ? "s" : ""}`}</p>
       </div>
-      <div className="mx-1 my-4 grid grid-cols-1 gap-4 sm:mx-2 xl:mx-0">
+
+      <LibCardContainer>
         <TeamEntrants teamId={team.id} />
         <TeamResultsByTeam team={team.id} />
-      </div>
+      </LibCardContainer>
     </LibMain>
   );
 }

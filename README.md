@@ -1,8 +1,8 @@
-# LIB Tour 2024
+# Libtour 2024
 
 ## https://libtour.net
 
-LIB Tour is a fun competition involving 18 individual competitions (listed below) and an overall team event. Prizes can be won as an individual or as a team at each event and at the end of the season for the top 3 teams.
+Libtour is a fun competition involving 18 individual competitions (listed below) and an overall team event. Prizes can be won as an individual or as a team at each event and at the end of the season for the top 3 teams.
 
 ## Summary of Changes for 2024
 
@@ -13,7 +13,7 @@ LIB Tour is a fun competition involving 18 individual competitions (listed below
 
 # Teams
 
-Once you are entered into the LIB Tour, you will be assigned to a team. Team selection is via a live draft where team captains will take turns to pick a player from the available pool of players. The order in which captains pick will be the reverse order of the previous year's final team table (ie the team finishing last will get first pick)
+Once you are entered into the Libtour, you will be assigned to a team. Team selection is via a live draft where team captains will take turns to pick a player from the available pool of players. The order in which captains pick will be the reverse order of the previous year's final team table (ie the team finishing last will get first pick)
 There are currently 8 teams:
 
 - Balls Deep
@@ -29,7 +29,7 @@ There are currently 8 teams:
 
 **There is a £20 entrance fee to be part of the LIB Tour**. This money is used to cover the end of season team prizes.
 
-> LIB Tour events are closely tied to official club competitions. Once you are a member of the LIB Tour, if you enter a club competition that is part of the LIB Tour, you are also entering the LIB Tour event for that competition. Correspondingly, to enter the LIB Tour event, you will need to enter the club competition.
+> Libtour events are closely tied to official club competitions. Once you are a member of the Libtour, if you enter a club competition that is part of the Libtour, you are also entering the Libtour event for that competition. Correspondingly, to enter the Libtour event, you will need to enter the club competition.
 
 **The entry fee is £5 for each individual player playing in the event**. Please ensure this is paid before the start of the day's competition. Non-payers will be tracked down/harassed/publicly shamed until payment is received.
 
@@ -45,7 +45,7 @@ All entry fees are paid out as prizes. The prize structure has been tweaked for 
 
 #### End of season team prize
 
-The entrance fees paid by all LIB Tour members will be put forward towards the end of season team prizes. This gives us a **team prize pot of £800**. This will be split as follows:
+The entrance fees paid by all Libtour members will be put forward towards the end of season team prizes. This gives us a **team prize pot of £800**. This will be split as follows:
 
 - 1st Place Team wins **£500**
 - 2nd Place Team wins **£200**
@@ -140,7 +140,7 @@ These points are totalled over the season and the three teams with most points a
 
 # Events
 
-LIB Tour 2024 will be held over the following events:
+Libtour 2024 will be held over the following events:
 
 | Event                         | Date       | Format     | IG Code |
 | :---------------------------- | :--------- | :--------- | :------ |

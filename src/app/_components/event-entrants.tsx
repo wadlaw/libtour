@@ -50,10 +50,10 @@ export default async function EventEntrants({
         {/* <TableCaption>Event Entrants</TableCaption> */}
         <TableHeader>
           <TableRow>
-            <TableHead className="px-1 sm:px-2">Name</TableHead>
+            <TableHead className="px-1 @2xl/libcard:px-2">Name</TableHead>
             {/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */}
             <TableHead
-              className={`${(sessionClaims?.metadata.captain || sessionClaims?.metadata.entryPermission) && "hidden"} px-2 sm:table-cell sm:px-4`}
+              className={`${(sessionClaims?.metadata.captain || sessionClaims?.metadata.entryPermission) && "hidden"} px-2 @2xl/libcard:table-cell @2xl/libcard:px-4`}
             >
               Team
             </TableHead>
@@ -65,7 +65,9 @@ export default async function EventEntrants({
               }
             >
               {isOpen ? (
-                <TableHead className="px-1 sm:px-2">Wildcard</TableHead>
+                <TableHead className="px-1 @2xl/libcard:px-2">
+                  Wildcard
+                </TableHead>
               ) : null}
             </Protect>
             <Protect
@@ -75,7 +77,9 @@ export default async function EventEntrants({
               }
             >
               {isOpen ? (
-                <TableHead className="px-1 sm:px-2">Withdraw?</TableHead>
+                <TableHead className="px-1 @2xl/libcard:px-2">
+                  Withdraw?
+                </TableHead>
               ) : null}
             </Protect>
           </TableRow>
@@ -83,7 +87,7 @@ export default async function EventEntrants({
         <TableBody>
           {entrants.map((entrant) => (
             <TableRow key={entrant.entrantId}>
-              <TableCell className="px-1 font-medium sm:px-2">
+              <TableCell className="px-1 font-medium @2xl/libcard:px-2">
                 <EntrantDisplay
                   entrant={{
                     id: entrant.entrantId,
@@ -98,7 +102,7 @@ export default async function EventEntrants({
               </TableCell>
               {/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */}
               <TableCell
-                className={`${(sessionClaims?.metadata.captain || sessionClaims?.metadata.entryPermission) && "hidden"} px-1 sm:table-cell sm:px-2`}
+                className={`${(sessionClaims?.metadata.captain || sessionClaims?.metadata.entryPermission) && "hidden"} px-1 @2xl/libcard:table-cell @2xl/libcard:px-2`}
               >
                 {/* eslint-enable @typescript-eslint/prefer-nullish-coalescing */}
                 <TeamDisplay
@@ -117,7 +121,7 @@ export default async function EventEntrants({
                 }
               >
                 {isOpen ? (
-                  <TableCell className="px-1 sm:px-2">
+                  <TableCell className="px-1 @2xl/libcard:px-2">
                     <Protect
                       condition={() =>
                         (!!sessionClaims?.metadata?.captain &&
@@ -142,7 +146,7 @@ export default async function EventEntrants({
                 }
               >
                 {isOpen ? (
-                  <TableCell className="px-1 sm:px-2">
+                  <TableCell className="px-1 @2xl/libcard:px-2">
                     <Protect
                       condition={() =>
                         (!!sessionClaims?.metadata?.captain &&
@@ -191,76 +195,75 @@ export async function EventNonEntrants({ compId, isOpen }: EventEntrantsProps) {
   }
 
   return (
-    <div className="xl:xm-0 mx-1 mb-1 grid w-[calc(100vw-8px)] grid-cols-1 sm:mx-2 sm:mb-2 sm:w-[calc(100vw-16px)] xl:mb-4 xl:w-[min(100vw,1280px)]">
-      <LibCardNarrow title="Not Entered">
-        <Table>
-          <TableCaption>Event Non Entrants</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Team</TableHead>
+    // <div className="@7xl/main:mx-0 @2xl/main:mx-2 @2xl/main:mb-2 @2xl/main:w-[calc(100vw-16px)] @7xl/main:mb-4 @7xl/main:w-[min(100vw,1280px)] mx-1 mb-1 grid w-[calc(100vw-8px)] grid-cols-1">
+    <LibCardNarrow title="Not Entered">
+      <Table>
+        <TableCaption>Event Non Entrants</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead>Team</TableHead>
+            <Protect
+              condition={() =>
+                !!sessionClaims?.metadata?.captain ||
+                !!sessionClaims?.metadata?.entryPermission
+              }
+            >
+              {isOpen ? <TableHead>Enter?</TableHead> : null}
+            </Protect>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {nonEntrants.map((entrant) => (
+            <TableRow key={entrant.id}>
+              <TableCell className="font-medium">
+                <EntrantDisplay
+                  entrant={{ id: entrant.id, name: entrant.name }}
+                />
+                {/* {`${entrant.name}`} */}
+              </TableCell>
+              <TableCell>
+                <TeamDisplay
+                  team={ensure(
+                    teams.filter((team) => team.id == entrant.teamId)[0],
+                  )}
+                />
+              </TableCell>
               <Protect
                 condition={() =>
                   !!sessionClaims?.metadata?.captain ||
                   !!sessionClaims?.metadata?.entryPermission
                 }
               >
-                {isOpen ? <TableHead>Enter?</TableHead> : null}
+                {isOpen ? (
+                  <TableCell>
+                    <Protect
+                      condition={() =>
+                        (!!sessionClaims?.metadata?.captain &&
+                          entrant.teamId === sessionClaims?.metadata?.teamId) ||
+                        !!sessionClaims?.metadata?.entryPermission
+                      }
+                    >
+                      <EnterSomeoneButton
+                        compId={compId}
+                        entrantId={entrant.id}
+                      />
+                    </Protect>
+                  </TableCell>
+                ) : null}
               </Protect>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {nonEntrants.map((entrant) => (
-              <TableRow key={entrant.id}>
-                <TableCell className="font-medium">
-                  <EntrantDisplay
-                    entrant={{ id: entrant.id, name: entrant.name }}
-                  />
-                  {/* {`${entrant.name}`} */}
-                </TableCell>
-                <TableCell>
-                  <TeamDisplay
-                    team={ensure(
-                      teams.filter((team) => team.id == entrant.teamId)[0],
-                    )}
-                  />
-                </TableCell>
-                <Protect
-                  condition={() =>
-                    !!sessionClaims?.metadata?.captain ||
-                    !!sessionClaims?.metadata?.entryPermission
-                  }
-                >
-                  {isOpen ? (
-                    <TableCell>
-                      <Protect
-                        condition={() =>
-                          (!!sessionClaims?.metadata?.captain &&
-                            entrant.teamId ===
-                              sessionClaims?.metadata?.teamId) ||
-                          !!sessionClaims?.metadata?.entryPermission
-                        }
-                      >
-                        <EnterSomeoneButton
-                          compId={compId}
-                          entrantId={entrant.id}
-                        />
-                      </Protect>
-                    </TableCell>
-                  ) : null}
-                </Protect>
-              </TableRow>
-            ))}
-          </TableBody>
-          {/* <TableFooter>
+          ))}
+        </TableBody>
+        {/* <TableFooter>
                 <TableRow>
                   <TableCell colSpan={3}>Total</TableCell>
                   <TableCell className="text-right">$2,500.00</TableCell>
                 </TableRow>
               </TableFooter> */}
-        </Table>
-      </LibCardNarrow>
-    </div>
+      </Table>
+    </LibCardNarrow>
+    // </div>
   );
 }
 

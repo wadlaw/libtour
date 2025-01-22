@@ -75,8 +75,12 @@ export default async function TeamResultsForComp({ compId }: TeamResultsProps) {
         <TableHeader>
           <TableRow>
             <TableHead>Team</TableHead>
-            <TableHead className="hidden lg:table-cell">First Score</TableHead>
-            <TableHead className="hidden lg:table-cell">Second Score</TableHead>
+            <TableHead className="hidden @5xl/libcard:table-cell">
+              First Score
+            </TableHead>
+            <TableHead className="hidden @5xl/libcard:table-cell">
+              Second Score
+            </TableHead>
             <TableHead className="text-center">Score</TableHead>
             <TableHead className="text-center">Points</TableHead>
           </TableRow>
@@ -90,6 +94,7 @@ export default async function TeamResultsForComp({ compId }: TeamResultsProps) {
               <TopTwoTeamScores
                 teamId={result.teamId}
                 scores={ScoresSchema.parse(result.comp.entrants)}
+                stableford={result.comp.stableford}
               />
               <TableCell className="text-center">{result.points}</TableCell>
             </TableRow>
@@ -109,35 +114,40 @@ export default async function TeamResultsForComp({ compId }: TeamResultsProps) {
 type TopTwoTeamScoresProps = {
   teamId: string;
   scores: z.infer<typeof ScoresSchema>;
+  stableford: boolean;
 };
 
-function TopTwoTeamScores({ teamId, scores }: TopTwoTeamScoresProps) {
+function TopTwoTeamScores({
+  teamId,
+  scores,
+  stableford,
+}: TopTwoTeamScoresProps) {
   const fScores = scores.filter((score) => score.entrant.teamId == teamId);
 
   return (
     <>
-      <TableCell className="hidden lg:table-cell">
+      <TableCell className="hidden @5xl/libcard:table-cell">
         {fScores[0] && (
           <EntrantDisplay
             entrant={{
               id: fScores[0]?.entrant.id ?? 0,
               name: fScores[0]?.entrant.name ?? "",
               score: fScores[0]?.teamScore
-                ? fScores[0]?.teamScore.toString()
+                ? `${fScores[0]?.teamScore.toString()}${stableford ? "pts" : ""}`
                 : "",
               wildcard: fScores[0]?.wildcard,
             }}
           />
         )}
       </TableCell>
-      <TableCell className="hidden lg:table-cell">
+      <TableCell className="hidden @5xl/libcard:table-cell">
         {fScores[1] && (
           <EntrantDisplay
             entrant={{
               id: fScores[1]?.entrant.id ?? 0,
               name: fScores[1]?.entrant.name ?? "",
               score: fScores[1]?.teamScore
-                ? fScores[1]?.teamScore.toString()
+                ? `${fScores[1]?.teamScore.toString()}${stableford ? "pts" : ""}`
                 : "",
               wildcard: fScores[1]?.wildcard,
             }}
@@ -165,31 +175,33 @@ export async function TeamResultsByTeam({ team }: TeamResultsByTeamProps) {
         {/* <TableCaption>Event Results</TableCaption> */}
         <TableHeader>
           <TableRow>
-            <TableHead className="sm:px2 px-1">Comp</TableHead>
-            <TableHead className="sm:px2 px-1">Date</TableHead>
-            <TableHead className="sm:px2 px-1">Format</TableHead>
-            <TableHead className="px-1 text-center sm:px-2">Points</TableHead>
+            <TableHead className="@2xl/libcard:px2 px-1">Comp</TableHead>
+            <TableHead className="@2xl/libcard:px2 px-1">Date</TableHead>
+            <TableHead className="@2xl/libcard:px2 px-1">Format</TableHead>
+            <TableHead className="px-1 text-center @2xl/libcard:px-2">
+              Points
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {compResults.map((result) => (
             <TableRow key={result.teamId}>
-              <TableCell className="sm:px2 px-1">
+              <TableCell className="@2xl/libcard:px2 px-1">
                 <Link href={`/events/${result.comp.igCompId}`}>
                   {result.comp.name}
                 </Link>
               </TableCell>
-              <TableCell className="sm:px2 px-1">
+              <TableCell className="@2xl/libcard:px2 px-1">
                 {new Date(result.comp.date).toLocaleDateString("en-GB", {
                   weekday: "short",
                   month: "long",
                   day: "numeric",
                 })}
               </TableCell>
-              <TableCell className="sm:px2 px-1">
+              <TableCell className="@2xl/libcard:px2 px-1">
                 {result.comp.stableford ? "Stableford" : "Medal"}
               </TableCell>
-              <TableCell className="px-1 text-center sm:px-2">
+              <TableCell className="px-1 text-center @2xl/libcard:px-2">
                 {result.points}
               </TableCell>
             </TableRow>

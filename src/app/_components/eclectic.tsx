@@ -74,7 +74,7 @@ type EclecticScorecard = {
 const HoleSchema = z.object({
   NR: z.boolean(),
   holeNo: z.number().min(1).max(18),
-  strokes: z.number().default(100),
+  strokes: z.number().min(1).default(100),
   net: z.number().default(100),
 });
 

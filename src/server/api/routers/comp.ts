@@ -324,9 +324,6 @@ export const compRouter = createTRPCRouter({
     })
   }),
 
-  
-
-
 
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.comp.findMany({
@@ -358,6 +355,15 @@ export const compRouter = createTRPCRouter({
     })
   }),
 
+  getAllUpcoming: publicProcedure.query(({ ctx }) => {
+    return ctx.db.comp.findMany({
+        orderBy: { date: "asc" },
+        where: {
+          completed: false
+        },
+    })
+  }),
+
   getRecent: publicProcedure.query(({ ctx }) => {
     return ctx.db.comp.findMany({
         orderBy: { date: "desc" },
@@ -372,6 +378,15 @@ export const compRouter = createTRPCRouter({
               }
             }
         }
+    })
+  }),
+
+  getAllCompleted: publicProcedure.query(({ ctx }) => {
+    return ctx.db.comp.findMany({
+        orderBy: { date: "desc" },
+        where: {
+          completed: true
+        },
     })
   }),
 
@@ -466,11 +481,12 @@ export const compRouter = createTRPCRouter({
         include: {
           team: true,
           comp: {
+            
             include: {
               entrants: {
                 orderBy: [
                   { teamScore: `${stab?.stableford ?? false ? 'desc' : 'asc'}`},
-                  { igPosition: 'desc' }
+                  { igPosition: 'asc' }
                 ],
                 include: {
                   entrant: true

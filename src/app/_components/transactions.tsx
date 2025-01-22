@@ -93,13 +93,19 @@ export function EntrantTransactions({ entrantId }: EntrantTransactionsProps) {
         {/* <TableCaption>My Account Transactions</TableCaption> */}
         <TableHeader>
           <TableRow>
-            <TableHead className=" px-1 sm:px-2">Date</TableHead>
-            <TableHead className="px-1 text-right sm:px-2">CR</TableHead>
-            <TableHead className="px-1 text-right sm:px-2">DR</TableHead>
-            <TableHead className="px-1 sm:px-2">Description</TableHead>
-            <TableHead className="px-1 sm:px-2">Comp</TableHead>
+            <TableHead className=" px-1 @2xl/libcard:px-2">Date</TableHead>
+            <TableHead className="px-1 text-right @2xl/libcard:px-2">
+              CR
+            </TableHead>
+            <TableHead className="px-1 text-right @2xl/libcard:px-2">
+              DR
+            </TableHead>
+            <TableHead className="px-1 @2xl/libcard:px-2">
+              Description
+            </TableHead>
+            <TableHead className="px-1 @2xl/libcard:px-2">Comp</TableHead>
 
-            <TableHead className="hidden px-1 sm:table-cell sm:px-2">
+            <TableHead className="hidden px-1 @2xl/libcard:table-cell @2xl/libcard:px-2">
               Remove
             </TableHead>
           </TableRow>
@@ -107,33 +113,35 @@ export function EntrantTransactions({ entrantId }: EntrantTransactionsProps) {
         <TableBody>
           {trans.data.transactions.map((trn) => (
             <TableRow key={trn.id}>
-              <TableCell className="px-1 sm:px-2">
+              <TableCell className="px-1 @2xl/libcard:px-2">
                 {new Date(trn.createdAt).toLocaleDateString("en-GB", {
                   weekday: "short",
                   month: "long",
                   day: "numeric",
                 })}
               </TableCell>
-              <TableCell className="px-1 text-right sm:px-2">
+              <TableCell className="px-1 text-right @2xl/libcard:px-2">
                 <LibMoney
                   hideZeros={true}
                   amountInPence={trn.netAmount >= 0 ? trn.amount : 0}
                 />
               </TableCell>
-              <TableCell className="px-1 text-right sm:px-2">
+              <TableCell className="px-1 text-right @2xl/libcard:px-2">
                 <LibMoney
                   hideZeros={true}
                   amountInPence={trn.netAmount < 0 ? trn.amount : 0}
                 />
               </TableCell>
-              <TableCell className="px-1 sm:px-2">{trn.description}</TableCell>
-              <TableCell className="px-1 sm:px-2">
+              <TableCell className="px-1 @2xl/libcard:px-2">
+                {trn.description}
+              </TableCell>
+              <TableCell className="px-1 @2xl/libcard:px-2">
                 <Link href={`/events/${trn.comp?.shortName}`}>
                   {trn.comp?.name}
                 </Link>
               </TableCell>
 
-              <TableCell className="hidden px-1 sm:table-cell sm:px-2">
+              <TableCell className="hidden px-1 @2xl/libcard:table-cell @2xl/libcard:px-2">
                 {trn.igCompId != null ? null : (
                   <DeleteTransactionPopover
                     transactionId={trn.id}
