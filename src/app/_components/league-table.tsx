@@ -33,24 +33,34 @@ export async function LeagueTable() {
           <TableRow>
             <TableHead className="px-1 sm:px-2">Team</TableHead>
 
-            <TableHead className="px-1 text-center sm:px-2">Events</TableHead>
-            <TableHead className="px-1 text-center sm:px-2">Wins</TableHead>
-            <TableHead className="px-1 text-center  sm:px-2">Points</TableHead>
+            <TableHead className="px-1 text-center @2xl/libcard:px-2">
+              Events
+            </TableHead>
+            <TableHead className="px-1 text-center @2xl/libcard:px-2">
+              Wins
+            </TableHead>
+            <TableHead className="px-1 text-center  @2xl/libcard:px-2">
+              Points
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {sortedTeams.map((team) => (
             <TableRow key={team.teamName}>
-              <TableCell className="px-1 font-medium sm:px-2">
-                <TeamDisplay team={team} alwaysDisplayLogo={true} />
+              <TableCell className="px-1 font-medium @2xl/libcard:px-2">
+                <TeamDisplay
+                  team={team}
+                  alwaysDisplayLogo={true}
+                  addTransitionName={true}
+                />
               </TableCell>
-              <TableCell className="px-1 text-center sm:px-2">
+              <TableCell className="px-1 text-center @2xl/libcard:px-2">
                 {team.teamPoints.length}
               </TableCell>
-              <TableCell className="px-1 text-center sm:px-2">
+              <TableCell className="px-1 text-center @2xl/libcard:px-2">
                 {team.teamPoints.filter((res) => res.points === 8).length}
               </TableCell>
-              <TableCell className="px-1 text-center sm:px-2">
+              <TableCell className="px-1 text-center @2xl/libcard:px-2">
                 <Link href={`/teams/${team.linkName}`}>
                   {team.teamPoints.reduce((acc, cur) => acc + cur.points, 0)}
                 </Link>
@@ -58,12 +68,6 @@ export async function LeagueTable() {
             </TableRow>
           ))}
         </TableBody>
-        {/* <TableFooter>
-              <TableRow>
-                <TableCell colSpan={3}>Total</TableCell>
-                <TableCell className="text-right">$2,500.00</TableCell>
-              </TableRow>
-            </TableFooter> */}
       </Table>
     </LibCardNarrow>
   );

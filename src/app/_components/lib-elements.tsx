@@ -54,6 +54,7 @@ type TeamDisplayProps = {
   team: { id: string; linkName: string; teamName: string };
   alwaysDisplayLogo?: boolean;
   iconOnlyWhenSmall?: boolean;
+  addTransitionName?: boolean;
 };
 
 type TeamDisplayCollapsibleProps = {
@@ -66,13 +67,14 @@ export function TeamDisplay({
   team,
   alwaysDisplayLogo = false,
   iconOnlyWhenSmall = false,
+  addTransitionName = false,
 }: TeamDisplayProps) {
   if (!team) return null;
   return (
     <Link href={`/teams/${team.linkName}`}>
       <div className="flex items-center justify-start">
         <div
-          className={`${iconOnlyWhenSmall ? "sm:mr-2" : "mr-2"} ${!alwaysDisplayLogo && "hidden"} overflow-hidden rounded-full sm:block`}
+          className={`${iconOnlyWhenSmall ? "sm:mr-2" : "mr-2"} ${!alwaysDisplayLogo && "hidden"} overflow-hidden rounded-full sm:block ${addTransitionName ? team.linkName : ""}`}
         >
           <Image
             src={`/${team.linkName}.png`}
