@@ -157,6 +157,7 @@ export function EntrantDisplay({
 type LibCardProps = {
   title?: string;
   url?: string;
+  transitionClass?: string;
   children: React.ReactNode;
 };
 
@@ -316,9 +317,14 @@ export function TeamScoreDisplay({
   );
 }
 
-export function LibCard({ title, url, children }: LibCardProps) {
+export function LibCard({
+  title,
+  url,
+  transitionClass = "",
+  children,
+}: LibCardProps) {
   return (
-    <Card className="libcard @container/libcard">
+    <Card className={`@container/libcard ${transitionClass}`}>
       <CardHeader>
         {url ? (
           <Link href={url}>
@@ -333,9 +339,14 @@ export function LibCard({ title, url, children }: LibCardProps) {
   );
 }
 
-export function LibCardNarrow({ title, url, children }: LibCardProps) {
+export function LibCardNarrow({
+  title,
+  url,
+  transitionClass = "",
+  children,
+}: LibCardProps) {
   return (
-    <Card className="libcard @container/libcard">
+    <Card className={`@container/libcard ${transitionClass}`}>
       <CardHeader className="px-2 @2xl/libcard:px-6">
         {url ? (
           <Link href={url}>

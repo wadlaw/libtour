@@ -182,6 +182,12 @@
   view-transition-name:title-move
 }
 
-.libcard {
-  view-transition-name:libcard-move
+
+.league-table {
+  view-transition-name:league-table-move
 }
+
+.prizewinners {
+  view-transition-name:prizewinners-move
+}
+

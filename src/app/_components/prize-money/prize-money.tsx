@@ -25,6 +25,7 @@ export default async function PrizeMoneyTable({
     <LibCardNarrow
       title={`${recordLimit < 40 ? "Top " : ""}Prizewinners`}
       url="/prizewinners"
+      transitionClass="prizewinners"
     >
       <Table>
         <TableHeader>
