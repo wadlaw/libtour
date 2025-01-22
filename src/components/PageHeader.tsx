@@ -1,10 +1,9 @@
 import Link from "next/link";
 // import { MobileNav } from "./MobileNav";
-import { MainNav } from "./MainNav";
+
 import { UserButton } from "@clerk/nextjs";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
-import { ModeToggle, ThemedLogo } from "~/app/_components/theme";
-import { DropdownMenu } from "./DropdownMenu";
+import { ThemedLogo } from "~/app/_components/theme";
 import { SidebarTrigger } from "./ui/sidebar";
 
 export async function PageHeader() {
