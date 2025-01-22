@@ -178,6 +178,16 @@
   }
 }
 
-.cl-organizationSwitcherPopoverRootBox {
-  pointer-events: auto;
+.title {
+  view-transition-name:title-move
 }
+
+
+.league-table {
+  view-transition-name:league-table-move
+}
+
+.prizewinners {
+  view-transition-name:prizewinners-move
+}
+

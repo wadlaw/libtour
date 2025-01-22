@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { api } from "~/trpc/server";
 import {
   Table,
@@ -22,7 +22,11 @@ export async function LeagueTable() {
   const sortedTeams = reducedTeams.sort((a, b) => b.points - a.points);
   if (!teams) return null;
   return (
-    <LibCardNarrow title="Lib Standings" url="/teams">
+    <LibCardNarrow
+      title="Lib Standings"
+      url="/teams"
+      transitionClass="league-table"
+    >
       <Table>
         {/* <TableCaption>Libtour Teams</TableCaption> */}
         <TableHeader>
