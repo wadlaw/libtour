@@ -34,7 +34,7 @@ export default async function Team({
   return (
     <LibMain>
       <div className=" flex flex-col items-center">
-        <div className="overflow-hidden rounded-full">
+        <div className={`overflow-hidden rounded-full ${team.linkName}`}>
           <Image
             src={`/${team.linkName}.png`}
             height={100}

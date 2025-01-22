@@ -182,7 +182,6 @@
   view-transition-name:title-move
 }
 
-
 .league-table {
   view-transition-name:league-table-move
 }
@@ -191,3 +190,38 @@
   view-transition-name:prizewinners-move
 }
 
+.ballsdeep {
+  view-transition-name:ballsdeep-move
+}
+
+.bigsticks {
+  view-transition-name:bigsticks-move
+}
+
+.bogeyboys {
+  view-transition-name:bogeyboys-move
+}
+
+.eurekas {
+  view-transition-name:eurekas-move
+}
+
+.lostballs {
+  view-transition-name:lostballs-move
+}
+
+.regularflex {
+  view-transition-name:regularflex-move
+}
+
+.shanksandbighook {
+  view-transition-name:shanksandbighook-move
+}
+
+.swingers {
+  view-transition-name:swingers-move
+}
+
+.twoballers {
+  view-transition-name:twoballers-move
+}

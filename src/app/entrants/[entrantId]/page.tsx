@@ -105,7 +105,9 @@ async function Content({ entrantId }: ContentProps) {
     <LibMain>
       {entrant ? (
         <div className="flex flex-col items-center">
-          <div className="h-[100px] w-[100px] overflow-hidden rounded-full ring-2 ring-[hsl(var(--muted))]">
+          <div
+            className={`h-[100px] w-[100px] overflow-hidden rounded-full ring-2 ring-[hsl(var(--muted))] ${entrant.team.linkName}`}
+          >
             <Link href={`/entrants/${entrant.id}`}>
               {entrant?.user?.avatarUrl ? (
                 <Image
@@ -141,13 +143,15 @@ async function Content({ entrantId }: ContentProps) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="px-1 sm:px-2">Comp</TableHead>
-                <TableHead className="hidden px-1 sm:table-cell sm:px-2">
+                <TableHead className="px-1 @2xl/libcard:px-2">Comp</TableHead>
+                <TableHead className="hidden px-1 @2xl/libcard:table-cell @2xl/libcard:px-2">
                   Date
                 </TableHead>
-                <TableHead className="px-1 sm:px-2">Results</TableHead>
-                <TableHead className="px-1 sm:px-2">Score</TableHead>
-                <TableHead className="px-1 text-right sm:px-2">
+                <TableHead className="px-1 @2xl/libcard:px-2">
+                  Results
+                </TableHead>
+                <TableHead className="px-1 @2xl/libcard:px-2">Score</TableHead>
+                <TableHead className="px-1 text-right @2xl/libcard:px-2">
                   Winnings
                 </TableHead>
               </TableRow>
@@ -158,9 +162,9 @@ async function Content({ entrantId }: ContentProps) {
                   <Collapsible key={comp.compId} asChild>
                     <Fragment key={comp.compId}>
                       <TableRow key={comp.compId}>
-                        <TableCell className="px-1 sm:px-2">
+                        <TableCell className="px-1 @2xl/libcard:px-2">
                           <Link href={`/events/${comp.comp.shortName}`}>
-                            <span className="mr-1 sm:mr-2">
+                            <span className="mr-1 @2xl/libcard:mr-2">
                               {comp.comp.name}
                             </span>
                             {comp.wildcard ? <Badge>WC</Badge> : null}
@@ -168,7 +172,7 @@ async function Content({ entrantId }: ContentProps) {
                         </TableCell>
                         <CollapsibleTrigger asChild>
                           <TableCell
-                            className={`hidden px-1 sm:table-cell sm:px-2 ${comp.scorecard && "cursor-pointer"}`}
+                            className={`hidden px-1 @2xl/libcard:table-cell @2xl/libcard:px-2 ${comp.scorecard && "cursor-pointer"}`}
                           >
                             {new Date(comp.comp.date).toLocaleDateString(
                               "en-GB",
@@ -182,7 +186,7 @@ async function Content({ entrantId }: ContentProps) {
                         </CollapsibleTrigger>
                         <CollapsibleTrigger asChild>
                           <TableCell
-                            className={`px-1 sm:px-2 ${comp.scorecard && "cursor-pointer"}`}
+                            className={`px-1 @2xl/libcard:px-2 ${comp.scorecard && "cursor-pointer"}`}
                           >
                             {comp.position
                               ? `${comp.position}${ordinal(comp.position)}`
@@ -191,14 +195,14 @@ async function Content({ entrantId }: ContentProps) {
                         </CollapsibleTrigger>
                         <CollapsibleTrigger asChild>
                           <TableCell
-                            className={`px-1 sm:px-2 ${comp.scorecard && "cursor-pointer"}`}
+                            className={`px-1 @2xl/libcard:px-2 ${comp.scorecard && "cursor-pointer"}`}
                           >
                             {comp.position
                               ? `${comp.score ? comp.score : "NR"}${comp.comp.stableford ? !comp.noResult && "pts" : ""}`
                               : ""}
                           </TableCell>
                         </CollapsibleTrigger>
-                        <TableCell className="px-1 text-right sm:px-2">
+                        <TableCell className="px-1 text-right @2xl/libcard:px-2">
                           <LibMoney
                             hideZeros={true}
                             amountInPence={comp.transactions.reduce(
