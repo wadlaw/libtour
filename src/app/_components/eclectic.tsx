@@ -26,6 +26,7 @@ import {
 import { ScorecardDisplay } from "./scorecard";
 import { Skeleton } from "~/components/ui/skeleton";
 import { type EclecticData } from "../eclectic/page";
+import { flushSync } from "react-dom";
 
 type Hole = {
   holeNo: number;
@@ -339,15 +340,30 @@ export default function Eclectic({ scores }: EclecticProps) {
     });
   });
 
+  const setTab = (tabName: "Gross" | "Net") => {
+    // Fallback for browsers that don't support View Transitions:
+    if (!document.startViewTransition) {
+      setGrossOrNet(tabName);
+      return;
+    }
+
+    // With View Transitions:
+    document.startViewTransition(() =>
+      flushSync(() => {
+        setGrossOrNet(tabName);
+      }),
+    );
+  };
+
   return (
     <LibCardContainer>
       <LibCardNarrow title="Eclectic Leaderboard">
         <Tabs className="" defaultValue={grossOrNet}>
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger onClick={() => setGrossOrNet("Gross")} value="Gross">
+            <TabsTrigger onClick={() => setTab("Gross")} value="Gross">
               Gross
             </TabsTrigger>
-            <TabsTrigger onClick={() => setGrossOrNet("Net")} value="Net">
+            <TabsTrigger onClick={() => setTab("Net")} value="Net">
               Net
             </TabsTrigger>
           </TabsList>
@@ -366,7 +382,10 @@ export default function Eclectic({ scores }: EclecticProps) {
             {(grossOrNet === "Gross" ? scratch : net).map((score, index) => (
               <Collapsible key={`${grossOrNet}-${score.entrantId}`} asChild>
                 <Fragment key={score.entrantId}>
-                  <TableRow key={score.entrantId}>
+                  <TableRow
+                    key={score.entrantId}
+                    className={`entrant${score.entrantId}`}
+                  >
                     <TableCell className="px-1 hover:cursor-pointer sm:px-2">
                       <CollapsibleTrigger asChild>
                         <span>{index + 1}</span>
