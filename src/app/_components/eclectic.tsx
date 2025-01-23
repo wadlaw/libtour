@@ -348,6 +348,7 @@ export default function Eclectic({ scores }: EclecticProps) {
     }
 
     // With View Transitions:
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     document.startViewTransition(() =>
       flushSync(() => {
         setGrossOrNet(tabName);
