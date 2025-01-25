@@ -1,17 +1,37 @@
 "use client";
-import { PiggyBank } from "lucide-react";
+import { useClerk } from "@clerk/nextjs";
+import {
+  PiggyBank,
+  FileUser,
+  UsersRound,
+  ChevronsUpDown,
+  LogOut,
+  UserRoundPen,
+} from "lucide-react";
 // import Link from "next/link";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 import Balance from "~/app/_components/balance";
 import {
+  SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarMenuSubItem,
   SidebarMenuSubButton,
   SidebarMenuBadge,
   useSidebar,
+  SidebarFooter,
 } from "~/components/ui/sidebar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 type MenuItemProps = {
   key: string;
@@ -75,21 +95,224 @@ export function MenuSubItem({
   );
 }
 
-export function MyAccountButton() {
+type MyMenuProps = {
+  entrantId: number;
+  teamName: string;
+  teamLinkName: string;
+};
+
+export function MyMenu({ entrantId, teamName, teamLinkName }: MyMenuProps) {
   const path = usePathname();
   const { setOpenMobile } = useSidebar();
+
   //   console.log("Path", path, "URL", url);
   return (
+    <>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            asChild
+            isActive={path === `/entrants/${entrantId}`}
+          >
+            <Link
+              href={`/entrants/${entrantId}`}
+              onClick={() => setOpenMobile(false)}
+            >
+              <FileUser />
+              My Results
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            asChild
+            isActive={path === `/teams/${teamLinkName}`}
+          >
+            <Link
+              href={`/teams/${teamLinkName}`}
+              onClick={() => setOpenMobile(false)}
+            >
+              <UsersRound />
+              {teamName} Results
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton asChild isActive={path === "/account"}>
+            <Link href="/account" onClick={() => setOpenMobile(false)}>
+              <PiggyBank />
+              My Account
+            </Link>
+          </SidebarMenuButton>
+          <SidebarMenuBadge className="text-sm">
+            <Balance />
+          </SidebarMenuBadge>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </>
+  );
+}
+
+export function MyFooter({ entrantId, teamName, teamLinkName }: MyMenuProps) {
+  const path = usePathname();
+  const { setOpenMobile } = useSidebar();
+
+  return (
+    <SidebarFooter>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            asChild
+            isActive={path === `/entrants/${entrantId}`}
+          >
+            <Link
+              href={`/entrants/${entrantId}`}
+              onClick={() => setOpenMobile(false)}
+            >
+              <FileUser />
+              My Results
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            asChild
+            isActive={path === `/teams/${teamLinkName}`}
+          >
+            <Link
+              href={`/teams/${teamLinkName}`}
+              onClick={() => setOpenMobile(false)}
+            >
+              <UsersRound />
+              {teamName} Results
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton asChild isActive={path === "/account"}>
+            <Link href="/account" onClick={() => setOpenMobile(false)}>
+              <PiggyBank />
+              My Account
+            </Link>
+          </SidebarMenuButton>
+          <SidebarMenuBadge className="text-sm">
+            <Balance />
+          </SidebarMenuBadge>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarFooter>
+  );
+}
+
+type UserDropdownProps = {
+  entrantId: number;
+  teamName: string;
+  email: string;
+  teamLinkName: string;
+  avatar: string;
+  firstName: string;
+  surname: string;
+};
+
+export function UserDropdown({
+  entrantId,
+  teamName,
+  email,
+  teamLinkName,
+  avatar,
+  firstName,
+  surname,
+}: UserDropdownProps) {
+  const { setOpenMobile } = useSidebar();
+  const clerk = useClerk();
+
+  return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild isActive={path === "/account"}>
-        <Link href="/account" onClick={() => setOpenMobile(false)}>
-          <PiggyBank />
-          My Account
-        </Link>
-      </SidebarMenuButton>
-      <SidebarMenuBadge className="text-sm">
-        <Balance />
-      </SidebarMenuBadge>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <SidebarMenuButton
+            size="lg"
+            className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+          >
+            <Avatar className="h-8 w-8 rounded-full">
+              <AvatarImage src={avatar} alt={`${firstName} ${surname}`} />
+              <AvatarFallback className="rounded-full">
+                {firstName?.substring(0, 1)}
+                {surname?.substring(0, 1)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <span className="truncate font-semibold">{`${firstName} ${surname}`}</span>
+              <span className="truncate text-xs">{email}</span>
+            </div>
+            <ChevronsUpDown className="ml-auto size-4" />
+          </SidebarMenuButton>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+          side="right"
+          align="end"
+          sideOffset={4}
+        >
+          <DropdownMenuLabel className="p-0 font-normal">
+            <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+              <Avatar className="h-8 w-8 rounded-full">
+                <AvatarImage src={avatar} alt={`${firstName} ${surname}`} />
+                <AvatarFallback className="rounded-full">
+                  {firstName?.substring(0, 1)}
+                  {surname?.substring(0, 1)}
+                </AvatarFallback>
+              </Avatar>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold">{`${firstName} ${surname}`}</span>
+                <span className="truncate text-xs">{email}</span>
+              </div>
+            </div>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <Link href="/account" onClick={() => setOpenMobile(false)}>
+              <DropdownMenuItem>
+                <PiggyBank size={16} />
+                My Account
+              </DropdownMenuItem>
+            </Link>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <Link
+              href={`/entrants/${entrantId}`}
+              onClick={() => setOpenMobile(false)}
+            >
+              <DropdownMenuItem>
+                <FileUser size={16} />
+                My Results
+              </DropdownMenuItem>
+            </Link>
+
+            <Link
+              href={`/teams/${teamLinkName}`}
+              onClick={() => setOpenMobile(false)}
+            >
+              <DropdownMenuItem>
+                <UsersRound size={16} />
+                {`${teamName} Results`}
+              </DropdownMenuItem>
+            </Link>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem onClick={() => clerk.openUserProfile()}>
+              <UserRoundPen size={16} />
+              Manage Account
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => clerk.signOut()}>
+              <LogOut size={16} />
+              Sign Out
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </SidebarMenuItem>
   );
 }

@@ -3,7 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { ensure } from "~/lib/utils";
 
-import { createTRPCRouter, publicProcedure,  wildcardProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure, protectedProcedure,  wildcardProcedure } from "~/server/api/trpc";
 
 export const entrantRouter = createTRPCRouter({
     getList: publicProcedure
@@ -71,6 +71,18 @@ export const entrantRouter = createTRPCRouter({
 
                 })          
         }),
+    getMe: protectedProcedure
+    .query(({ ctx }) => {
+        return ctx.db.entrant.findFirst({
+            where: {
+                id: ctx.entrant.id,
+            },
+            include: {
+                team: true,
+                user: true,
+            }
+        })
+    }),
     setWildcard: wildcardProcedure
     .input(z.object({ comp: z.string().min(4), entrantId: z.number() }))
     .mutation(async ({ ctx, input }) => {

@@ -1,11 +1,5 @@
 import { api } from "~/trpc/server";
-import {
-  UserButton,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  currentUser,
-} from "@clerk/nextjs";
+import { SignInButton, SignedOut, currentUser } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import {
   Calendar,
@@ -34,7 +28,12 @@ import {
   SidebarHeader,
   SidebarSeparator,
 } from "~/components/ui/sidebar";
-import { MenuItem, MenuSubItem, MyAccountButton } from "./app-sidebar-button";
+import {
+  MenuItem,
+  MenuSubItem,
+  MyFooter,
+  UserDropdown,
+} from "./app-sidebar-button";
 import { Protect } from "@clerk/nextjs";
 import {
   Collapsible,
@@ -68,6 +67,7 @@ const items = [
 
 export async function AppSidebar() {
   const user = await currentUser();
+  const entrant = user ? await api.entrant.getMe() : null;
   const { sessionClaims } = auth();
   // const router = useRouter();
 
@@ -75,23 +75,24 @@ export async function AppSidebar() {
     <Sidebar variant="inset">
       <SidebarHeader>
         <SignedOut>
-          <div className="hidden flex-col md:flex">
+          <SidebarMenu className="hidden md:flex">
             <SignInButton />
-          </div>
-        </SignedOut>
-        <SignedIn>
-          <div className="hidden items-center justify-start gap-4 px-2 md:flex">
-            <UserButton />
-            <span>{`${user?.firstName} ${user?.lastName}`}</span>
-          </div>
-        </SignedIn>
-        <Protect>
-          <SidebarMenu>
-            <MyAccountButton />
           </SidebarMenu>
-        </Protect>
+        </SignedOut>
+        <SidebarMenu className="hidden md:flex">
+          <Protect>
+            <UserDropdown
+              entrantId={entrant?.id ?? 0}
+              teamName={entrant?.team.teamName ?? ""}
+              teamLinkName={entrant?.team.linkName ?? ""}
+              avatar={entrant?.user?.avatarUrl ?? ""}
+              firstName={entrant?.user?.firstName ?? ""}
+              surname={entrant?.user?.surname ?? ""}
+              email={entrant?.user?.email ?? ""}
+            />
+          </Protect>
+        </SidebarMenu>
       </SidebarHeader>
-      <SidebarSeparator className="hidden md:block" />
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
@@ -121,6 +122,15 @@ export async function AppSidebar() {
           <AdminMenu />
         </Protect>
       </SidebarContent>
+      <SidebarSeparator className="hidden md:block" />
+
+      <Protect>
+        <MyFooter
+          entrantId={entrant?.id ?? 0}
+          teamName={entrant?.team.teamName ?? ""}
+          teamLinkName={entrant?.team.linkName ?? ""}
+        />
+      </Protect>
     </Sidebar>
   );
 }
