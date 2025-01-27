@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { EditEntrantDialog, EditEntrantPopover } from "../_components/entrants";
+import { EditEntrantDialog } from "../_components/entrants";
 
 export default async function Entrants() {
   const entrants = await api.entrant.getAll();
