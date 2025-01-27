@@ -39,7 +39,7 @@ const standings: { title: string; href: string; description: string }[] = [
   },
 ];
 
-export function DropdownMenu() {
+export function DropdownMenuNav() {
   const { user } = useUser();
 
   return (

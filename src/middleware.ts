@@ -34,7 +34,7 @@ export default authMiddleware({
     } 
 
     // Admin routes=====================
-    const adminRoutes = ['/users']
+    const adminRoutes = ['/users', '/entrants']
 
     if (adminRoutes.includes(req.nextUrl.pathname)) {
       if (!auth.sessionClaims?.metadata?.adminPermission){

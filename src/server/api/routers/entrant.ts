@@ -3,7 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { ensure } from "~/lib/utils";
 
-import { createTRPCRouter, publicProcedure, protectedProcedure,  wildcardProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure, protectedProcedure,  wildcardProcedure, adminProcedure } from "~/server/api/trpc";
 
 export const entrantRouter = createTRPCRouter({
     getList: publicProcedure
@@ -130,6 +130,20 @@ export const entrantRouter = createTRPCRouter({
             })
         }  else {throw new TRPCError({ code: "PRECONDITION_FAILED", message: "All wildcards are already locked in!" })}
     }),
+    update: adminProcedure
+        .input(z.object({ entrantId: z.number(), name: z.string().min(1), teamId: z.string().length(2) }))
+        .mutation(async ({ ctx, input }) => {
+            return ctx.db.entrant.update({
+                where: {
+                    id: input.entrantId
+                },
+                data: {
+                    name: input.name,
+                    teamId: input.teamId
+                }
+            })
+        }),
+
 
     removeWildcard: wildcardProcedure
     .input(z.object({ comp: z.string().min(4), entrantId: z.number() }))

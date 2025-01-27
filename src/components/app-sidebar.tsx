@@ -13,6 +13,7 @@ import {
   BadgePoundSterling,
   PoundSterling,
   ChevronRight,
+  BookUser,
 } from "lucide-react";
 
 import {
@@ -148,11 +149,21 @@ function AdminMenu() {
             }
           >
             <MenuItem
-              key="User Accounts"
+              key="Accounts"
               item={{
-                title: "User Accounts",
+                title: "Accounts",
                 url: "/accounts",
                 icon: <BadgePoundSterling />,
+              }}
+            />
+          </Protect>
+          <Protect condition={() => !!sessionClaims?.metadata.adminPermission}>
+            <MenuItem
+              key="Entrant Admin"
+              item={{
+                title: "Entrant Admin",
+                url: "/entrants",
+                icon: <BookUser />,
               }}
             />
           </Protect>
