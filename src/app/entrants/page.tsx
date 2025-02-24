@@ -5,7 +5,7 @@ import LibMain, {
   LibCardNarrow,
   LibH1,
   TeamDisplay,
-} from "../_components/lib-elements";
+} from "~/app/_components/lib-elements";
 import {
   Table,
   TableBody,
@@ -14,7 +14,15 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { EditEntrantDialog } from "../_components/entrants";
+import { Badge } from "~/components/ui/badge";
+import { Link } from "next-view-transitions";
+
+export async function generateMetadata() {
+  return {
+    title: `Libtour - Entrants`,
+    description: "A List of Entrants for this season's Libtour",
+  };
+}
 
 export default async function Entrants() {
   const entrants = await api.entrant.getAll();
@@ -30,7 +38,6 @@ export default async function Entrants() {
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Team</TableHead>
-                <TableHead>Update</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -38,29 +45,20 @@ export default async function Entrants() {
                 return (
                   <TableRow key={entrant.id}>
                     <TableCell>
-                      <EntrantDisplay entrant={entrant} />
+                      <div className="flex gap-1">
+                        <EntrantDisplay entrant={entrant} />
+                        {entrant.captain && (
+                          <Link href={`/entrants/${entrant.id}`}>
+                            <Badge>Captain</Badge>
+                          </Link>
+                        )}
+                      </div>
                     </TableCell>
                     <TableCell>
                       <TeamDisplay
                         team={entrant.team}
                         alwaysDisplayLogo={true}
                         iconOnlyWhenSmall={true}
-                      />
-                    </TableCell>
-                    {/* <TableCell>
-                      <EditEntrantPopover
-                        key={entrant.id}
-                        entrantId={entrant.id}
-                        name={entrant.name}
-                        teamId={entrant.teamId}
-                      />
-                    </TableCell> */}
-                    <TableCell>
-                      <EditEntrantDialog
-                        key={entrant.id}
-                        entrantId={entrant.id}
-                        name={entrant.name}
-                        teamId={entrant.teamId}
                       />
                     </TableCell>
                   </TableRow>

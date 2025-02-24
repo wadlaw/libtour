@@ -1,5 +1,8 @@
 import { EventListTable } from "~/app/_components/event-list";
-import LibMain, { LibCardContainer, LibH1 } from "~/app/_components/lib-elements";
+import LibMain, {
+  LibCardContainer,
+  LibH1,
+} from "~/app/_components/lib-elements";
 
 export const metadata = {
   title: "Libtour - Events",
@@ -10,12 +13,12 @@ export default async function Events() {
   return (
     <LibMain>
       <div className="flex flex-col items-center">
-        <LibH1>Events</LibH1>
+        <LibH1>Events Admin</LibH1>
       </div>
 
-    <LibCardContainer splitAtLargeSizes={false}>
-        <EventListTable />
-    </LibCardContainer>
+      <LibCardContainer splitAtLargeSizes={false}>
+        <EventListTable edit={true} />
+      </LibCardContainer>
     </LibMain>
   );
 }

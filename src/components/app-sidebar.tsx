@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import {
   Calendar,
   CalendarCheck,
+  CalendarCog,
   Home,
   Medal,
   Trophy,
@@ -162,18 +163,28 @@ function AdminMenu() {
               key="Entrant Admin"
               item={{
                 title: "Entrant Admin",
-                url: "/entrants",
-                icon: <BookUser />,
+                url: "/admin/entrants",
+                icon: <UserRoundCog />,
               }}
             />
           </Protect>
-          <Protect condition={() => !!sessionClaims?.metadata.adminPermission}>
+          {/* <Protect condition={() => !!sessionClaims?.metadata.adminPermission}>
             <MenuItem
               key="User Admin"
               item={{
                 title: "User Admin",
                 url: "/users",
                 icon: <UserRoundCog />,
+              }}
+            />
+          </Protect> */}
+          <Protect condition={() => !!sessionClaims?.metadata.adminPermission}>
+            <MenuItem
+              key="Event Admin"
+              item={{
+                title: "Event Admin",
+                url: "/admin/events",
+                icon: <CalendarCog />,
               }}
             />
           </Protect>

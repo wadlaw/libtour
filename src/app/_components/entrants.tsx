@@ -63,16 +63,22 @@ export function EditEntrantDialog({
         </AlertDialogHeader>
 
         <div className="grid gap-4">
-          <Label htmlFor="teamselect">Select Team</Label>
-          <TeamDropdown teamId={team} setTeamId={setTeam} />
-          <Label htmlFor="displayname">Display Name</Label>
-          <Input
-            type="text"
-            id="displayname"
-            placeholder="Name cannot be blank"
-            value={entrantName}
-            onChange={(evt) => setEntrantName(evt.target.value)}
-          />
+          <div className="grid gap-2">
+            <Label htmlFor="teamselect">Select Team</Label>
+            <div className="flex">
+              <TeamDropdown teamId={team} setTeamId={setTeam} />
+            </div>
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="displayname">Display Name</Label>
+            <Input
+              type="text"
+              id="displayname"
+              placeholder="Name cannot be blank"
+              value={entrantName}
+              onChange={(evt) => setEntrantName(evt.target.value)}
+            />
+          </div>
         </div>
 
         <AlertDialogFooter>

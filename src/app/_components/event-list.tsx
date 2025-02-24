@@ -1,6 +1,7 @@
 import { Link } from "next-view-transitions";
 import { api } from "~/trpc/server";
 import { Protect } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 import {
   Table,
@@ -14,13 +15,24 @@ import {
 import EnterWithdraw from "./entry-buttons";
 import { ClosedEventStatus, EntrantCountDisplay } from "./event-entrants";
 import { EntrantDisplay, LibCardNarrow } from "./lib-elements";
+import { EditEventDialog } from "./events";
 
-export async function EventListTable() {
+type EventListTableProps = {
+  edit?: boolean;
+};
+
+export async function EventListTable({ edit = false }: EventListTableProps) {
   const comps = await api.comp.getAll();
   // const user = await api.user.loggedInUser();
 
   if (!comps) return null;
-  return <EventListDisplay comps={comps} title="Lib Events" />;
+  return (
+    <EventListDisplay
+      comps={comps}
+      title="Lib Events"
+      displayEditOption={edit}
+    />
+  );
 }
 
 export async function UpcomingEventList() {
@@ -75,6 +87,7 @@ type EventListDisplayProps = {
   title?: string;
   lastHeaderText?: string;
   emptyListText?: string;
+  displayEditOption?: boolean;
 };
 
 function EventListDisplay({
@@ -82,18 +95,29 @@ function EventListDisplay({
   title,
   lastHeaderText = "",
   emptyListText = "No events to display",
+  displayEditOption = false,
 }: EventListDisplayProps) {
+  const { sessionClaims } = auth();
   return (
     <LibCardNarrow title={title} url="/events">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className=" px-1 sm:px-2">Event</TableHead>
-            <TableHead className="hidden px-1 sm:table-cell sm:px-2">
+            <Protect
+              condition={() =>
+                !!sessionClaims?.metadata?.adminPermission && displayEditOption
+              }
+            >
+              <TableHead className="hidden @3xl/libcard:table-cell"></TableHead>
+            </Protect>
+            <TableHead className=" px-1 @2xl/libcard:px-2">Event</TableHead>
+            <TableHead className="hidden px-1 @2xl/libcard:table-cell @2xl/libcard:px-2">
               Format
             </TableHead>
-            <TableHead className="px-1 sm:px-2">Date</TableHead>
-            <TableHead className="px-1 sm:px-2">{lastHeaderText}</TableHead>
+            <TableHead className="px-1 @2xl/libcard:px-2">Date</TableHead>
+            <TableHead className="px-1 @2xl/libcard:px-2">
+              {lastHeaderText}
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -106,24 +130,42 @@ function EventListDisplay({
           ) : null}
           {comps.map((comp) => (
             <TableRow key={comp.igCompId}>
-              <TableCell className="px-1 font-medium sm:px-2">
+              <Protect
+                condition={() =>
+                  !!sessionClaims?.metadata?.adminPermission &&
+                  displayEditOption
+                }
+              >
+                <TableCell className="hidden @3xl/libcard:table-cell">
+                  {!comp.completed && (
+                    <EditEventDialog
+                      igCompId={comp.igCompId}
+                      shortName={comp.shortName}
+                      name={comp.name}
+                      date={new Date(comp.date)}
+                      stableford={comp.stableford}
+                    />
+                  )}
+                </TableCell>
+              </Protect>
+              <TableCell className="px-1 font-medium @2xl/libcard:px-2">
                 <Link href={`/events/${comp.shortName}`}>{comp.name}</Link>
               </TableCell>
-              <TableCell className="hidden px-1 sm:table-cell sm:px-2">
+              <TableCell className="hidden px-1 @2xl/libcard:table-cell @2xl/libcard:px-2">
                 <Link href={`/events/${comp.shortName}`}>
                   {comp.stableford ? "Stableford" : "Medal"}
                 </Link>
               </TableCell>
-              <TableCell className="px-1 sm:px-2">
+              <TableCell className="px-1 @2xl/libcard:px-2">
                 <Link href={`/events/${comp.shortName}`}>
                   {new Date(comp.date).toLocaleDateString("en-GB", {
                     weekday: "short",
-                    month: "long",
+                    month: "short",
                     day: "numeric",
                   })}
                 </Link>
               </TableCell>
-              <TableCell className="px-1 sm:px-2">
+              <TableCell className="px-1 @2xl/libcard:px-2">
                 {/* <Link href={`/events/${comp.shortName}`}> */}
 
                 {comp.completed ? (

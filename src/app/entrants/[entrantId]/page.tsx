@@ -1,5 +1,6 @@
 import { api } from "~/trpc/server";
 import LibMain, {
+  LibCardContainer,
   LibCardNarrow,
   LibH1,
   TeamDisplay,
@@ -67,7 +68,8 @@ function ContentSkeleton() {
 
         <Skeleton className="m-4 h-6 w-40" />
       </div>
-      <div className="mx-1 mb-1 mt-4 grid w-full grid-cols-1 gap-4 sm:mx-2 sm:mb-2 xl:mx-0 xl:mb-4">
+      <LibCardContainer>
+        {/* <div className="mx-1 mb-1 mt-4 grid w-full grid-cols-1 gap-4 sm:mx-2 sm:mb-2 xl:mx-0 xl:mb-4"> */}
         <LibCardNarrow title="Results">
           <SkeletonTable
             rows={8}
@@ -79,7 +81,8 @@ function ContentSkeleton() {
             ]}
           />
         </LibCardNarrow>
-      </div>
+        {/* </div> */}
+      </LibCardContainer>
     </LibMain>
   );
 }
@@ -138,7 +141,8 @@ async function Content({ entrantId }: ContentProps) {
           <LibH1>Entrant not found</LibH1>
         </div>
       )}
-      <div className="mx-1 mb-1 mt-4 grid grid-cols-1 gap-4 sm:mx-2 sm:mb-2 xl:mx-0 xl:mb-4">
+      <LibCardContainer>
+        {/* <div className="mx-1 mb-1 mt-4 grid grid-cols-1 gap-4 sm:mx-2 sm:mb-2 xl:mx-0 xl:mb-4"> */}
         <LibCardNarrow title={`Results for ${entrant?.name}`}>
           <Table>
             <TableHeader>
@@ -178,7 +182,7 @@ async function Content({ entrantId }: ContentProps) {
                               "en-GB",
                               {
                                 weekday: "short",
-                                month: "long",
+                                month: "short",
                                 day: "numeric",
                               },
                             )}
@@ -229,7 +233,8 @@ async function Content({ entrantId }: ContentProps) {
             </TableBody>
           </Table>
         </LibCardNarrow>
-      </div>
+        {/* </div> */}
+      </LibCardContainer>
     </LibMain>
   );
 }

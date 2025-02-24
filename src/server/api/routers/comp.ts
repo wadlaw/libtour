@@ -8,6 +8,40 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure, entryProcedure, adminProcedure } from "~/server/api/trpc";
 
 export const compRouter = createTRPCRouter({
+    update: adminProcedure
+      .input(z.object({ igCompId: z.string().min(4), shortName: z.string().min(1), name: z.string().min(1), date: z.date(), stableford: z.boolean() }))
+      .mutation(async ({ ctx, input}) => {
+        const comp = await ctx.db.comp.findFirst({
+          where: {
+            igCompId: input.igCompId
+          }
+        })
+        if (!comp || comp.completed) {
+          throw new TRPCError({ code: "PRECONDITION_FAILED" })
+        } else {
+          return ctx.db.comp.update({
+            where: {
+              igCompId: input.igCompId,
+            },
+            data: {
+              shortName: input.shortName,
+              name: input.name,
+              date: input.date,
+              stableford: input.stableford,
+            }
+          })
+        }
+      }), 
+    
+      delete : adminProcedure
+        .input(z.object({ igCompId: z.string().min(4)}))
+        .mutation(({ ctx, input }) => {
+          return ctx.db.comp.delete({
+            where: {
+              igCompId: input.igCompId
+            }
+          })
+        }),
 
     // withdraw: protectedProcedure
     enter: protectedProcedure
@@ -131,7 +165,7 @@ export const compRouter = createTRPCRouter({
         where: {
           OR: [
             { igCompId: input.comp },
-            { shortName: input.comp.toUpperCase() }
+            { shortName: input.comp.toLowerCase() }
           ]
 
         }
@@ -146,7 +180,7 @@ export const compRouter = createTRPCRouter({
         where: {
           OR: [
             { igCompId: input.comp },
-            { shortName: input.comp.toUpperCase() }
+            { shortName: input.comp.toLowerCase() }
           ]
 
         },

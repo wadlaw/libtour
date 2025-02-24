@@ -56,7 +56,7 @@ export default function UserSelect({
         assign.mutate({ userId: value, entrantId: entrant });
       }}
     >
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-[140px] @2xl/libcard:w-[180px]">
         <SelectValue placeholder="Assign a user" />
       </SelectTrigger>
       <SelectContent>

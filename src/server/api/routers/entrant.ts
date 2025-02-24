@@ -91,7 +91,7 @@ export const entrantRouter = createTRPCRouter({
             where: {
                 OR: [
                     { igCompId: input.comp },
-                    { shortName: input.comp.toUpperCase() }
+                    { shortName: input.comp.toLowerCase() }
                 ]
               
             }
@@ -152,7 +152,7 @@ export const entrantRouter = createTRPCRouter({
             where: {
                 OR: [
                     { igCompId: input.comp },
-                    { shortName: input.comp.toUpperCase() }
+                    { shortName: input.comp.toLowerCase() }
                 ]
             }
           })
