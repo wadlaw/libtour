@@ -348,3 +348,12 @@
   view-transition-name:entrant40-move
 }
 
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+

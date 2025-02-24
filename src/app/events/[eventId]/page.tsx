@@ -98,7 +98,7 @@ export default async function Event({
         <div>
           Date:{" "}
           {comp.date.toLocaleDateString("en-GB", {
-            weekday: "short",
+            weekday: "long",
             month: "long",
             day: "numeric",
           })}

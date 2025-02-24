@@ -34,7 +34,7 @@ export default authMiddleware({
     } 
 
     // Admin routes=====================
-    const adminRoutes = ['/users', '/entrants']
+    const adminRoutes = ['/users', '/admin/entrants', '/admin/events']
 
     if (adminRoutes.includes(req.nextUrl.pathname)) {
       if (!auth.sessionClaims?.metadata?.adminPermission){
@@ -51,7 +51,7 @@ export default authMiddleware({
     return NextResponse.next();
   },
   // Allow signed out users to access the specified routes:
-  publicRoutes: ['/', '/teams', '/teams/:path', '/events', '/events/:path', '/entrants/:path', '/api/webhooks/user', '/sign-in', '/prizewinners', '/halloffame', '/wallofshame', '/eclectic', '/honoursboards'],
+  publicRoutes: ['/', '/teams', '/teams/:path', '/events', '/events/:path', '/entrants', '/entrants/:path', '/api/webhooks/user', '/sign-in', '/prizewinners', '/halloffame', '/wallofshame', '/eclectic', '/honoursboards'],
   // Prevent the specified routes from accessing
   // authentication information:
   // ignoredRoutes: ['/no-auth-in-this-route'],

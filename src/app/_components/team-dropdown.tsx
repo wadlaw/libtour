@@ -75,7 +75,7 @@ function TeamDisplay({ teamId, teamName, linkName }: TeamDisplayProps) {
   return (
     <div className="flex gap-2">
       <Avatar className="h-6 w-6 overflow-hidden rounded-full">
-        <AvatarImage src={`${linkName}.png`} alt={teamName} />
+        <AvatarImage src={`/${linkName}.png`} alt={teamName} />
         <AvatarFallback className="rounded-full">{teamId}</AvatarFallback>
       </Avatar>
       <div className="flex flex-col justify-center">

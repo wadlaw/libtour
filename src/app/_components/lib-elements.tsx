@@ -74,7 +74,7 @@ export function TeamDisplay({
     <Link href={`/teams/${team.linkName}`}>
       <div className="flex items-center justify-start">
         <div
-          className={`${iconOnlyWhenSmall ? "sm:mr-2" : "mr-2"} ${!alwaysDisplayLogo && "hidden"} overflow-hidden rounded-full sm:block ${addTransitionName ? team.linkName : ""}`}
+          className={`${iconOnlyWhenSmall ? "@2xl/libcard:mr-2" : "mr-2"} ${!alwaysDisplayLogo && "hidden"} overflow-hidden rounded-full @2xl/libcard:block ${addTransitionName ? team.linkName : ""}`}
         >
           <Image
             src={`/${team.linkName}.png`}
@@ -83,7 +83,7 @@ export function TeamDisplay({
             alt={`${team.teamName} Team Logo`}
           ></Image>
         </div>
-        <div className={`${iconOnlyWhenSmall && "hidden"} sm:block`}>
+        <div className={`${iconOnlyWhenSmall && "hidden"} @2xl/libcard:block`}>
           {team.teamName}
         </div>
       </div>
@@ -143,8 +143,8 @@ export function EntrantDisplay({
           <IdentityIcon username={entrant.name} width={30} />
         </div> */}
 
-        <div className={`${iconOnlyWhenSmall && "hidden"} sm:block`}>
-          <span className="mr-1 sm:mr-2">
+        <div className={`${iconOnlyWhenSmall && "hidden"} @2xl/libcard:block`}>
+          <span className="mr-1 @2xl/libcard:mr-2">
             {entrant.name}
             {!!entrant.handicap ? ` (${entrant.handicap})` : ""}
             {!!entrant.score ? ` (${entrant.score})` : ""}
