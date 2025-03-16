@@ -869,242 +869,230 @@ dix
     //Add Comps=========================================================
 
     const comp1 = await prisma.comp.upsert({
-        where: { igCompId: '1742' },
+        where: { igCompId: '1997' },
         update: {},
         create: {
-            igCompId: '1742',
-            shortName: 'MARSTAB',
-            name: 'The Race to Le Touquet Stableford',
-            date: '2024-03-30T00:00:00.000Z',
+            igCompId: '1997',
+            shortName: 'oco',
+            name: 'OCO Spring Cup',
+            date: '2025-04-05T00:00:00.000Z',
             stableford: true,
-            open: true,
         }
     })
 
     const comp2 = await prisma.comp.upsert({
-        where: { igCompId: '1676' },
+        where: { igCompId: '2070' },
         update: {},
         create: {
-            igCompId: '1676',
-            shortName: 'OCO',
-            name: 'OCO Spring Cup',
-            date: '2024-04-07T00:00:00.000Z',
-            stableford: true,
+            igCompId: '2070',
+            shortName: 'aprmedal',
+            name: 'April Medal',
+            date: '2025-04-13T00:00:00.000Z',
+            stableford: false,
         }
     })
 
     const comp3 = await prisma.comp.upsert({
-        where: { igCompId: '1747' },
+        where: { igCompId: '2077' },
         update: {},
         create: {
-            igCompId: '1747',
-            shortName: 'APRMEDAL',
-            name: 'April Medal',
-            date: '2024-04-14T00:00:00.000Z',
-            stableford: false,
+            igCompId: '2077',
+            shortName: 'aprstab',
+            name: 'April Stableford',
+            date: '2025-04-20T00:00:00.000Z',
+            stableford: true,
 
         }
     })
 
     const comp4 = await prisma.comp.upsert({
-        where: { igCompId: '1750' },
+        where: { igCompId: '2000' },
         update: {},
         create: {
-            igCompId: '1750',
-            shortName: 'APRSTAB',
-            name: 'April Stableford',
-            date: '2024-04-21T00:00:00.000Z',
-            stableford: true,
+            igCompId: '2000',
+            shortName: 'stgeorge',
+            name: 'St Georges Day cup',
+            date: '2024-04-26T00:00:00.000Z',
+            stableford: false,
 
         }
     })
 
     const comp5 = await prisma.comp.upsert({
-        where: { igCompId: '1679' },
+        where: { igCompId: '2080' },
         update: {},
         create: {
-            igCompId: '1679',
-            shortName: 'STGEORGE',
-            name: "St George's Day Cup",
-            date: '2024-04-27T00:00:00.000Z',
+            igCompId: '2080',
+            shortName: 'maymedal',
+            name: "May Medal",
+            date: '2025-05-04T00:00:00.000Z',
             stableford: false,
 
         }
     })
 
     const comp6 = await prisma.comp.upsert({
-        where: { igCompId: '1753' },
+        where: { igCompId: '2003' },
         update: {},
         create: {
-            igCompId: '1753',
-            shortName: 'MAYMEDAL',
-            name: 'May Medal',
-            date: '2024-05-05T00:00:00.000Z',
-            stableford: false,
-
-        }
-    })
-
-    const comp7 = await prisma.comp.upsert({
-        where: { igCompId: '1682' },
-        update: {},
-        create: {
-            igCompId: '1682',
-            shortName: 'FOUNDATION',
-            name: 'Foundation Cup',
-            date: '2024-05-12T00:00:00.000Z',
-            stableford: false,
-
-        }
-    })
-
-    const comp8 = await prisma.comp.upsert({
-        where: { igCompId: '1756' },
-        update: {},
-        create: {
-            igCompId: '1756',
-            shortName: 'MAYSTAB',
-            name: 'May Stableford',
-            date: '2024-05-19T00:00:00.000Z',
+            igCompId: '2003',
+            shortName: 'footsie',
+            name: 'The Footsie',
+            date: '2025-05-18T00:00:00.000Z',
             stableford: true,
 
         }
     })
 
-    const comp9 = await prisma.comp.upsert({
-        where: { igCompId: '1759' },
+    const comp7 = await prisma.comp.upsert({
+        where: { igCompId: '2083' },
         update: {},
         create: {
-            igCompId: '1759',
-            shortName: 'JUNMEDAL',
-            name: 'June Medal',
-            date: '2024-06-02T00:00:00.000Z',
-            stableford: false,
+            igCompId: '2083',
+            shortName: 'maystab',
+            name: 'May Stableford',
+            date: '2024-06-01T00:00:00.000Z',
+            stableford: true,
 
         }
     })
 
-    const comp10 = await prisma.comp.upsert({
-        where: { igCompId: '1688' },
+    const comp8 = await prisma.comp.upsert({
+        where: { igCompId: '2009' },
         update: {},
         create: {
-            igCompId: '1688',
-            shortName: 'WIG',
-            name: 'WIG Trophy',
+            igCompId: '2009',
+            shortName: 'foundation',
+            name: 'Foundation Cup',
             date: '2024-06-08T00:00:00.000Z',
             stableford: false,
 
         }
     })
 
-    const comp11 = await prisma.comp.upsert({
-        where: { igCompId: '1762' },
+    const comp9 = await prisma.comp.upsert({
+        where: { igCompId: '2086' },
         update: {},
         create: {
-            igCompId: '1762',
-            shortName: 'JUNSTAB',
+            igCompId: '2086',
+            shortName: 'junmedal',
+            name: 'June Medal',
+            date: '2025-06-15T00:00:00.000Z',
+            stableford: false,
+
+        }
+    })
+
+    const comp10 = await prisma.comp.upsert({
+        where: { igCompId: '2012' },
+        update: {},
+        create: {
+            igCompId: '2012',
+            shortName: 'wig',
+            name: 'WIG Trophy',
+            date: '2024-06-21T00:00:00.000Z',
+            stableford: false,
+
+        }
+    })
+
+    const comp11 = await prisma.comp.upsert({
+        where: { igCompId: '2089' },
+        update: {},
+        create: {
+            igCompId: '2089',
+            shortName: 'junstab',
             name: 'June Stableford',
-            date: '2024-06-23T00:00:00.000Z',
+            date: '2025-06-29T00:00:00.000Z',
             stableford: true,
 
         }
     })
 
     const comp12 = await prisma.comp.upsert({
-        where: { igCompId: '1691' },
+        where: { igCompId: '2015' },
         update: {},
         create: {
-            igCompId: '1691',
-            shortName: 'FOOTSIE',
-            name: 'The Footsie',
-            date: '2024-06-30T00:00:00.000Z',
+            igCompId: '2015',
+            shortName: 'captain',
+            name: 'Captains Stableford',
+            date: '2025-07-06T00:00:00.000Z',
             stableford: true,
 
         }
     })
 
     const comp13 = await prisma.comp.upsert({
-        where: { igCompId: '1860' },
+        where: { igCompId: '2094' },
         update: {},
         create: {
-            igCompId: '1860',
-            shortName: 'JULMEDAL',
+            igCompId: '2094',
+            shortName: 'julmedal',
             name: 'July Medal',
-            date: '2024-07-14T00:00:00.000Z',
+            date: '2025-07-20T00:00:00.000Z',
             stableford: false,
 
         }
     })
 
     const comp14 = await prisma.comp.upsert({
-        where: { igCompId: '1872' },
+        where: { igCompId: '2097' },
         update: {},
         create: {
-            igCompId: '1872',
-            shortName: 'JULSTAB',
-            name: 'July Stableford',
-            date: '2024-07-21T00:00:00.000Z',
+            igCompId: '2097',
+            shortName: 'augstab',
+            name: 'August Stableford',
+            date: '2025-08-03T00:00:00.000Z',
             stableford: true,
 
         }
     })
 
     const comp15 = await prisma.comp.upsert({
-        where: { igCompId: '1863' },
+        where: { igCompId: '2100' },
         update: {},
         create: {
-            igCompId: '1863',
-            shortName: 'AUGMEDAL',
+            igCompId: '2100',
+            shortName: 'augmedal',
             name: 'August Medal',
-            date: '2024-08-11T00:00:00.000Z',
+            date: '2025-08-31T00:00:00.000Z',
             stableford: false,
 
         }
     })
 
     const comp16 = await prisma.comp.upsert({
-        where: { igCompId: '1875' },
+        where: { igCompId: '2029' },
         update: {},
         create: {
-            igCompId: '1875',
-            shortName: 'AUGSTAB',
-            name: 'August Stableford',
-            date: '2024-08-25T00:00:00.000Z',
-            stableford: true,
+            igCompId: '2029',
+            shortName: 'cc1',
+            name: 'Club Champs Rd1',
+            date: '2025-09-06T00:00:00.000Z',
+            stableford: false,
 
         }
     })
 
     const comp17 = await prisma.comp.upsert({
-        where: { igCompId: '1657' },
+        where: { igCompId: '2030' },
         update: {},
         create: {
-            igCompId: '1657',
-            shortName: 'CCHAMPS1',
-            name: 'Club Championship Rd 1',
-            date: '2024-08-31T00:00:00.000Z',
+            igCompId: '2030',
+            shortName: 'cc2',
+            name: 'Club Champs Rd2',
+            date: '2025-09-07T00:00:00.000Z',
             stableford: false,
 
         }
     })
 
-    const comp18 = await prisma.comp.upsert({
-        where: { igCompId: '1658' },
-        update: {},
-        create: {
-            igCompId: '1658',
-            shortName: 'CCHAMPS2',
-            name: 'Club Championship Rd 2',
-            date: '2024-09-01T00:00:00.000Z',
-            stableford: false,
-
-        }
-    })
+    
 
 
 
     console.log({comp1, comp2, comp3, comp4, comp5, comp6, comp7, comp8, comp9, comp10, 
-        comp11, comp12, comp13, comp14, comp15, comp16, comp17, comp18, })
+        comp11, comp12, comp13, comp14, comp15, comp16, comp17, })
 
         //Add Prize money===============================================
 

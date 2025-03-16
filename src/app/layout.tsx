@@ -39,43 +39,45 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider
-      appearance={{
-        elements: {
-          footer: "hidden",
-        },
-      }}
-    >
-      <ViewTransitions>
-        <html lang="en" suppressHydrationWarning>
-          <CSPostHogProvider>
-            <body className={`font-sans ${inter.variable}`}>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-              >
-                <TRPCReactProvider>
-                  <SidebarProvider>
-                    <AppSidebar />
+    <>
+      <ClerkProvider
+        appearance={{
+          elements: {
+            footer: "hidden",
+          },
+        }}
+      >
+        <ViewTransitions>
+          <html lang="en" suppressHydrationWarning>
+            <CSPostHogProvider>
+              <body className={`font-sans ${inter.variable}`}>
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme="system"
+                  enableSystem
+                  disableTransitionOnChange
+                >
+                  <TRPCReactProvider>
+                    <SidebarProvider>
+                      <AppSidebar />
 
-                    <SidebarInset>
-                      <PostHogPageView />
-                      {/* <div className="w-full"> */}
-                      <PageHeader />
-                      <Separator />
-                      {children}
-                      <Toaster />
-                      {/* </div> */}
-                    </SidebarInset>
-                  </SidebarProvider>
-                </TRPCReactProvider>
-              </ThemeProvider>
-            </body>
-          </CSPostHogProvider>
-        </html>
-      </ViewTransitions>
-    </ClerkProvider>
+                      <SidebarInset>
+                        <PostHogPageView />
+                        {/* <div className="w-full"> */}
+                        <PageHeader />
+                        <Separator />
+                        {children}
+                        <Toaster />
+                        {/* </div> */}
+                      </SidebarInset>
+                    </SidebarProvider>
+                  </TRPCReactProvider>
+                </ThemeProvider>
+              </body>
+            </CSPostHogProvider>
+          </html>
+        </ViewTransitions>
+      </ClerkProvider>
+    </>
   );
 }
