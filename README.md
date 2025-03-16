@@ -1,15 +1,8 @@
-# Libtour 2024
+# Libtour 2025
 
 ## https://libtour.net
 
 Libtour is a fun competition involving 18 individual competitions (listed below) and an overall team event. Prizes can be won as an individual or as a team at each event and at the end of the season for the top 3 teams.
-
-## Summary of Changes for 2024
-
-> - £20 Entrance fee to be charged. This will be used for the team prizes
-> - More team prizes!
-> - If you play in an event and your team wins the team event, your £5 entry will be refunded
-> - Wildcards only count toward team events - not individual prizes
 
 # Teams
 
@@ -98,8 +91,6 @@ Each event will offer individual prizes based on the number of entrants and how 
 Individual prizes will be paid out after each event (subject to all entry fees being received)
 
 # Wildcards
-
-_Changed for 2024 - the Wildcard adjustment will only count towards the team score - not the individual_
 
 Each team receives a _Wildcard_ for each event. Before the start of the event, the captain of each team should nominate which member of their team will get the wildcard for that event. This should be done on WhatsApp.
 

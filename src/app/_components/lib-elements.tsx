@@ -4,6 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 // import IdentityIcon from "./identicons";
 import { Badge } from "~/components/ui/badge";
 import { CollapsibleTrigger } from "~/components/ui/collapsible";
+import GradientText from "./gradient-text";
+const libColours = ["#8360c3", "#2ebf91", "#8360c3"];
+const libSadColours = ["#1e130c", "#9a8478", "#1e130c"];
 
 export default function LibMain(props: { children: React.ReactNode }) {
   return (
@@ -26,27 +29,44 @@ export function LibMainFixed(props: { children: React.ReactNode }) {
 export function LibH1(props: { children: React.ReactNode }) {
   return (
     // <h1 className="text-[3rem] font-extrabold tracking-tight text-[hsl(280,100%,70%)]">
-    <h1 className="title bg-gradient-to-r from-blue-700  to-red-700 bg-clip-text text-center  text-[3rem] font-extrabold leading-tight tracking-tight text-transparent">
+    // <h1 className="title bg-gradient-to-r from-blue-700  to-red-700 bg-clip-text text-center  text-[3rem] font-extrabold leading-tight tracking-tight text-transparent">
+    //   {props.children}
+    // </h1>
+    <GradientText
+      showBorder={false}
+      colors={libColours}
+      className="title text-center text-[3rem] font-extrabold leading-tight tracking-tight"
+    >
       {props.children}
-    </h1>
+    </GradientText>
   );
 }
 
 export function LibSadH1(props: { children: React.ReactNode }) {
   return (
     // <h1 className="text-[3rem] font-extrabold tracking-tight text-[hsl(280,100%,70%)]">
-    <h1 className="title bg-gradient-to-r from-[#1e130c] to-[#9a8478] bg-clip-text text-center  text-[3rem] font-extrabold leading-tight tracking-tight text-transparent">
+    // <h1 className="title bg-gradient-to-r from-[#1e130c] to-[#9a8478] bg-clip-text text-center  text-[3rem] font-extrabold leading-tight tracking-tight text-transparent">
+    <GradientText
+      showBorder={false}
+      colors={libSadColours}
+      className="title text-center text-[3rem] font-extrabold leading-tight tracking-tight"
+    >
       {props.children}
-    </h1>
+    </GradientText>
+    // </h1>
   );
 }
 
 export function LibBanner(props: { children: React.ReactNode }) {
   return (
     // <h1 className="text-[3rem] font-extrabold tracking-tight text-[hsl(280,100%,70%)]">
-    <h1 className="bg-gradient-to-r from-blue-700 to-red-700 bg-clip-text text-center   font-extrabold text-transparent">
+    <GradientText
+      showBorder={false}
+      colors={libColours}
+      className="text-center   font-extrabold"
+    >
       {props.children}
-    </h1>
+    </GradientText>
   );
 }
 
