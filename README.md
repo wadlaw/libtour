@@ -20,7 +20,7 @@ There are currently 8 teams:
 
 # Entry Fees
 
-**There is a £20 entrance fee to be part of the LIB Tour**. This money is used to cover the end of season team prizes.
+**There is a £20 entrance fee to be part of the Libtour**. This money is used to cover the end of season team prizes.
 
 > Libtour events are closely tied to official club competitions. Once you are a member of the Libtour, if you enter a club competition that is part of the Libtour, you are also entering the Libtour event for that competition. Correspondingly, to enter the Libtour event, you will need to enter the club competition.
 
@@ -131,7 +131,7 @@ These points are totalled over the season and the three teams with most points a
 
 # Events
 
-Libtour 2024 will be held over the following events:
+Libtour 2025 will be held over the following events:
 
 | Event                | Date       | Format     | IG Code |
 | :------------------- | :--------- | :--------- | :------ |
