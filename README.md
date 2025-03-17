@@ -2,7 +2,7 @@
 
 ## https://libtour.net
 
-Libtour is a fun competition involving 18 individual competitions (listed below) and an overall team event. Prizes can be won as an individual or as a team at each event and at the end of the season for the top 3 teams.
+Libtour is a fun competition involving 17 individual competitions (listed below) and an overall team event. Prizes can be won as an individual or as a team at each event and at the end of the season for the top 3 teams.
 
 # Teams
 
@@ -133,23 +133,22 @@ These points are totalled over the season and the three teams with most points a
 
 Libtour 2024 will be held over the following events:
 
-| Event                         | Date       | Format     | IG Code |
-| :---------------------------- | :--------- | :--------- | :------ |
-| Race to Le Touquet Stableford | Sat 30 Mar | Stableford | 1742    |
-| OCO Spring Cup                | Sun 7 Apr  | Stableford | 1676    |
-| April Medal                   | Sun 14 Apr | Medal      | 1747    |
-| April Stableford              | Sun 21 Apr | Stableford | 1750    |
-| St George's Day Cup           | Sat 27 Apr | Medal      | 1679    |
-| May Medal                     | Sun 5 May  | Medal      | 1753    |
-| Foundation Cup                | Sun 12 May | Medal      | 1682    |
-| May Stableford                | Sun 19 May | Stableford | 1756    |
-| June Medal                    | Sun 2 Jun  | Medal      | 1759    |
-| WIG Trophy                    | Sat 8 Jun  | Medal      | 1688    |
-| June Stableford               | Sun 23 Jun | Stableford | 1762    |
-| The Footsie                   | Sun 30 Jun | Stableford | 1691    |
-| July Medal                    | Sun 14 Jul | Medal      | 1860    |
-| July Stableford               | Sun 21 Jul | Stableford | 1872    |
-| August Medal                  | Sun 11 Aug | Medal      | 1863    |
-| Aug Stableford                | Sun 25 Aug | Stableford | 1875    |
-| Club Champs Rd 1              | Sat 31 Aug | Medal      | 1657    |
-| Club Champs Rd 2              | Sun 1 Sep  | Medal      | 1658    |
+| Event                | Date       | Format     | IG Code |
+| :------------------- | :--------- | :--------- | :------ |
+| OCO Spring Cup       | Sat 5 Apr  | Stableford | 1997    |
+| April Medal          | Sun 13 Apr | Medal      | 2070    |
+| April Stableford     | Sun 20 Apr | Stableford | 2077    |
+| St George's Day Cup  | Sat 26 Apr | Medal      | 2000    |
+| May Medal            | Sun 4 May  | Medal      | 2080    |
+| The Footsie          | Sun 18 May | Stableford | 2003    |
+| May Stableford       | Sun 1 Jun  | Stableford | 2083    |
+| Foundation Cup       | Sun 8 Jun  | Medal      | 2009    |
+| June Medal           | Sun 15 Jun | Medal      | 2086    |
+| Wig Trophy           | Sat 21 Jun | Medal      | 2012    |
+| June Stableford      | Sun 29 Jun | Stableford | 2089    |
+| Captain's Stableford | Sun 6 Jul  | Stableford | 2015    |
+| July Medal           | Sun 20 Jul | Medal      | 2094    |
+| August Stableford    | Sun 3 Aug  | Stableford | 2097    |
+| August Medal         | Sun 31 Aug | Medal      | 2100    |
+| Club Champs Rd 1     | Sat 6 Sep  | Medal      | 2029    |
+| Club Champs Rd 2     | Sun 7 Sep  | Medal      | 2030    |
