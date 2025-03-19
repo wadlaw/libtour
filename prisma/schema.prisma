@@ -17,66 +17,75 @@ datasource db {
 
 model Team {
     id         String       @unique
-    teamName   String       @unique
-    linkName   String       @unique
+    teamName   String       @unique @map("teamname")
+    linkName   String       @unique @map("linkname")
     points     Int          @default(0)
     entrants   Entrant[]
     teamPoints TeamPoints[]
+
+    @@map("teams")
 }
 
 model TeamPoints {
-    teamId   String
-    igCompId String
+    teamId   String @map("teamid")
+    igCompId String @map("igcompid")
     points   Int
     team     Team   @relation(fields: [teamId], references: [id])
     comp     Comp   @relation(fields: [igCompId], references: [igCompId])
 
     @@unique([teamId, igCompId])
+    @@map("teampoints")
 }
 
 model Entrant {
     id                Int           @id @default(autoincrement())
-    userId            String?       @unique
+    userId            String?       @unique @map("userid")
     name              String        @unique
     team              Team          @relation(fields: [teamId], references: [id])
-    teamId            String
+    teamId            String        @map("teamid")
     captain           Boolean       @default(false)
-    entryPermission   Boolean       @default(false)
-    financePermission Boolean       @default(false)
-    compPermission    Boolean       @default(false)
-    adminPermission   Boolean       @default(false)
+    entryPermission   Boolean       @default(false) @map("entrypermission")
+    financePermission Boolean       @default(false) @map("financepermission")
+    compPermission    Boolean       @default(false) @map("comppermission")
+    adminPermission   Boolean       @default(false) @map("adminpermission")
     comps             CompEntrant[]
     transactions      Transaction[]
     user              User?         @relation(fields: [userId], references: [id])
+
+    @@map("entrants")
 }
 
 model User {
     id        String   @unique
-    firstName String
+    firstName String   @map("firstname")
     surname   String
     email     String
-    avatarUrl String?
+    avatarUrl String?  @map("avatarurl")
     entrant   Entrant?
+
+    @@map("users")
 }
 
 model Transaction {
     id          Int          @id @default(autoincrement())
-    entrantId   Int
+    entrantId   Int          @map("entrantid")
     amount      Int
     description String
     type        String
-    netAmount   Int
-    igCompId    String?
+    netAmount   Int          @map("netamount")
+    igCompId    String?      @map("igcompid")
     winnings    Boolean      @default(false)
-    createdAt   DateTime     @default(now())
+    createdAt   DateTime     @default(now()) @map("createdat")
     compEntry   CompEntrant? @relation(fields: [igCompId, entrantId], references: [compId, entrantId], onDelete: Cascade)
     entrant     Entrant      @relation(fields: [entrantId], references: [id])
     comp        Comp?        @relation(fields: [igCompId], references: [igCompId])
+
+    @@map("transactions")
 }
 
 model Comp {
-    igCompId     String        @unique
-    shortName    String        @unique
+    igCompId     String        @unique @map("igcompid")
+    shortName    String        @unique @map("shortname")
     name         String        @unique
     date         DateTime
     stableford   Boolean       @default(false)
@@ -86,66 +95,73 @@ model Comp {
     entrants     CompEntrant[]
     teamPoints   TeamPoints[]
     transactions Transaction[]
+
+    @@map("comps")
 }
 
 model CompEntrant {
     compId           String
-    entrantId        Int
+    entrantId        Int           @map("entrantid")
     position         Int?
-    igPosition       Int?
-    provisionalScore Int?
+    igPosition       Int?          @map("igposition")
+    provisionalScore Int?          @map("provisionalscore")
     score            Int?
-    teamScore        Int?
-    noResult         Boolean       @default(false)
+    teamScore        Int?          @map("teamscore")
+    noResult         Boolean       @default(false) @map("noresult")
     wildcard         Boolean       @default(false)
     fee              Int           @default(500)
-    createdAt        DateTime      @default(now())
+    createdAt        DateTime      @default(now()) @map("createdat")
     entrant          Entrant       @relation(fields: [entrantId], references: [id])
     comp             Comp          @relation(fields: [compId], references: [igCompId])
     transactions     Transaction[]
     scorecard        Scorecard?
 
     @@unique([compId, entrantId])
+    @@map("compentrants")
 }
 
 model Scorecard {
     id               Int         @id @default(autoincrement())
-    compId           String
-    entrantId        Int
+    compId           String      @map("compid")
+    entrantId        Int         @map("entrantid")
     handicap         Int
     stableford       Boolean
-    NR               Boolean     @default(false)
+    NR               Boolean     @default(false) @map("nr")
     strokes          Int?
-    strokesCountback BigInt?
+    strokesCountback BigInt?     @map("strokescountback")
     points           Int
-    pointsCountback  BigInt
+    pointsCountback  BigInt      @map("pointscountback")
     net              Int?
-    netCountback     BigInt?
+    netCountback     BigInt?     @map("netcountback")
     holes            Hole[]
     compEntrant      CompEntrant @relation(fields: [compId, entrantId], references: [compId, entrantId], onDelete: Cascade)
 
     @@unique([compId, entrantId])
+    @@map("scorecards")
 }
 
 model Hole {
-    scorecardId Int
-    holeNo      Int
+    scorecardId Int       @map("scorecardid")
+    holeNo      Int       @map("holeno")
     par         Int
-    strokeIndex Int
+    strokeIndex Int       @map("strokeindex")
     strokes     Int?
-    NR          Boolean   @default(false)
+    NR          Boolean   @default(false) @map("nr")
     points      Int       @default(0)
     net         Int?
     scorecard   Scorecard @relation(fields: [scorecardId], references: [id], onDelete: Cascade)
 
     @@unique([scorecardId, holeNo])
+    @@map("holes")
 }
 
 model CompPrizes {
-    prizePot Int  @id
+    prizePot Int  @id @map("prizepot")
     first    Int
     second   Int
     third    Int?
     fourth   Int?
     fifth    Int?
+
+    @@map("compprizes")
 }
