@@ -333,7 +333,7 @@ async function main() {
     create: {
         name: 'Randip Gill',
         systemName: 'Randip Gill',
-        teamId: 'BS',
+        teamId: 'SW',
         captain: false,
         transactions: {
             create: {
