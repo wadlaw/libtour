@@ -93,6 +93,7 @@ async function main() {
     update: {},
     create: {
         name: 'Danny Innes',
+        systemName: 'Danny Innes',
         teamId: 'BD',
         captain: false,
         compPermission: false,
@@ -115,6 +116,7 @@ async function main() {
     update: {},
     create: {
         name: 'Tom Whitelaw',
+        systemName: 'Tom Whitelaw',
         teamId: 'BD',
         captain: true,
         entryPermission: true,
@@ -138,6 +140,7 @@ async function main() {
     update: {},
     create: {
         name: "Chris O'Donoghue",
+        systemName: "Chris O'Donoghue",
         teamId: 'SW',
         captain: true,
         entryPermission: true,
@@ -161,6 +164,7 @@ async function main() {
     update: {},
     create: {
         name: 'Kyle Deane',
+        systemName: 'Kyle Deane',
         teamId: 'BB',
         captain: true,
         transactions: {
@@ -179,7 +183,8 @@ async function main() {
     where: { name: 'Terence Hare'},
     update: {},
     create: {
-        name: 'Terence Hare',
+        name: 'Terry Hare',
+        systemName: 'Terence Hare',
         teamId: 'EU',
         captain: true,
         transactions: {
@@ -199,6 +204,7 @@ async function main() {
     update: {},
     create: {
         name: 'Anthony Elisak',
+        systemName: 'Anthony Elisak',
         teamId: '2B',
         captain: true,
         transactions: {
@@ -218,6 +224,7 @@ async function main() {
     update: {},
     create: {
         name: 'Steve Dixon',
+        systemName: 'Steve Dixon',
         teamId: 'SH',
         captain: true,
         transactions: {
@@ -237,6 +244,7 @@ async function main() {
     update: {},
     create: {
         name: 'Suki Saran',
+        systemName: 'Suki Saran',
         teamId: 'BS',
         captain: true,
         transactions: {
@@ -263,6 +271,7 @@ async function main() {
     update: {},
     create: {
         name: 'David Washer',
+        systemName: 'David Washer',
         teamId: 'RF',
         captain: true,
         transactions: {
@@ -282,6 +291,7 @@ async function main() {
     update: {},
     create: {
         name: 'Graham Marshall',
+        systemName: 'Graham Marshall',
         teamId: 'BD',
         captain: false,
         transactions: {
@@ -302,6 +312,7 @@ async function main() {
     update: {},
     create: {
         name: 'Lee Merryweather',
+        systemName: 'Lee Merryweather',
         teamId: 'SW',
         captain: false,
         transactions: {
@@ -321,6 +332,7 @@ async function main() {
     update: {},
     create: {
         name: 'Randip Gill',
+        systemName: 'Randip Gill',
         teamId: 'BS',
         captain: false,
         transactions: {
@@ -340,6 +352,7 @@ async function main() {
     update: {},
     create: {
         name: 'Simon Forde',
+        systemName: 'Simon Forde',
         teamId: 'SW',
         captain: false,
         transactions: {
@@ -363,10 +376,11 @@ async function main() {
   })
 
   const smithy = await prisma.entrant.upsert({
-    where: { name: 'Ian R Smith'},
+    where: { name: 'Ian Smith'},
     update: {},
     create: {
-        name: 'Ian R Smith',
+        name: 'Ian Smith',
+        systemName: 'Ian R Smith',
         teamId: 'EU',
         captain: false,
         transactions: {
@@ -382,10 +396,11 @@ async function main() {
   })
 
   const jethro = await prisma.entrant.upsert({
-    where: { name: 'Thomas Jeffrey'},
+    where: { name: 'Tom Jeffrey'},
     update: {},
     create: {
-        name: 'Thomas Jeffrey',
+        name: 'Tom Jeffrey',
+        systemName: 'Thomas Jeffrey',
         teamId: '2B',
         captain: false,
         transactions: {
@@ -407,6 +422,7 @@ async function main() {
     update: {},
     create: {
         name: 'Duncan Jenner',
+        systemName: 'Duncan Jenner',
         teamId: 'BS',
         captain: false,
         transactions: {
@@ -425,10 +441,11 @@ async function main() {
 
 
   const tony = await prisma.entrant.upsert({
-    where: { name: 'Anthony Money'},
+    where: { name: 'Tony Money'},
     update: {},
     create: {
-        name: 'Anthony Money',
+        name: 'Tony Money',
+        systemName: 'Anthony Money',
         teamId: '2B',
         transactions: {
             create: {
@@ -447,6 +464,7 @@ async function main() {
     update: {},
     create: {
         name: 'Peter Greene',
+        systemName: 'Peter Greene',
         teamId: 'BB',
         captain: false,
         transactions: {
@@ -466,6 +484,7 @@ async function main() {
     update: {},
     create: {
         name: 'Paul Salvage',
+        systemName: 'Paul Salvage',
         teamId: 'SW',
         captain: false,
         transactions: {
@@ -481,10 +500,11 @@ async function main() {
   })
 
   const darren = await prisma.entrant.upsert({
-    where: { name: 'Darren James Read'},
+    where: { name: 'Darren Read'},
     update: {},
     create: {
-        name: 'Darren James Read',
+        name: 'Darren Read',
+        systemName: 'Darren James Read',
         teamId: 'SH',
         captain: false,
         transactions: {
@@ -504,6 +524,7 @@ async function main() {
     update: {},
     create: {
         name: 'John Ashen',
+        systemName: 'John Ashen',
         teamId: 'EU',
         captain: false,
         transactions: {
@@ -524,6 +545,7 @@ async function main() {
     update: {},
     create: {
         name: 'Ben Pettet',
+        systemName: 'Ben Pettet',
         teamId: 'RF',
         captain: false,
         transactions: {
@@ -551,6 +573,7 @@ async function main() {
     update: {},
     create: {
         name: 'Chris Stevens',
+        systemName: 'Chris Stevens',
         teamId: '2B',
         captain: false,
         transactions: {
@@ -570,6 +593,7 @@ async function main() {
     update: {},
     create: {
         name: 'Greg Hammond',
+        systemName: 'Greg Hammond',
         teamId: 'BB',
         captain: false,
         compPermission: true,
@@ -591,6 +615,7 @@ async function main() {
     update: {},
     create: {
         name: 'Tony Delaney',
+        systemName: 'Tony Delaney',
         teamId: 'BD',
         captain: false,
         transactions: {
@@ -610,6 +635,7 @@ async function main() {
     update: {},
     create: {
         name: 'Justin Gledhill-Carr',
+        systemName: 'Justin Gledhill-Carr',
         teamId: 'RF',
         captain: false,
         transactions: {
@@ -635,10 +661,11 @@ async function main() {
 
 
   const malk = await prisma.entrant.upsert({
-    where: { name: 'Malkinder Dhami'},
+    where: { name: 'Malk Dhami'},
     update: {},
     create: {
-        name: 'Malkinder Dhami',
+        name: 'Malk Dhami',
+        systemName: 'Malkinder Dhami',
         teamId: 'BS',
         captain: false,
         transactions: {
@@ -659,6 +686,7 @@ async function main() {
     update: {},
     create: {
         name: 'Lokesh Patel',
+        systemName: 'Lokesh Patel',
         teamId: 'SH',
         captain: false,
         transactions: {
@@ -674,10 +702,11 @@ async function main() {
   })
 
   const jamie = await prisma.entrant.upsert({
-    where: { name: 'James Bartlett'},
+    where: { name: 'Jamie Bartlett'},
     update: {},
     create: {
-        name: 'James Bartlett',
+        name: 'Jamie Bartlett',
+        systemName: 'James Bartlett',
         teamId: 'EU',
         captain: false,
         transactions: {
@@ -697,6 +726,7 @@ async function main() {
     update: {},
     create: {
         name: 'Kelvin Munroe',
+        systemName: 'Kelvin Munroe',
         teamId: 'BS',
         captain: false,
         transactions: {
@@ -725,6 +755,7 @@ async function main() {
     update: {},
     create: {
         name: 'Linas Bumblys',
+        systemName: 'Linas Bumblys',
         teamId: 'SH',
         captain: false,
         transactions: {
@@ -744,6 +775,7 @@ async function main() {
     update: {},
     create: {
         name: 'Sam Ryan',
+        systemName: 'Sam Ryan',
         teamId: 'BB',
         captain: false,
         transactions: {
@@ -763,6 +795,7 @@ async function main() {
     update: {},
     create: {
         name: 'Charlie French',
+        systemName: 'Charlie French',
         teamId: 'BS',
         captain: false,
         transactions: {
@@ -782,6 +815,7 @@ async function main() {
     update: {},
     create: {
         name: 'Ben Doe',
+        systemName: 'Ben Doe',
         teamId: 'BB',
         captain: false,
         transactions: {
@@ -801,6 +835,7 @@ async function main() {
     update: {},
     create: {
         name: 'Henry Jackson',
+        systemName: 'Henry Jackson',
         teamId: 'EU',
         captain: false,
         transactions: {
@@ -820,6 +855,7 @@ async function main() {
     update: {},
     create: {
         name: 'Dan Blatchford',
+        systemName: 'Dan Blatchford',
         teamId: 'RF',
         captain: false,
         transactions: {
@@ -839,6 +875,7 @@ async function main() {
     update: {},
     create: {
         name: 'Gareth Coulter',
+        systemName: 'Gareth Coulter',
         teamId: 'RF',
         captain: false,
         transactions: {
@@ -858,6 +895,7 @@ async function main() {
     update: {},
     create: {
         name: 'Paul Wood',
+        systemName: 'Paul Wood',
         teamId: 'SH',
         captain: false,
         transactions: {
@@ -877,6 +915,7 @@ async function main() {
     update: {},
     create: {
         name: 'Craig Jeffrey',
+        systemName: 'Craig Jeffrey',
         teamId: '2B',
         captain: false,
         transactions: {
@@ -896,6 +935,7 @@ async function main() {
     update: {},
     create: {
         name: 'Stephen Brown',
+        systemName: 'Stephen Brown',
         teamId: 'BD',
         captain: false,
         transactions: {
