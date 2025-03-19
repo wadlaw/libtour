@@ -25,15 +25,18 @@ import { TeamDropdown } from "./team-dropdown";
 type EditEntrantType = {
   entrantId: number;
   name: string;
+  systemName: string;
   teamId: string;
 };
 
 export function EditEntrantDialog({
   entrantId,
   name,
+  systemName,
   teamId,
 }: EditEntrantType) {
   const [entrantName, setEntrantName] = useState<string>(name);
+  const [sysName, setSysName] = useState<string>(systemName);
   const [team, setTeam] = useState<string>(teamId);
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -79,19 +82,32 @@ export function EditEntrantDialog({
               onChange={(evt) => setEntrantName(evt.target.value)}
             />
           </div>
+          <div className="grid gap-2">
+            <Label htmlFor="systemname">System Name</Label>
+            <Input
+              type="text"
+              id="systemname"
+              placeholder="Name cannot be blank"
+              value={sysName}
+              onChange={(evt) => setSysName(evt.target.value)}
+            />
+          </div>
         </div>
 
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             disabled={
-              (entrantName == name && team === teamId) ||
+              (entrantName == name &&
+                sysName == systemName &&
+                team === teamId) ||
               entrantName.length == 0
             }
             onClick={() => {
               entrant.mutate({
                 entrantId: entrantId,
                 name: entrantName,
+                systemName: sysName,
                 teamId: team,
               });
             }}

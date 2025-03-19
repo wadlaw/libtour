@@ -32,7 +32,10 @@ export default async function Entrants() {
               <TableRow>
                 <TableHead className="px-1 @2xl/libcard:px-2">Update</TableHead>
                 <TableHead className="px-1 @2xl/libcard:px-2">Name</TableHead>
-                <TableHead className="hidden px-1 @xl/libcard:table-cell @2xl/main:px-2">
+                <TableHead className="hidden px-1 @2xl/libcard:px-2 @4xl/libcard:table-cell ">
+                  IG Name
+                </TableHead>
+                <TableHead className="hidden px-1 @xl/libcard:table-cell @2xl/libcard:px-2">
                   Team
                 </TableHead>
                 <TableHead className="px-1 @2xl/libcard:px-2">
@@ -49,13 +52,17 @@ export default async function Entrants() {
                         key={entrant.id}
                         entrantId={entrant.id}
                         name={entrant.name}
+                        systemName={entrant.systemName}
                         teamId={entrant.teamId}
                       />
                     </TableCell>
                     <TableCell className="px-1 @2xl/libcard:px-2">
                       <EntrantDisplay entrant={entrant} />
                     </TableCell>
-                    <TableCell className="hidden px-1 @xl/libcard:table-cell @2xl/main:px-2">
+                    <TableCell className="hidden px-1 @2xl/libcard:px-2 @4xl/libcard:table-cell">
+                      {entrant.systemName}
+                    </TableCell>
+                    <TableCell className="hidden px-1 @xl/libcard:table-cell @2xl/libcard:px-2">
                       <TeamDisplay
                         team={entrant.team}
                         alwaysDisplayLogo={true}
