@@ -180,7 +180,7 @@ async function main() {
   })
 
   const terry = await prisma.entrant.upsert({
-    where: { name: 'Terence Hare'},
+    where: { name: 'Terry Hare'},
     update: {},
     create: {
         name: 'Terry Hare',
@@ -257,10 +257,10 @@ async function main() {
             },
             {
                 amount: 5550,
-                description: 'Libtour Entry Fee',
+                description: 'Balance from 2024',
                 type: 'CR',
                 netAmount: 5550,
-                createdAt: '2025-03-31T01:00:00.000Z'
+                createdAt: '2025-03-01T01:00:00.000Z'
             },]
         }
     },
@@ -368,7 +368,7 @@ async function main() {
                 description: 'Balance from 2024',
                 type: 'CR',
                 netAmount: 2800,
-                createdAt: '2025-03-31T01:00:00.000Z'
+                createdAt: '2025-03-01T01:00:00.000Z'
             },
         ]
         }
@@ -561,7 +561,7 @@ async function main() {
                 description: 'Balance from 2024',
                 type: 'CR',
                 netAmount: 4000,
-                createdAt: '2025-03-31T01:00:00.000Z'
+                createdAt: '2025-03-01T01:00:00.000Z'
             },
         ]
         }
