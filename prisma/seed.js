@@ -39,8 +39,8 @@ async function main() {
     update: {},
     create: {
         id: 'BD',
-        teamName: 'Lost Balls',
-        linkName: 'lostballs',
+        teamName: 'Balls Deep',
+        linkName: 'ballsdeep',
     },
   })
 
@@ -93,18 +93,19 @@ async function main() {
     update: {},
     create: {
         name: 'Danny Innes',
-        teamId: 'BS',
-        captain: true,
-        compPermission: true,
-        entryPermission: true,
+        systemName: 'Danny Innes',
+        teamId: 'BD',
+        captain: false,
+        compPermission: false,
+        entryPermission: false,
         financePermission: true,
         transactions: {
             create: {
                 amount: 2000,
-                description: 'LIB Entry Fee',
+                description: 'Libtour Entry Fee',
                 type: 'DR',
                 netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
+                createdAt: '2025-03-31T01:00:00.000Z'
             }
         }
     },
@@ -115,6 +116,7 @@ async function main() {
     update: {},
     create: {
         name: 'Tom Whitelaw',
+        systemName: 'Tom Whitelaw',
         teamId: 'BD',
         captain: true,
         entryPermission: true,
@@ -124,10 +126,10 @@ async function main() {
         transactions: {
             create: {
                 amount: 2000,
-                description: 'LIB Entry Fee',
+                description: 'Libtour Entry Fee',
                 type: 'DR',
                 netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
+                createdAt: '2025-03-31T01:00:00.000Z'
             }
         }
     },
@@ -138,6 +140,7 @@ async function main() {
     update: {},
     create: {
         name: "Chris O'Donoghue",
+        systemName: "Chris O'Donoghue",
         teamId: 'SW',
         captain: true,
         entryPermission: true,
@@ -147,10 +150,10 @@ async function main() {
         transactions: {
             create: {
                 amount: 2000,
-                description: 'LIB Entry Fee',
+                description: 'Libtour Entry Fee',
                 type: 'DR',
                 netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
+                createdAt: '2025-03-31T01:00:00.000Z'
             }
         }
     },
@@ -161,15 +164,16 @@ async function main() {
     update: {},
     create: {
         name: 'Kyle Deane',
+        systemName: 'Kyle Deane',
         teamId: 'BB',
         captain: true,
         transactions: {
             create: {
                 amount: 2000,
-                description: 'LIB Entry Fee',
+                description: 'Libtour Entry Fee',
                 type: 'DR',
                 netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
+                createdAt: '2025-03-31T01:00:00.000Z'
             }
         }
     },
@@ -179,644 +183,17 @@ async function main() {
     where: { name: 'Terence Hare'},
     update: {},
     create: {
-        name: 'Terence Hare',
+        name: 'Terry Hare',
+        systemName: 'Terence Hare',
         teamId: 'EU',
         captain: true,
         transactions: {
             create: {
                 amount: 2000,
-                description: 'LIB Entry Fee',
+                description: 'Libtour Entry Fee',
                 type: 'DR',
                 netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const robbie = await prisma.entrant.upsert({
-    where: { name: 'Robbie Howe'},
-    update: {},
-    create: {
-        name: 'Robbie Howe',
-        teamId: 'RF',
-        captain: true,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const graham = await prisma.entrant.upsert({
-    where: { name: 'Graham Marshall'},
-    update: {},
-    create: {
-        name: 'Graham Marshall',
-        teamId: 'SH',
-        captain: true,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const james = await prisma.entrant.upsert({
-    where: { name: 'James Reynolds'},
-    update: {},
-    create: {
-        name: 'James Reynolds',
-        teamId: '2B',
-        captain: true,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const lee = await prisma.entrant.upsert({
-    where: { name: 'Lee Merryweather'},
-    update: {},
-    create: {
-        name: 'Lee Merryweather',
-        teamId: 'BD',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const randip = await prisma.entrant.upsert({
-    where: { name: 'Randip Gill'},
-    update: {},
-    create: {
-        name: 'Randip Gill',
-        teamId: 'BS',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const fordey = await prisma.entrant.upsert({
-    where: { name: 'Simon Forde'},
-    update: {},
-    create: {
-        name: 'Simon Forde',
-        teamId: 'BD',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const smithy = await prisma.entrant.upsert({
-    where: { name: 'Ian R Smith'},
-    update: {},
-    create: {
-        name: 'Ian R Smith',
-        teamId: 'BD',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const jethro = await prisma.entrant.upsert({
-    where: { name: 'Thomas Jeffrey'},
-    update: {},
-    create: {
-        name: 'Thomas Jeffrey',
-        teamId: 'BD',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const suki = await prisma.entrant.upsert({
-    where: { name: 'Suki Saran'},
-    update: {},
-    create: {
-        name: 'Suki Saran',
-        teamId: 'BS',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const dj = await prisma.entrant.upsert({
-    where: { name: 'Duncan Jenner'},
-    update: {},
-    create: {
-        name: 'Duncan Jenner',
-        teamId: 'BS',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const cindy = await prisma.entrant.upsert({
-    where: { name: 'Sam Crawford'},
-    update: {},
-    create: {
-        name: 'Sam Crawford',
-        teamId: 'BS',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const dish = await prisma.entrant.upsert({
-    where: { name: 'David Washer'},
-    update: {},
-    create: {
-        name: 'David Washer',
-        teamId: 'BB',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const tony = await prisma.entrant.upsert({
-    where: { name: 'Anthony Money'},
-    update: {},
-    create: {
-        name: 'Anthony Money',
-        teamId: 'BB',
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const greeney = await prisma.entrant.upsert({
-    where: { name: 'Peter Greene'},
-    update: {},
-    create: {
-        name: 'Peter Greene',
-        teamId: 'BB',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const salvage = await prisma.entrant.upsert({
-    where: { name: 'Paul Salvage'},
-    update: {},
-    create: {
-        name: 'Paul Salvage',
-        teamId: 'BB',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const darren = await prisma.entrant.upsert({
-    where: { name: 'Darren James Read'},
-    update: {},
-    create: {
-        name: 'Darren James Read',
-        teamId: 'EU',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const john = await prisma.entrant.upsert({
-    where: { name: 'John Ashen'},
-    update: {},
-    create: {
-        name: 'John Ashen',
-        teamId: 'EU',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const malc = await prisma.entrant.upsert({
-    where: { name: 'Malcolm McLaughlin'},
-    update: {},
-    create: {
-        name: 'Malcolm McLaughlin',
-        teamId: 'EU',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const ben = await prisma.entrant.upsert({
-    where: { name: 'Ben Pettet'},
-    update: {},
-    create: {
-        name: 'Ben Pettet',
-        teamId: 'EU',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const chris = await prisma.entrant.upsert({
-    where: { name: 'Chris Stevens'},
-    update: {},
-    create: {
-        name: 'Chris Stevens',
-        teamId: 'RF',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const greg = await prisma.entrant.upsert({
-    where: { name: 'Greg Hammond'},
-    update: {},
-    create: {
-        name: 'Greg Hammond',
-        teamId: 'RF',
-        captain: false,
-        compPermission: true,
-        financePermission: true,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const chef = await prisma.entrant.upsert({
-    where: { name: 'Tony Delaney'},
-    update: {},
-    create: {
-        name: 'Tony Delaney',
-        teamId: 'RF',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const justin = await prisma.entrant.upsert({
-    where: { name: 'Justin Gledhill-Carr'},
-    update: {},
-    create: {
-        name: 'Justin Gledhill-Carr',
-        teamId: 'RF',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const charlie = await prisma.entrant.upsert({
-    where: { name: 'Charlie Appleton'},
-    update: {},
-    create: {
-        name: 'Charlie Appleton',
-        teamId: 'SH',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const kev = await prisma.entrant.upsert({
-    where: { name: 'Kevin Reid'},
-    update: {},
-    create: {
-        name: 'Kevin Reid',
-        teamId: 'SH',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const malk = await prisma.entrant.upsert({
-    where: { name: 'Malkinder Dhami'},
-    update: {},
-    create: {
-        name: 'Malkinder Dhami',
-        teamId: 'SH',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const phil = await prisma.entrant.upsert({
-    where: { name: 'Phil Jarrett'},
-    update: {},
-    create: {
-        name: 'Phil Jarrett',
-        teamId: 'SH',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const ed = await prisma.entrant.upsert({
-    where: { name: 'Edward Money'},
-    update: {},
-    create: {
-        name: 'Edward Money',
-        teamId: 'SW',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const lokesh = await prisma.entrant.upsert({
-    where: { name: 'Lokesh Patel'},
-    update: {},
-    create: {
-        name: 'Lokesh Patel',
-        teamId: 'SW',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const jamie = await prisma.entrant.upsert({
-    where: { name: 'James Bartlett'},
-    update: {},
-    create: {
-        name: 'James Bartlett',
-        teamId: 'SW',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const kelvin = await prisma.entrant.upsert({
-    where: { name: 'Kelvin Munroe'},
-    update: {},
-    create: {
-        name: 'Kelvin Munroe',
-        teamId: 'SW',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const linas = await prisma.entrant.upsert({
-    where: { name: 'Linas Bumblys'},
-    update: {},
-    create: {
-        name: 'Linas Bumblys',
-        teamId: '2B',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
-            }
-        }
-    },
-  })
-
-  const sam = await prisma.entrant.upsert({
-    where: { name: 'Sam Ryan'},
-    update: {},
-    create: {
-        name: 'Sam Ryan',
-        teamId: '2B',
-        captain: false,
-        transactions: {
-            create: {
-                amount: 2000,
-                description: 'LIB Entry Fee',
-                type: 'DR',
-                netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
+                createdAt: '2025-03-31T01:00:00.000Z'
             }
         }
     },
@@ -827,15 +204,16 @@ async function main() {
     update: {},
     create: {
         name: 'Anthony Elisak',
+        systemName: 'Anthony Elisak',
         teamId: '2B',
-        captain: false,
+        captain: true,
         transactions: {
             create: {
                 amount: 2000,
-                description: 'LIB Entry Fee',
+                description: 'Libtour Entry Fee',
                 type: 'DR',
                 netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
+                createdAt: '2025-03-31T01:00:00.000Z'
             }
         }
     },
@@ -846,24 +224,737 @@ async function main() {
     update: {},
     create: {
         name: 'Steve Dixon',
-        teamId: '2B',
-        captain: false,
+        systemName: 'Steve Dixon',
+        teamId: 'SH',
+        captain: true,
         transactions: {
             create: {
                 amount: 2000,
-                description: 'LIB Entry Fee',
+                description: 'Libtour Entry Fee',
                 type: 'DR',
                 netAmount: -2000,
-                createdAt: '2024-03-29T00:00:00.000Z'
+                createdAt: '2025-03-31T01:00:00.000Z'
             }
         }
     },
   })
 
-  console.log({danny, tom, kyle, terry, cod, robbie,graham,  james, lee, randip, fordey, smithy,
-jethro, suki, dj, cindy, dish, tony, greeney, salvage, darren, john, malc, ben, chris,
-greg, chef, justin, charlie, kev, malk, phil, ed, lokesh, jamie, kelvin, linas, sam, anthony,
-dix
+  const suki = await prisma.entrant.upsert({
+    where: { name: 'Suki Saran'},
+    update: {},
+    create: {
+        name: 'Suki Saran',
+        systemName: 'Suki Saran',
+        teamId: 'BS',
+        captain: true,
+        transactions: {
+            create: [{
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            },
+            {
+                amount: 5550,
+                description: 'Libtour Entry Fee',
+                type: 'CR',
+                netAmount: 5550,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            },]
+        }
+    },
+  })
+
+  const dish = await prisma.entrant.upsert({
+    where: { name: 'David Washer'},
+    update: {},
+    create: {
+        name: 'David Washer',
+        systemName: 'David Washer',
+        teamId: 'RF',
+        captain: true,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const graham = await prisma.entrant.upsert({
+    where: { name: 'Graham Marshall'},
+    update: {},
+    create: {
+        name: 'Graham Marshall',
+        systemName: 'Graham Marshall',
+        teamId: 'BD',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+
+  const lee = await prisma.entrant.upsert({
+    where: { name: 'Lee Merryweather'},
+    update: {},
+    create: {
+        name: 'Lee Merryweather',
+        systemName: 'Lee Merryweather',
+        teamId: 'SW',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const randip = await prisma.entrant.upsert({
+    where: { name: 'Randip Gill'},
+    update: {},
+    create: {
+        name: 'Randip Gill',
+        systemName: 'Randip Gill',
+        teamId: 'SW',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const fordey = await prisma.entrant.upsert({
+    where: { name: 'Simon Forde'},
+    update: {},
+    create: {
+        name: 'Simon Forde',
+        systemName: 'Simon Forde',
+        teamId: 'SW',
+        captain: false,
+        transactions: {
+            create: [{
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            },
+            {
+                amount: 2800,
+                description: 'Balance from 2024',
+                type: 'CR',
+                netAmount: 2800,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            },
+        ]
+        }
+    },
+  })
+
+  const smithy = await prisma.entrant.upsert({
+    where: { name: 'Ian Smith'},
+    update: {},
+    create: {
+        name: 'Ian Smith',
+        systemName: 'Ian R Smith',
+        teamId: 'EU',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const jethro = await prisma.entrant.upsert({
+    where: { name: 'Tom Jeffrey'},
+    update: {},
+    create: {
+        name: 'Tom Jeffrey',
+        systemName: 'Thomas Jeffrey',
+        teamId: '2B',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+
+
+  const dj = await prisma.entrant.upsert({
+    where: { name: 'Duncan Jenner'},
+    update: {},
+    create: {
+        name: 'Duncan Jenner',
+        systemName: 'Duncan Jenner',
+        teamId: 'BS',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+
+
+
+  const tony = await prisma.entrant.upsert({
+    where: { name: 'Tony Money'},
+    update: {},
+    create: {
+        name: 'Tony Money',
+        systemName: 'Anthony Money',
+        teamId: '2B',
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const greeney = await prisma.entrant.upsert({
+    where: { name: 'Peter Greene'},
+    update: {},
+    create: {
+        name: 'Peter Greene',
+        systemName: 'Peter Greene',
+        teamId: 'BB',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const salvage = await prisma.entrant.upsert({
+    where: { name: 'Paul Salvage'},
+    update: {},
+    create: {
+        name: 'Paul Salvage',
+        systemName: 'Paul Salvage',
+        teamId: 'SW',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const darren = await prisma.entrant.upsert({
+    where: { name: 'Darren Read'},
+    update: {},
+    create: {
+        name: 'Darren Read',
+        systemName: 'Darren James Read',
+        teamId: 'SH',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const john = await prisma.entrant.upsert({
+    where: { name: 'John Ashen'},
+    update: {},
+    create: {
+        name: 'John Ashen',
+        systemName: 'John Ashen',
+        teamId: 'EU',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+
+  const ben = await prisma.entrant.upsert({
+    where: { name: 'Ben Pettet'},
+    update: {},
+    create: {
+        name: 'Ben Pettet',
+        systemName: 'Ben Pettet',
+        teamId: 'RF',
+        captain: false,
+        transactions: {
+            create: [{
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            },
+            {
+                amount: 4000,
+                description: 'Balance from 2024',
+                type: 'CR',
+                netAmount: 4000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            },
+        ]
+        }
+    },
+  })
+
+  const chris = await prisma.entrant.upsert({
+    where: { name: 'Chris Stevens'},
+    update: {},
+    create: {
+        name: 'Chris Stevens',
+        systemName: 'Chris Stevens',
+        teamId: '2B',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const greg = await prisma.entrant.upsert({
+    where: { name: 'Greg Hammond'},
+    update: {},
+    create: {
+        name: 'Greg Hammond',
+        systemName: 'Greg Hammond',
+        teamId: 'BB',
+        captain: false,
+        compPermission: true,
+        financePermission: true,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const chef = await prisma.entrant.upsert({
+    where: { name: 'Tony Delaney'},
+    update: {},
+    create: {
+        name: 'Tony Delaney',
+        systemName: 'Tony Delaney',
+        teamId: 'BD',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const justin = await prisma.entrant.upsert({
+    where: { name: 'Justin Gledhill-Carr'},
+    update: {},
+    create: {
+        name: 'Justin Gledhill-Carr',
+        systemName: 'Justin Gledhill-Carr',
+        teamId: 'RF',
+        captain: false,
+        transactions: {
+            create: [
+                {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            },
+            {
+                amount: 3500,
+                description: 'Balance from 2024',
+                type: 'CR',
+                netAmount: 3500,
+                createdAt: '2025-03-01T01:00:00.000Z'
+            },
+        ]
+        }
+    },
+  })
+
+
+  const malk = await prisma.entrant.upsert({
+    where: { name: 'Malk Dhami'},
+    update: {},
+    create: {
+        name: 'Malk Dhami',
+        systemName: 'Malkinder Dhami',
+        teamId: 'BS',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+
+  const lokesh = await prisma.entrant.upsert({
+    where: { name: 'Lokesh Patel'},
+    update: {},
+    create: {
+        name: 'Lokesh Patel',
+        systemName: 'Lokesh Patel',
+        teamId: 'SH',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const jamie = await prisma.entrant.upsert({
+    where: { name: 'Jamie Bartlett'},
+    update: {},
+    create: {
+        name: 'Jamie Bartlett',
+        systemName: 'James Bartlett',
+        teamId: 'EU',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const kelvin = await prisma.entrant.upsert({
+    where: { name: 'Kelvin Munroe'},
+    update: {},
+    create: {
+        name: 'Kelvin Munroe',
+        systemName: 'Kelvin Munroe',
+        teamId: 'BS',
+        captain: false,
+        transactions: {
+            create: [
+                {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            },
+            {
+                amount: 1500,
+                description: 'Balance from 2024',
+                type: 'CR',
+                netAmount: 1500,
+                createdAt: '2025-03-01T01:00:00.000Z'
+            },
+        ]
+        }
+    },
+  })
+
+  const linas = await prisma.entrant.upsert({
+    where: { name: 'Linas Bumblys'},
+    update: {},
+    create: {
+        name: 'Linas Bumblys',
+        systemName: 'Linas Bumblys',
+        teamId: 'SH',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const sam = await prisma.entrant.upsert({
+    where: { name: 'Sam Ryan'},
+    update: {},
+    create: {
+        name: 'Sam Ryan',
+        systemName: 'Sam Ryan',
+        teamId: 'BB',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const charlie = await prisma.entrant.upsert({
+    where: { name: 'Charlie French'},
+    update: {},
+    create: {
+        name: 'Charlie French',
+        systemName: 'Charlie French',
+        teamId: 'BS',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const doe = await prisma.entrant.upsert({
+    where: { name: 'Ben Doe'},
+    update: {},
+    create: {
+        name: 'Ben Doe',
+        systemName: 'Ben Doe',
+        teamId: 'BB',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const henry = await prisma.entrant.upsert({
+    where: { name: 'Henry Jackson'},
+    update: {},
+    create: {
+        name: 'Henry Jackson',
+        systemName: 'Henry Jackson',
+        teamId: 'EU',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const danb = await prisma.entrant.upsert({
+    where: { name: 'Dan Blatchford'},
+    update: {},
+    create: {
+        name: 'Dan Blatchford',
+        systemName: 'Dan Blatchford',
+        teamId: 'RF',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const gareth = await prisma.entrant.upsert({
+    where: { name: 'Gareth Coulter'},
+    update: {},
+    create: {
+        name: 'Gareth Coulter',
+        systemName: 'Gareth Coulter',
+        teamId: 'RF',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const woody = await prisma.entrant.upsert({
+    where: { name: 'Paul Wood'},
+    update: {},
+    create: {
+        name: 'Paul Wood',
+        systemName: 'Paul Wood',
+        teamId: 'SH',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const craig = await prisma.entrant.upsert({
+    where: { name: 'Craig Jeffrey'},
+    update: {},
+    create: {
+        name: 'Craig Jeffrey',
+        systemName: 'Craig Jeffrey',
+        teamId: '2B',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+  const browny = await prisma.entrant.upsert({
+    where: { name: 'Stephen Brown'},
+    update: {},
+    create: {
+        name: 'Stephen Brown',
+        systemName: 'Stephen Brown',
+        teamId: 'BD',
+        captain: false,
+        transactions: {
+            create: {
+                amount: 2000,
+                description: 'Libtour Entry Fee',
+                type: 'DR',
+                netAmount: -2000,
+                createdAt: '2025-03-31T01:00:00.000Z'
+            }
+        }
+    },
+  })
+
+
+  console.log({danny, tom, kyle, terry, cod,graham, lee, randip, fordey, smithy,
+jethro, suki, dj, dish, tony, greeney, salvage, darren, john, ben, chris,
+greg, chef, justin, malk, lokesh, jamie, kelvin, linas, sam, anthony,
+dix, charlie, doe, henry, danb, gareth, woody, craig, browny
     })
 
     //Add Comps=========================================================
@@ -875,7 +966,7 @@ dix
             igCompId: '1997',
             shortName: 'oco',
             name: 'OCO Spring Cup',
-            date: '2025-04-05T00:00:00.000Z',
+            date: '2025-04-05T01:00:00.000Z',
             stableford: true,
         }
     })
@@ -887,7 +978,7 @@ dix
             igCompId: '2070',
             shortName: 'aprmedal',
             name: 'April Medal',
-            date: '2025-04-13T00:00:00.000Z',
+            date: '2025-04-13T01:00:00.000Z',
             stableford: false,
         }
     })
@@ -899,7 +990,7 @@ dix
             igCompId: '2077',
             shortName: 'aprstab',
             name: 'April Stableford',
-            date: '2025-04-20T00:00:00.000Z',
+            date: '2025-04-20T01:00:00.000Z',
             stableford: true,
 
         }
@@ -911,8 +1002,8 @@ dix
         create: {
             igCompId: '2000',
             shortName: 'stgeorge',
-            name: 'St Georges Day cup',
-            date: '2024-04-26T00:00:00.000Z',
+            name: 'St Georges Day Cup',
+            date: '2025-04-26T01:00:00.000Z',
             stableford: false,
 
         }
@@ -925,7 +1016,7 @@ dix
             igCompId: '2080',
             shortName: 'maymedal',
             name: "May Medal",
-            date: '2025-05-04T00:00:00.000Z',
+            date: '2025-05-04T01:00:00.000Z',
             stableford: false,
 
         }
@@ -938,7 +1029,7 @@ dix
             igCompId: '2003',
             shortName: 'footsie',
             name: 'The Footsie',
-            date: '2025-05-18T00:00:00.000Z',
+            date: '2025-05-18T01:00:00.000Z',
             stableford: true,
 
         }
@@ -951,7 +1042,7 @@ dix
             igCompId: '2083',
             shortName: 'maystab',
             name: 'May Stableford',
-            date: '2024-06-01T00:00:00.000Z',
+            date: '2025-06-01T01:00:00.000Z',
             stableford: true,
 
         }
@@ -964,7 +1055,7 @@ dix
             igCompId: '2009',
             shortName: 'foundation',
             name: 'Foundation Cup',
-            date: '2024-06-08T00:00:00.000Z',
+            date: '2025-06-08T01:00:00.000Z',
             stableford: false,
 
         }
@@ -977,7 +1068,7 @@ dix
             igCompId: '2086',
             shortName: 'junmedal',
             name: 'June Medal',
-            date: '2025-06-15T00:00:00.000Z',
+            date: '2025-06-15T01:00:00.000Z',
             stableford: false,
 
         }
@@ -990,7 +1081,7 @@ dix
             igCompId: '2012',
             shortName: 'wig',
             name: 'WIG Trophy',
-            date: '2024-06-21T00:00:00.000Z',
+            date: '2025-06-21T01:00:00.000Z',
             stableford: false,
 
         }
@@ -1003,7 +1094,7 @@ dix
             igCompId: '2089',
             shortName: 'junstab',
             name: 'June Stableford',
-            date: '2025-06-29T00:00:00.000Z',
+            date: '2025-06-29T01:00:00.000Z',
             stableford: true,
 
         }
@@ -1016,7 +1107,7 @@ dix
             igCompId: '2015',
             shortName: 'captain',
             name: 'Captains Stableford',
-            date: '2025-07-06T00:00:00.000Z',
+            date: '2025-07-06T01:00:00.000Z',
             stableford: true,
 
         }
@@ -1029,7 +1120,7 @@ dix
             igCompId: '2094',
             shortName: 'julmedal',
             name: 'July Medal',
-            date: '2025-07-20T00:00:00.000Z',
+            date: '2025-07-20T01:00:00.000Z',
             stableford: false,
 
         }
@@ -1042,7 +1133,7 @@ dix
             igCompId: '2097',
             shortName: 'augstab',
             name: 'August Stableford',
-            date: '2025-08-03T00:00:00.000Z',
+            date: '2025-08-03T01:00:00.000Z',
             stableford: true,
 
         }
@@ -1055,7 +1146,7 @@ dix
             igCompId: '2100',
             shortName: 'augmedal',
             name: 'August Medal',
-            date: '2025-08-31T00:00:00.000Z',
+            date: '2025-08-31T01:00:00.000Z',
             stableford: false,
 
         }
@@ -1068,7 +1159,7 @@ dix
             igCompId: '2029',
             shortName: 'cc1',
             name: 'Club Champs Rd1',
-            date: '2025-09-06T00:00:00.000Z',
+            date: '2025-09-06T01:00:00.000Z',
             stableford: false,
 
         }
@@ -1081,7 +1172,7 @@ dix
             igCompId: '2030',
             shortName: 'cc2',
             name: 'Club Champs Rd2',
-            date: '2025-09-07T00:00:00.000Z',
+            date: '2025-09-07T01:00:00.000Z',
             stableford: false,
 
         }
