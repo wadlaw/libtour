@@ -1003,7 +1003,7 @@ dix, charlie, doe, henry, danb, gareth, woody, craig, browny
             igCompId: '2000',
             shortName: 'stgeorge',
             name: 'St Georges Day Cup',
-            date: '2024-04-26T01:00:00.000Z',
+            date: '2025-04-26T01:00:00.000Z',
             stableford: false,
 
         }
@@ -1042,7 +1042,7 @@ dix, charlie, doe, henry, danb, gareth, woody, craig, browny
             igCompId: '2083',
             shortName: 'maystab',
             name: 'May Stableford',
-            date: '2024-06-01T01:00:00.000Z',
+            date: '2025-06-01T01:00:00.000Z',
             stableford: true,
 
         }
@@ -1055,7 +1055,7 @@ dix, charlie, doe, henry, danb, gareth, woody, craig, browny
             igCompId: '2009',
             shortName: 'foundation',
             name: 'Foundation Cup',
-            date: '2024-06-08T01:00:00.000Z',
+            date: '2025-06-08T01:00:00.000Z',
             stableford: false,
 
         }
@@ -1081,7 +1081,7 @@ dix, charlie, doe, henry, danb, gareth, woody, craig, browny
             igCompId: '2012',
             shortName: 'wig',
             name: 'WIG Trophy',
-            date: '2024-06-21T01:00:00.000Z',
+            date: '2025-06-21T01:00:00.000Z',
             stableford: false,
 
         }
