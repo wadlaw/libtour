@@ -11,7 +11,8 @@ export const entrantRouter = createTRPCRouter({
             return ctx.db.entrant.findMany({
                 select: {
                     id: true,
-                    name: true
+                    name: true,
+                    systemName: true,
                 }
             })
         }),
