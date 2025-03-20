@@ -40,9 +40,14 @@ export default async function EntrantAccount({
       <div className="flex flex-col items-center">
         <LibH1>Account</LibH1>
         <div>
-          <Link href={`/entrants/${params.entrantId}`}>{entrant.name}</Link>
+          <Link
+            href={`/entrants/${params.entrantId}`}
+            className={`entrant${entrant.id}`}
+          >
+            {entrant.name}
+          </Link>
         </div>
-        <div className="flex gap-2">
+        <div className={`flex gap-2 balance${entrant.id}`}>
           <span>Balance:</span>
 
           <BalanceDisplay

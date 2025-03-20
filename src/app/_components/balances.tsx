@@ -43,7 +43,9 @@ export default function Balances() {
       <TableBody>
         {entrants.data.map((entrant) => (
           <TableRow key={entrant.id}>
-            <TableCell className=" px-1 @2xl/libcard:px-2">
+            <TableCell
+              className={`px-1 @2xl/libcard:px-2 entrant${entrant.id}`}
+            >
               <EntrantDisplay
                 entrant={{ id: entrant.id, name: entrant.name }}
                 linkUrl="/accounts/"
