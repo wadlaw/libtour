@@ -11,7 +11,8 @@ export const entrantRouter = createTRPCRouter({
             return ctx.db.entrant.findMany({
                 select: {
                     id: true,
-                    name: true
+                    name: true,
+                    systemName: true,
                 }
             })
         }),
@@ -131,7 +132,7 @@ export const entrantRouter = createTRPCRouter({
         }  else {throw new TRPCError({ code: "PRECONDITION_FAILED", message: "All wildcards are already locked in!" })}
     }),
     update: adminProcedure
-        .input(z.object({ entrantId: z.number(), name: z.string().min(1), teamId: z.string().length(2) }))
+        .input(z.object({ entrantId: z.number(), name: z.string().min(1), systemName: z.string().min(1), teamId: z.string().length(2) }))
         .mutation(async ({ ctx, input }) => {
             return ctx.db.entrant.update({
                 where: {
@@ -139,6 +140,7 @@ export const entrantRouter = createTRPCRouter({
                 },
                 data: {
                     name: input.name,
+                    systemName: input.systemName,
                     teamId: input.teamId
                 }
             })

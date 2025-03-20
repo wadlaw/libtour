@@ -50,11 +50,11 @@ const items = [
     url: "/prizewinners",
     icon: <PoundSterling />,
   },
-  {
-    title: "Eclectic",
-    url: "/eclectic",
-    icon: <NotebookTabs />,
-  },
+  // {
+  //   title: "Eclectic",
+  //   url: "/eclectic",
+  //   icon: <NotebookTabs />,
+  // },
   {
     title: "Hall of Fame",
     url: "/halloffame",
