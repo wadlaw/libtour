@@ -9,12 +9,11 @@ import {
   Medal,
   Trophy,
   UserRoundCog,
-  NotebookTabs,
+  // NotebookTabs,
   UsersRound,
   BadgePoundSterling,
   PoundSterling,
   ChevronRight,
-  BookUser,
 } from "lucide-react";
 
 import {
