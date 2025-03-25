@@ -202,7 +202,7 @@ export async function ProcessResults(compId: string): Promise<ScrapedResultsChec
       // if (noMatches.includes(compEntrant.entrant.name) || noMatches.includes(result.entrantName)) {
       //   console.log("IG", `${result.entrantName}(${result.entrantName.length})`, "DB", `${compEntrant.entrant.name}(${compEntrant.entrant.name.length})`, "Match?", (result.entrantName === compEntrant.entrant.name))
       // }
-      return compEntrant.entrant.name == result.entrantName
+      return compEntrant.entrant.systemName == result.entrantName
     })
     if (match.length === 1 && match[0]) {
       
@@ -230,7 +230,7 @@ export async function ProcessResults(compId: string): Promise<ScrapedResultsChec
   
   //Find NoShows!
   compEntrants.forEach(entrant => {
-    const match = igResults.scrapedResults.filter(result => (result.entrantName === entrant.entrant.name))
+    const match = igResults.scrapedResults.filter(result => (result.entrantName === entrant.entrant.systemName))
     if (match.length === 0) {
       const ent = allEntrants.filter(entr => (entr.id === entrant.entrantId))
       noShows.push(ensure(ent[0]))
@@ -245,7 +245,7 @@ export async function ProcessResults(compId: string): Promise<ScrapedResultsChec
       return teamResult.team === result.entrant.teamId})
     
       const teamResult = ensure(teamResults[teamIndex])
-      if (result.wildcard) {teamResult.wildcard = result.entrant.name}
+      if (result.wildcard) {teamResult.wildcard = result.entrant.systemName}
     // If first score for a team, must be their highest finish
       if (teamResult && teamResult?.bestFinish === 0) {
       teamResult.bestFinish = (result.igPosition ?? 0)
@@ -468,7 +468,7 @@ const browser = await puppeteer.launch(browserArgs);
     for (const result of returnData.scrapedResults) {
       await page.goto(result.link)
       await page.waitForSelector(".club-footer");
-      const scrape = { entrant: result.entrantName, entrantId: entrants.filter((ent) => {return ent.name === result.entrantName})[0]?.id ?? undefined, handicap: "", scores: [] as EclecticScore[]}
+      const scrape = { entrant: result.entrantName, entrantId: entrants.filter((ent) => {return ent.systemName === result.entrantName})[0]?.id ?? undefined, handicap: "", scores: [] as EclecticScore[]}
       const hcp = await page.$eval('#rounds>table>thead>tr>td:nth-child(1)', el => {return el.textContent})
       // if (hcp) console.log("handicap element", hcp, typeof(hcp))
         if (hcp) {
