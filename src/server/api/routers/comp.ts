@@ -9,7 +9,7 @@ import { createTRPCRouter, publicProcedure, protectedProcedure, entryProcedure, 
 
 export const compRouter = createTRPCRouter({
     update: adminProcedure
-      .input(z.object({ igCompId: z.string().min(4), shortName: z.string().min(1), name: z.string().min(1), date: z.date(), stableford: z.boolean() }))
+      .input(z.object({ igCompId: z.string().min(4), shortName: z.string().min(1), name: z.string().min(1), date: z.date(), stableford: z.boolean(), lib: z.boolean(), eclectic: z.boolean() }))
       .mutation(async ({ ctx, input}) => {
         const comp = await ctx.db.comp.findFirst({
           where: {
@@ -28,6 +28,8 @@ export const compRouter = createTRPCRouter({
               name: input.name,
               date: input.date,
               stableford: input.stableford,
+              lib: input.lib,
+              eclectic: input.eclectic
             }
           })
         }
@@ -49,7 +51,8 @@ export const compRouter = createTRPCRouter({
       .mutation(async ({ ctx, input }) => {
         const comp = await ctx.db.comp.findFirst({
           where: {
-            igCompId: input.comp
+            igCompId: input.comp,
+            lib: true,
           }
         })
         if (comp?.open) {
@@ -79,7 +82,8 @@ export const compRouter = createTRPCRouter({
         
         const comp = await ctx.db.comp.findFirst({
           where: {
-            igCompId: input.comp
+            igCompId: input.comp,
+            lib: true,
           }
         })
         if (comp?.open) {
@@ -110,7 +114,8 @@ export const compRouter = createTRPCRouter({
         
         const comp = await ctx.db.comp.findFirst({
           where: {
-            igCompId: input.comp
+            igCompId: input.comp,
+            lib: true,
           }
         })
         if (comp?.open) {
@@ -130,7 +135,8 @@ export const compRouter = createTRPCRouter({
         
         const comp = await ctx.db.comp.findFirst({
           where: {
-            igCompId: input.comp
+            igCompId: input.comp,
+            lib: true,
           }
         })
         if (comp?.open) {
@@ -371,12 +377,45 @@ export const compRouter = createTRPCRouter({
         }
     })
   }),
+  
+  getAllLib: publicProcedure.query(({ ctx }) => {
+    return ctx.db.comp.findMany({
+        orderBy: { date: "asc" },
+        where: {
+          lib: true
+        },
+        include: {
+            entrants: {
+              include: {
+                entrant: true
+              }
+            }
+        }
+    })
+  }),
+
+  getAllEclectic: publicProcedure.query(({ ctx }) => {
+    return ctx.db.comp.findMany({
+        orderBy: { date: "asc" },
+        where: {
+          eclectic: true
+        },
+        include: {
+            entrants: {
+              include: {
+                entrant: true
+              }
+            }
+        }
+    })
+  }),
 
   getUpcoming: publicProcedure.query(({ ctx }) => {
     return ctx.db.comp.findMany({
         orderBy: { date: "asc" },
         where: {
-          completed: false
+          completed: false,
+          lib: true,
         },
         take: 5,
         include: {
@@ -393,16 +432,19 @@ export const compRouter = createTRPCRouter({
     return ctx.db.comp.findMany({
         orderBy: { date: "asc" },
         where: {
-          completed: false
+          completed: false,
+          lib: true
         },
     })
   }),
+
 
   getRecent: publicProcedure.query(({ ctx }) => {
     return ctx.db.comp.findMany({
         orderBy: { date: "desc" },
         where: {
-          completed: true
+          completed: true,
+          lib: true,
         },
         take: 5,
         include: {
@@ -419,7 +461,8 @@ export const compRouter = createTRPCRouter({
     return ctx.db.comp.findMany({
         orderBy: { date: "desc" },
         where: {
-          completed: true
+          completed: true,
+          lib: true
         },
     })
   }),
@@ -658,7 +701,8 @@ export const compRouter = createTRPCRouter({
       .query(({ ctx }) => {
       return ctx.db.comp.findMany({
         where: {
-          completed: true
+          completed: true,
+          lib: true,
         },
         include: {
           teamPoints: {

@@ -9,6 +9,7 @@ declare global {
         financePermission?: boolean,
         compPermission?: boolean,
         adminPermission?: boolean,
+        eclecticPermission?: boolean,
     };
   }
 }

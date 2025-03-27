@@ -1178,12 +1178,25 @@ dix, charlie, doe, henry, danb, gareth, woody, craig, browny
         }
     })
 
+    const comp18 = await prisma.comp.upsert({
+        where: { igCompId: '2103' },
+        update: {},
+        create: {
+            igCompId: '2103',
+            shortName: 'sepstab',
+            name: 'September Stableford',
+            date: '2025-09-21T01:00:00.000Z',
+            stableford: true,
+            lib: false
+
+        }
+    })
     
 
 
 
     console.log({comp1, comp2, comp3, comp4, comp5, comp6, comp7, comp8, comp9, comp10, 
-        comp11, comp12, comp13, comp14, comp15, comp16, comp17, })
+        comp11, comp12, comp13, comp14, comp15, comp16, comp17, comp18})
 
         //Add Prize money===============================================
 

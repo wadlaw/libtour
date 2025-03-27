@@ -9,7 +9,7 @@ import {
   Medal,
   Trophy,
   UserRoundCog,
-  // NotebookTabs,
+  NotebookText,
   UsersRound,
   BadgePoundSterling,
   PoundSterling,
@@ -113,7 +113,7 @@ export async function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
+        <EclecticMenu />
         <Protect
           condition={() =>
             !!sessionClaims?.metadata?.adminPermission ||
@@ -192,6 +192,45 @@ function AdminMenu() {
     </SidebarGroup>
   );
 }
+
+function EclecticMenu() {
+  const { sessionClaims } = auth();
+  if (!sessionClaims?.metadata.eclecticPermission) return null;
+
+  return (
+    <SidebarGroup>
+      <SidebarGroupLabel>Eclectic</SidebarGroupLabel>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {/* <MenuItem
+            key="eclectic"
+            item={{
+              title: "Eclectic",
+              url: "/eclectic",
+              icon: <NotebookText />,
+            }}
+          /> */}
+          <Protect
+            condition={() =>
+              !!sessionClaims?.metadata.eclecticPermission ||
+              !!sessionClaims?.metadata.adminPermission
+            }
+          >
+            <MenuItem
+              key="Eclectic Entrants"
+              item={{
+                title: "Eclectic Entrants",
+                url: "/admin/eclecticentrants",
+                icon: <UserRoundCog />,
+              }}
+            />
+          </Protect>
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  );
+}
+
 async function TeamsTable() {
   const teams = await api.team.getAllWithPoints();
   const reducedTeams: typeof teams = [];

@@ -3,8 +3,8 @@ import LibMain, { LibH1 } from "~/app/_components/lib-elements";
 import Eclectic from "../_components/eclectic";
 
 export const metadata = {
-  title: "Libtour - Eclectic",
-  description: "The best scores on each hole over all Libtour events",
+  title: "Eclectic",
+  description: "The best scores on each hole over all designated events",
 };
 
 export type EclecticData = Awaited<
@@ -16,7 +16,7 @@ export default async function EclecticPage() {
   return (
     <LibMain>
       <div className="flex flex-col items-center">
-        <LibH1>Lib Eclectic</LibH1>
+        <LibH1>Eclectic</LibH1>
       </div>
 
       <Eclectic scores={scoreData} />

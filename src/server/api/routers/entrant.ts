@@ -16,6 +16,13 @@ export const entrantRouter = createTRPCRouter({
                 }
             })
         }),
+    getListByCompId: publicProcedure
+        .input(z.object({ compId: z.string() }))
+        .query(({ ctx, input }) => {
+            return ctx.db.entrant.findMany({
+                where: { comps: { some: { compId: input.compId } } }
+            })
+        }),
     getAll: publicProcedure
         .query(({ ctx }) => {
             return ctx.db.entrant.findMany({

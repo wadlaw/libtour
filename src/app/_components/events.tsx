@@ -30,6 +30,8 @@ type EditEventType = {
   name: string;
   date: Date;
   stableford: boolean;
+  lib: boolean;
+  eclectic: boolean;
 };
 export function EditEventDialog({
   igCompId,
@@ -37,11 +39,15 @@ export function EditEventDialog({
   name,
   date,
   stableford,
+  lib,
+  eclectic,
 }: EditEventType) {
   const [linkName, setLinkName] = useState<string>(shortName);
   const [fullName, setFullName] = useState<string>(name);
   const [compDate, setCompDate] = useState<Date>(date ?? new Date());
   const [isStableford, setIsStableford] = useState<boolean>(stableford);
+  const [isLib, setIsLib] = useState<boolean>(lib);
+  const [isEclectic, setIsEclectic] = useState<boolean>(eclectic);
   const router = useRouter();
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -51,6 +57,8 @@ export function EditEventDialog({
     setFullName(name);
     setCompDate(date);
     setIsStableford(stableford);
+    setIsLib(lib);
+    setIsEclectic(eclectic);
   };
 
   const event = api.comp.update.useMutation({
@@ -136,6 +144,22 @@ export function EditEventDialog({
             />
             <Label htmlFor="stableford">Stableford Scoring</Label>
           </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="lib"
+              checked={isLib}
+              onCheckedChange={(checked) => setIsLib(checked as boolean)}
+            />
+            <Label htmlFor="lib">Lib event?</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="eclectic"
+              checked={isEclectic}
+              onCheckedChange={(checked) => setIsEclectic(checked as boolean)}
+            />
+            <Label htmlFor="eclectic">Eclectic event?</Label>
+          </div>
         </div>
 
         <AlertDialogFooter>
@@ -157,7 +181,9 @@ export function EditEventDialog({
               linkName === shortName &&
               fullName === name &&
               compDate.valueOf() == date.valueOf() &&
-              isStableford === stableford
+              isStableford === stableford &&
+              isLib === lib &&
+              isEclectic === eclectic
             }
             onClick={() => {
               event.mutate({
@@ -166,6 +192,8 @@ export function EditEventDialog({
                 name: fullName,
                 date: compDate,
                 stableford: isStableford,
+                lib: isLib,
+                eclectic: isEclectic,
               });
             }}
           >

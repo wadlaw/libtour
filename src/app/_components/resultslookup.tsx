@@ -130,9 +130,37 @@ export function ScrapeResults({ eventId }: ScrapeResultProps) {
     },
   });
 
+  const eclecticScores = api.scorecard.addManyEclectic.useMutation({
+    onSuccess: async () => {
+      toast({
+        title: "Eclectic scorecards added",
+        description: "Scraped scores have been added to entrants' records",
+      });
+    },
+    onError: async (err) => {
+      toast({
+        variant: "destructive",
+        title: "Eclectic scorecards not updated!",
+        description: `${err.message}`,
+      });
+    },
+  });
+
   type ScoreDataType = {
     compId: string;
     entrantId: number;
+    handicap: number;
+    stableford: boolean;
+    holes: {
+      holeNo: number;
+      strokes: number | undefined;
+      NR: boolean;
+    }[];
+  }[];
+
+  type EclecticScoreDataType = {
+    compId: string;
+    eclecticEntrantId: number;
     handicap: number;
     stableford: boolean;
     holes: {
@@ -169,6 +197,32 @@ export function ScrapeResults({ eventId }: ScrapeResultProps) {
       // console.log("Filtered Scores==============", rawScoreData);
       // console.log("ScoreData================", scoreData);
       scores.mutate(scoreData);
+
+      //grab the scores that are matched to an eclectic entrant
+      const rawEclecticData = eclectic?.scrapedScores.filter((ent) => {
+        return ent.eclecticEntrantId;
+      });
+      const eclecticScoreData: EclecticScoreDataType = [];
+      rawEclecticData?.forEach((round) => {
+        const roundData = {
+          compId: eventId,
+          eclecticEntrantId: round.eclecticEntrantId ?? 0,
+          handicap: Number(round.handicap),
+          stableford: eclectic?.compFormat === "Stableford",
+          holes: round.scores.map((score) => {
+            return {
+              holeNo: score.hole,
+              strokes: Number(score.score) || undefined,
+              NR: ["NR", "NS"].includes(score.score ?? ""),
+            };
+          }),
+        };
+        eclecticScoreData.push(roundData);
+      });
+      // console.log("Raw Scores=================", eclectic?.scrapedScores);
+      // console.log("Filtered Scores==============", rawScoreData);
+      // console.log("ScoreData================", scoreData);
+      eclecticScores.mutate(eclecticScoreData);
     });
   };
 
@@ -193,47 +247,52 @@ export function ScrapeResults({ eventId }: ScrapeResultProps) {
           <MissingWildcards teams={missingWildcards} />
         </div>
       </div>
-      <div className="w-100 flex flex-wrap justify-items-start gap-2">
-        <Button onClick={() => open.mutate(eventId)}>Open</Button>
-        <Button className="" onClick={() => close.mutate(eventId)}>
-          Close
-        </Button>
-
-        <Button
-          className=""
-          onClick={processResults}
-          disabled={isScrapePending}
-        >
-          <div className="flex gap-2">
-            {isScrapePending ? <Spinner /> : null}
-            <span>Process Results</span>
-          </div>
-        </Button>
-        <Button
-          onClick={() => {
-            if (resultsObject) {
-              SendResults.mutate(resultsObject);
-            }
-          }}
-          disabled={resultsObject === null}
-        >
-          Finalise Results
-        </Button>
-        <Button onClick={scrapeEclectic} disabled={isEclecticPending}>
-          <div className="flex gap-2">
-            {isEclecticPending && <Spinner />}
-            <span>Process Eclectic</span>
-          </div>
-        </Button>
-        <Button
-          onClick={updateScores}
-          disabled={!eclectic || isScoreUpdatePending}
-        >
-          <div className="flex gap-2">
-            {isScoreUpdatePending && <Spinner />}
-            <span>Update Scorecards</span>
-          </div>
-        </Button>
+      <div className="flex flex-col gap-2">
+        <div className="w-100 flex flex-wrap justify-items-start gap-2">
+          <Button onClick={() => open.mutate(eventId)}>Open</Button>
+          <Button className="" onClick={() => close.mutate(eventId)}>
+            Close
+          </Button>
+        </div>
+        <div className="w-100 flex flex-wrap justify-items-start gap-2">
+          <Button
+            className=""
+            onClick={processResults}
+            disabled={isScrapePending}
+          >
+            <div className="flex gap-2">
+              {isScrapePending ? <Spinner /> : null}
+              <span>Process Results</span>
+            </div>
+          </Button>
+          <Button
+            onClick={() => {
+              if (resultsObject) {
+                SendResults.mutate(resultsObject);
+              }
+            }}
+            disabled={resultsObject === null}
+          >
+            Finalise Results
+          </Button>
+        </div>
+        <div className="w-100 flex flex-wrap justify-items-start gap-2">
+          <Button onClick={scrapeEclectic} disabled={isEclecticPending}>
+            <div className="flex gap-2">
+              {isEclecticPending && <Spinner />}
+              <span>Process Eclectic</span>
+            </div>
+          </Button>
+          <Button
+            onClick={updateScores}
+            disabled={!eclectic || isScoreUpdatePending}
+          >
+            <div className="flex gap-2">
+              {isScoreUpdatePending && <Spinner />}
+              <span>Update Scorecards</span>
+            </div>
+          </Button>
+        </div>
       </div>
       <div className="grid grid-cols-1">
         <IGLinks results={eclectic} />
