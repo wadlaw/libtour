@@ -33,6 +33,16 @@ export default authMiddleware({
       return NextResponse.next();
     } 
 
+    // Eclectic Admin Routes============
+    const eclecticAdminRoutes = ['/admin/eclecticentrants']
+
+    if (eclecticAdminRoutes.includes(req.nextUrl.pathname)) {
+      if (!auth.sessionClaims?.metadata?.eclecticPermission && !auth.sessionClaims?.metadata?.adminPermission){
+        const homePage = new URL("/", req.url);
+        return NextResponse.redirect(homePage);
+      }
+      return NextResponse.next();
+    }
     // Admin routes=====================
     const adminRoutes = ['/users', '/admin/entrants', '/admin/events']
 
@@ -51,7 +61,7 @@ export default authMiddleware({
     return NextResponse.next();
   },
   // Allow signed out users to access the specified routes:
-  publicRoutes: ['/', '/teams', '/teams/:path', '/events', '/events/:path', '/entrants', '/entrants/:path', '/api/webhooks/user', '/sign-in', '/prizewinners', '/halloffame', '/wallofshame', '/eclectic', '/honoursboards'],
+  publicRoutes: ['/', '/teams', '/teams/:path', '/events', '/events/:path', '/entrants', '/entrants/:path', '/api/webhooks/user', '/sign-in', '/prizewinners', '/halloffame', '/wallofshame', '/eclectic', '/libeclectic', '/honoursboards'],
   // Prevent the specified routes from accessing
   // authentication information:
   // ignoredRoutes: ['/no-auth-in-this-route'],

@@ -93,6 +93,8 @@ model Comp {
     open         Boolean       @default(false)
     current      Boolean       @default(false)
     completed    Boolean       @default(false)
+    lib          Boolean       @default(true)
+    eclectic     Boolean       @default(true)
     entrants     CompEntrant[]
     teamPoints   TeamPoints[]
     transactions Transaction[]
@@ -165,4 +167,49 @@ model CompPrizes {
     fifth    Int?
 
     @@map("compprizes")
+}
+
+model EclecticEntrant {
+    id          Int                 @id @default(autoincrement())
+    displayName String              @unique @map("displayname")
+    systemName  String              @unique @map("systemname")
+    paid        Boolean             @default(false) @map("paid")
+    scorecards  EclecticScorecard[]
+
+    @@map("eclecticentrants")
+}
+
+model EclecticScorecard {
+    id               Int             @id @default(autoincrement())
+    compId           String          @map("compid")
+    entrantId        Int             @map("entrantid")
+    handicap         Int
+    stableford       Boolean
+    NR               Boolean         @default(false) @map("nr")
+    strokes          Int?
+    strokesCountback BigInt?         @map("strokescountback")
+    points           Int
+    pointsCountback  BigInt          @map("pointscountback")
+    net              Int?
+    netCountback     BigInt?         @map("netcountback")
+    holes            EclecticHole[]
+    entrant          EclecticEntrant @relation(fields: [entrantId], references: [id])
+
+    @@unique([compId, entrantId])
+    @@map("eclecticscorecards")
+}
+
+model EclecticHole {
+    id          Int               @id @default(autoincrement())
+    scorecardId Int               @map("scorecardid")
+    holeNo      Int               @map("holeno")
+    par         Int
+    strokeIndex Int               @map("strokeindex")
+    strokes     Int?
+    NR          Boolean           @default(false) @map("nr")
+    points      Int               @default(0)
+    net         Int?
+    scorecard   EclecticScorecard @relation(fields: [scorecardId], references: [id], onDelete: Cascade)
+
+    @@map("eclecticholes")
 }

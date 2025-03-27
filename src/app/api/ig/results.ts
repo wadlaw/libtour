@@ -385,7 +385,7 @@ export type ScrapedEclecticType = {
   comp: string
   compFormat: string
   scrapedResults: { entrantName: string, link: string}[]
-  scrapedScores: { entrant: string, entrantId?: number, handicap: string, scores: EclecticScore[]}[]
+  scrapedScores: { entrant: string, entrantId?: number, eclecticEntrantId?: number, handicap: string, scores: EclecticScore[]}[]
 }
 
 // export type ScrapedEclecticScore = {
@@ -406,8 +406,9 @@ export async function GetEclectic(compId: string): Promise<ScrapedEclecticType> 
     scrapedResults: [],
     scrapedScores: []
   }
+  
   //Get list of Entrants so we can map their Lib entrantIds
-  const entrants = await api.entrant.getList()
+  const [ entrants, eclecticEntrants ] = await Promise.all([api.entrant.getListByCompId({compId: compId}), api.eclectic.getEntrants()])
 
   const urlStub = 'https://redlibbets.intelligentgolf.co.uk/'
   const url = `${urlStub}competition.php?compid=${compId}`;
@@ -468,7 +469,7 @@ const browser = await puppeteer.launch(browserArgs);
     for (const result of returnData.scrapedResults) {
       await page.goto(result.link)
       await page.waitForSelector(".club-footer");
-      const scrape = { entrant: result.entrantName, entrantId: entrants.filter((ent) => {return ent.systemName === result.entrantName})[0]?.id ?? undefined, handicap: "", scores: [] as EclecticScore[]}
+      const scrape = { entrant: result.entrantName, entrantId: entrants.filter((ent) => {return ent.systemName === result.entrantName})[0]?.id ?? undefined, eclecticEntrantId: eclecticEntrants.filter((ent) => {return ent.systemName === result.entrantName})[0]?.id ?? undefined, handicap: "", scores: [] as EclecticScore[]}
       const hcp = await page.$eval('#rounds>table>thead>tr>td:nth-child(1)', el => {return el.textContent})
       // if (hcp) console.log("handicap element", hcp, typeof(hcp))
         if (hcp) {

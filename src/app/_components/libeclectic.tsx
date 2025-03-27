@@ -25,7 +25,7 @@ import {
 } from "~/components/ui/collapsible";
 import { ScorecardDisplay } from "./scorecard";
 import { Skeleton } from "~/components/ui/skeleton";
-import { type EclecticData } from "../eclectic/page";
+import { type LibEclecticData } from "../libeclectic/page";
 import { flushSync } from "react-dom";
 
 type Hole = {
@@ -38,9 +38,14 @@ type Hole = {
   points: number;
 };
 
-type EclecticScorecard = {
+type LibEclecticScorecard = {
   entrantId: number;
   entrantName: string;
+  team: {
+    id: string;
+    linkName: string;
+    teamName: string;
+  };
   holes: [
     Hole,
     Hole,
@@ -74,18 +79,19 @@ const HoleSchema = z.object({
   net: z.number().default(100),
 });
 
-type EclecticProps = {
-  scores: EclecticData;
+type LibEclecticProps = {
+  scores: LibEclecticData;
 };
 
-export default function Eclectic({ scores }: EclecticProps) {
+export default function LibEclectic({ scores }: LibEclecticProps) {
   const [grossOrNet, setGrossOrNet] = useState<"Gross" | "Net">("Gross");
-  const eclecticScores: EclecticScorecard[] = [];
+  const eclecticScores: LibEclecticScorecard[] = [];
 
   scores.map((entrant) => {
-    const entrantEclecticCard: EclecticScorecard = {
+    const entrantEclecticCard: LibEclecticScorecard = {
       entrantId: entrant.id,
-      entrantName: entrant.displayName,
+      entrantName: entrant.name,
+      team: entrant.team,
       holes: [
         {
           holeNo: 1,
@@ -255,9 +261,9 @@ export default function Eclectic({ scores }: EclecticProps) {
       Net: 0,
       NetCountback: 0,
     };
-    entrant.scorecards.map((card) => {
-      if (card) {
-        card.holes.map((hole) => {
+    entrant.comps.map((comp) => {
+      if (comp.scorecard) {
+        comp.scorecard.holes.map((hole) => {
           const safeHole = HoleSchema.parse(hole);
           const thisHole = entrantEclecticCard.holes[safeHole.holeNo - 1];
           if (thisHole != undefined) {
@@ -316,11 +322,13 @@ export default function Eclectic({ scores }: EclecticProps) {
     eclecticScores.push(entrantEclecticCard);
   });
 
-  const scratch: EclecticScorecard[] = eclecticScores;
+  const scratch: LibEclecticScorecard[] = eclecticScores;
 
   //Deep Copy the eclecticScores array so we can easily modify the Net to show net scores when shown on a scorecard
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const net: EclecticScorecard[] = JSON.parse(JSON.stringify(eclecticScores));
+  const net: LibEclecticScorecard[] = JSON.parse(
+    JSON.stringify(eclecticScores),
+  );
 
   scratch.sort((a, b) => {
     return a.GrossCountback - b.GrossCountback;
@@ -352,7 +360,7 @@ export default function Eclectic({ scores }: EclecticProps) {
 
   return (
     <LibCardContainer>
-      <LibCardNarrow title="Eclectic Leaderboard">
+      <LibCardNarrow title="Lib Eclectic Leaderboard">
         <Tabs className="" defaultValue={grossOrNet}>
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger onClick={() => setTab("Gross")} value="Gross">
@@ -368,6 +376,7 @@ export default function Eclectic({ scores }: EclecticProps) {
             <TableRow>
               <TableHead className="px-1 sm:px-2">Pos</TableHead>
               <TableHead className="px-1 sm:px-2">Name</TableHead>
+              <TableHead className="px-1 sm:px-2">Team</TableHead>
 
               <TableHead className="px-1 text-right sm:px-2">Score</TableHead>
             </TableRow>
@@ -386,7 +395,19 @@ export default function Eclectic({ scores }: EclecticProps) {
                       </CollapsibleTrigger>
                     </TableCell>
                     <TableCell className="px-1 sm:px-2">
-                      {score.entrantName}
+                      <EntrantDisplay
+                        entrant={{
+                          id: score.entrantId,
+                          name: score.entrantName,
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell className="px-1 sm:px-2">
+                      <TeamDisplay
+                        team={score.team}
+                        alwaysDisplayLogo={true}
+                        iconOnlyWhenSmall={true}
+                      />
                     </TableCell>
 
                     <TableCell className="px-1 text-right hover:cursor-pointer sm:px-2">
@@ -421,12 +442,12 @@ export default function Eclectic({ scores }: EclecticProps) {
   );
 }
 
-export function EclecticSkeleton() {
+export function LibEclecticSkeleton() {
   const [grossOrNet, setGrossOrNet] = useState<"Gross" | "Net">("Gross");
   const fakeArray = [...Array<string>(40)];
   return (
     <LibCardContainer>
-      <LibCardNarrow title="Eclectic Leaderboard">
+      <LibCardNarrow title="Lib Eclectic Leaderboard">
         <Tabs className="" defaultValue={grossOrNet}>
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger onClick={() => setGrossOrNet("Gross")} value="Gross">
@@ -442,6 +463,7 @@ export function EclecticSkeleton() {
             <TableRow>
               <TableHead>Pos</TableHead>
               <TableHead>Name</TableHead>
+              <TableHead>Team</TableHead>
               <TableHead className="text-right">Score</TableHead>
             </TableRow>
           </TableHeader>
@@ -455,7 +477,12 @@ export function EclecticSkeleton() {
                   <TableCell>
                     <Skeleton className="h-4 w-24 " />
                   </TableCell>
-
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Skeleton className="h-6 w-6 rounded-full" />
+                      <Skeleton className="hidden h-4 w-16 sm:block" />
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <div className="flex w-full justify-end">
                       <Skeleton className="h-4 w-8" />

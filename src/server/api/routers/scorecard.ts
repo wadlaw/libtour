@@ -143,6 +143,88 @@ export const scorecardRouter = createTRPCRouter({
         
       
         }),
+
+        addManyEclectic: adminProcedure
+        .input(z.object({compId: z.string(), eclecticEntrantId: z.number(), handicap: z.number(), stableford: z.boolean(), NR: z.boolean().optional().nullable().default(null), gross: z.number().optional().nullable().default(null), points: z.number().optional().default(0), net: z.number().optional().nullable().default(null), holes: z.object({ holeNo: z.number(), strokes: z.number().optional(), NR: z.boolean(), points: z.number().optional().default(0) , net: z.number().optional().nullable().default(null) }).array()}).array())
+        .mutation(async ({ ctx, input }) => {
+
+            await ctx.db.$transaction(input.map(sc => {
+                //Calculate points and net score for each hole
+                sc.holes.forEach(hole => {
+                    hole.points = CalculatePoints(hole.strokes, libbetsCard[hole.holeNo - 1]?.par ?? 4, libbetsCard[hole.holeNo - 1]?.strokeIndex ?? 19, sc.handicap, hole.NR ),
+                    hole.net = CalculateNet(hole.strokes, libbetsCard[hole.holeNo - 1]?.par ?? 4, libbetsCard[hole.holeNo - 1]?.strokeIndex ?? 19, sc.handicap, hole.NR )
+                }) 
+                //Update scorecard properties with scores
+                sc.NR = sc.holes.filter(hole => hole.NR).length > 0
+                if (!sc.NR) {
+                    sc.gross = sc.holes.reduce((acc, cur) => acc + (cur.strokes ?? 0), 0)
+                    sc.net = sc.holes.reduce((acc, cur) => acc + (cur.net ?? 0), 0)
+                }
+                sc.points = sc.holes.reduce((acc, cur) => acc + (cur.points ?? 0), 0)
+
+                return ctx.db.eclecticEntrant.update({
+                    where: {
+                        id: sc.eclecticEntrantId
+                    },
+                    data: {
+                        scorecards: {
+                            create: {
+                                compId: sc.compId,
+                                handicap: sc.handicap,
+                                stableford: sc.stableford,
+                                NR: (sc.holes.filter(hole => hole.NR === true).length > 0),
+                                points: sc.points,
+                                net: sc.net,
+                                strokes: sc.gross,
+                                pointsCountback: 100_000_000 * sc.points +
+                                                   1_000_000 * sc.holes.filter(h => h.holeNo >= 10).reduce((acc, cur) => acc + cur.points,0) +
+                                                      10_000 * sc.holes.filter(h => h.holeNo >= 13).reduce((acc, cur) => acc + cur.points,0) +
+                                                         100 * sc.holes.filter(h => h.holeNo >= 16).reduce((acc, cur) => acc + cur.points,0) +
+                                                           1 * sc.holes.filter(h => h.holeNo >= 18).reduce((acc, cur) => acc + cur.points,0),
+                                strokesCountback: sc.gross ? 
+                                                100_000_000 * sc.gross +
+                                                  1_000_000 * sc.holes.filter(h => h.holeNo >= 10).reduce((acc, cur) => acc + (cur.strokes ?? 0),0) +
+                                                     10_000 * sc.holes.filter(h => h.holeNo >= 13).reduce((acc, cur) => acc + (cur.strokes ?? 0),0) +
+                                                        100 * sc.holes.filter(h => h.holeNo >= 16).reduce((acc, cur) => acc + (cur.strokes ?? 0),0) +
+                                                          1 * sc.holes.filter(h => h.holeNo >= 18).reduce((acc, cur) => acc + (cur.strokes ?? 0),0)
+                                         : null,
+                                netCountback: sc.net ? 
+                                                100_000_000 * sc.net +
+                                                  1_000_000 * sc.holes.filter(h => h.holeNo >= 10).reduce((acc, cur) => acc + (cur.net ?? 0),0) +
+                                                     10_000 * sc.holes.filter(h => h.holeNo >= 13).reduce((acc, cur) => acc + (cur.net ?? 0),0) +
+                                                        100 * sc.holes.filter(h => h.holeNo >= 16).reduce((acc, cur) => acc + (cur.net ?? 0),0) +
+                                                          1 * sc.holes.filter(h => h.holeNo >= 18).reduce((acc, cur) => acc + (cur.net ?? 0),0)
+                                  : null,
+                                holes: {
+                                    createMany: {
+                                        data: sc.holes.map(hole => {
+                                            return { 
+                                                holeNo: hole.holeNo, 
+                                                par: libbetsCard[hole.holeNo - 1]?.par ?? 4,
+                                                strokeIndex: libbetsCard[hole.holeNo - 1]?.strokeIndex ?? 19,
+                                                strokes: hole.strokes,
+                                                NR: hole.NR,
+                                                // points: CalculatePoints(hole.strokes, libbetsCard[hole.holeNo - 1]?.par ?? 4, libbetsCard[hole.holeNo - 1]?.strokeIndex ?? 19, sc.handicap, hole.NR ),
+                                                // net: CalculateNet(hole.strokes, libbetsCard[hole.holeNo - 1]?.par ?? 4, libbetsCard[hole.holeNo - 1]?.strokeIndex ?? 19, sc.handicap, hole.NR )
+                                                points: hole.points,
+                                                net: hole.net
+                                            }
+                                        })
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                 })
+                
+                
+            }))
+            
+            
+        
+      
+        }),
     
     eagles: publicProcedure
         .query(({ ctx }) => {
@@ -409,7 +491,7 @@ export const scorecardRouter = createTRPCRouter({
                 })
             }),   
         
-        EclecticScores: publicProcedure
+        LibEclecticScores: publicProcedure
             .query(async ({ ctx }) => {
                 return ctx.db.entrant.findMany({
                     include: {
@@ -430,6 +512,26 @@ export const scorecardRouter = createTRPCRouter({
 
                         }
                     }
+                })
+            }),
+
+        EclecticScores: publicProcedure
+            .query(async ({ ctx }) => {
+                return ctx.db.eclecticEntrant.findMany({
+                    include: {
+                        scorecards: {
+                            include: {
+                                holes: {
+                                    where: {
+                                        NR: false
+                                    },
+                                    
+                                }
+                            }
+                        }
+                    }
+
+
                 })
             }),
 })

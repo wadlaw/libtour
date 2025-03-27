@@ -5,7 +5,7 @@ export default async function EclecticLoader() {
   return (
     <LibMain>
       <div className="flex flex-col items-center">
-        <LibH1>Eclectic</LibH1>
+        <LibH1>Lib Eclectic</LibH1>
       </div>
       <LibEclecticSkeleton />
     </LibMain>

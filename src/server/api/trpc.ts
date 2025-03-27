@@ -195,6 +195,23 @@ const canSetComp = t.middleware(({ next, ctx }) => {
   });
 });
 
+const canSetEclectic = t.middleware(({ next, ctx }) => {
+  if (!ctx.auth.userId) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+ 
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+  if (!(ctx.auth.sessionClaims?.metadata?.adminPermission || ctx.auth.sessionClaims?.metadata?.eclecticPermission)) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  return next({
+    ctx: {
+      auth: ctx.auth,
+    },
+  });
+});
+
 // const canSetEntrant = t.middleware(({ next, ctx }) => {
 //   if (!ctx.auth.userId) {
 //     throw new TRPCError({ code: "UNAUTHORIZED" });
@@ -247,3 +264,4 @@ export const wildcardProcedure = t.procedure.use(canSetWildcard);
 export const transactionProcedure = t.procedure.use(canSetTransaction);
 export const compStatusProcedure = t.procedure.use(canSetCompStatus);
 export const compProcedure = t.procedure.use(canSetComp);
+export const eclecticProcedure = t.procedure.use(canSetEclectic);

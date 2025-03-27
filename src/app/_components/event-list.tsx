@@ -22,14 +22,14 @@ type EventListTableProps = {
 };
 
 export async function EventListTable({ edit = false }: EventListTableProps) {
-  const comps = await api.comp.getAll();
+  const comps = edit ? await api.comp.getAll() : await api.comp.getAllLib();
   // const user = await api.user.loggedInUser();
 
   if (!comps) return null;
   return (
     <EventListDisplay
       comps={comps}
-      title="Lib Events"
+      title={edit ? "All Events" : "Lib Events"}
       displayEditOption={edit}
     />
   );
@@ -83,6 +83,8 @@ type EventListDisplayProps = {
     open: boolean;
     shortName: string;
     stableford: boolean;
+    lib: boolean;
+    eclectic: boolean;
   }>;
   title?: string;
   lastHeaderText?: string;
@@ -108,14 +110,16 @@ function EventListDisplay({
                 !!sessionClaims?.metadata?.adminPermission && displayEditOption
               }
             >
-              <TableHead className="hidden @3xl/libcard:table-cell"></TableHead>
+              <TableHead className="px-1 @2xl/libcard:px-2"></TableHead>
             </Protect>
             <TableHead className=" px-1 @2xl/libcard:px-2">Event</TableHead>
-            <TableHead className="hidden px-1 @2xl/libcard:table-cell @2xl/libcard:px-2">
+            <TableHead className="hidden px-1 @xl/libcard:table-cell @2xl/libcard:px-2">
               Format
             </TableHead>
             <TableHead className="px-1 @2xl/libcard:px-2">Date</TableHead>
-            <TableHead className="px-1 @2xl/libcard:px-2">
+            <TableHead
+              className={`${displayEditOption && "hidden"} ${displayEditOption && "@2xl/libcard:table-cell"} px-1 @2xl/libcard:px-2`}
+            >
               {lastHeaderText}
             </TableHead>
           </TableRow>
@@ -136,7 +140,7 @@ function EventListDisplay({
                   displayEditOption
                 }
               >
-                <TableCell className="hidden @3xl/libcard:table-cell">
+                <TableCell className="px-1 @2xl/libcard:px-2">
                   {!comp.completed && (
                     <EditEventDialog
                       igCompId={comp.igCompId}
@@ -144,6 +148,8 @@ function EventListDisplay({
                       name={comp.name}
                       date={new Date(comp.date)}
                       stableford={comp.stableford}
+                      lib={comp.lib}
+                      eclectic={comp.eclectic}
                     />
                   )}
                 </TableCell>
@@ -151,7 +157,7 @@ function EventListDisplay({
               <TableCell className="px-1 font-medium @2xl/libcard:px-2">
                 <Link href={`/events/${comp.shortName}`}>{comp.name}</Link>
               </TableCell>
-              <TableCell className="hidden px-1 @2xl/libcard:table-cell @2xl/libcard:px-2">
+              <TableCell className="hidden px-1 @xl/libcard:table-cell @2xl/libcard:px-2">
                 <Link href={`/events/${comp.shortName}`}>
                   {comp.stableford ? "Stableford" : "Medal"}
                 </Link>
@@ -165,7 +171,9 @@ function EventListDisplay({
                   })}
                 </Link>
               </TableCell>
-              <TableCell className="px-1 @2xl/libcard:px-2">
+              <TableCell
+                className={`${displayEditOption && "hidden"} ${displayEditOption && "@2xl/libcard:table-cell"}  px-1 @2xl/libcard:px-2`}
+              >
                 {/* <Link href={`/events/${comp.shortName}`}> */}
 
                 {comp.completed ? (

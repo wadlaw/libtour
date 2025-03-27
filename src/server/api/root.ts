@@ -6,6 +6,7 @@ import { accountRouter } from "~/server/api/routers/account";
 import { entrantRouter } from "./routers/entrant";
 import { prizesRouter } from "./routers/prizes";
 import { scorecardRouter } from "./routers/scorecard";
+import { eclecticRouter } from "./routers/eclectic";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 
 /**
@@ -21,7 +22,8 @@ export const appRouter = createTRPCRouter({
   account: accountRouter,
   entrant: entrantRouter,
   prizes: prizesRouter,
-  scorecard: scorecardRouter
+  scorecard: scorecardRouter,
+  eclectic: eclecticRouter
 });
 
 // export type definition of API
