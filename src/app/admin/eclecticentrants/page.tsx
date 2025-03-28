@@ -16,6 +16,7 @@ import {
   AddEclecticEntrantDialog,
   EditEclecticEntrantDialog,
 } from "~/app/_components/eclectic-entrants";
+import { Link } from "next-view-transitions";
 
 export default async function Entrants() {
   const entrants = await api.eclectic.getEntrants();
@@ -58,14 +59,26 @@ export default async function Entrants() {
                         paid={entrant.paid}
                       />
                     </TableCell>
-                    <TableCell className="px-1 @2xl/libcard:px-2">
-                      {entrant.displayName}
+                    <TableCell
+                      className={`px-1 @2xl/libcard:px-2 ${!entrant.paid && "text-red-500"}`}
+                    >
+                      <Link href={`/eclectic/${entrant.id}`}>
+                        {entrant.displayName}
+                      </Link>
                     </TableCell>
-                    <TableCell className="hidden px-1 @2xl/libcard:px-2 @4xl/libcard:table-cell">
-                      {entrant.systemName}
+                    <TableCell
+                      className={`hidden px-1 @2xl/libcard:px-2 @4xl/libcard:table-cell ${!entrant.paid && "text-red-500"}`}
+                    >
+                      <Link href={`/eclectic/${entrant.id}`}>
+                        {entrant.systemName}
+                      </Link>
                     </TableCell>
-                    <TableCell className="px-1 @2xl/libcard:px-2 @4xl/libcard:table-cell">
-                      {entrant.paid ? "Yes" : "No"}
+                    <TableCell
+                      className={`px-1 @2xl/libcard:px-2 @4xl/libcard:table-cell ${!entrant.paid && "text-red-500"}`}
+                    >
+                      <Link href={`/eclectic/${entrant.id}`}>
+                        {entrant.paid ? "Yes" : "No"}
+                      </Link>
                     </TableCell>
                   </TableRow>
                 );

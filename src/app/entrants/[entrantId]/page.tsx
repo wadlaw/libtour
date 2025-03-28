@@ -125,7 +125,7 @@ async function Content({ entrantId }: ContentProps) {
             </Link>
           </div>
           <LibH1>{entrant?.name}</LibH1>
-          <p className="mt-1 sm:mt-2">
+          <div className="mt-1 sm:mt-2">
             {entrant?.captain ? (
               <div className="flex items-center gap-2">
                 Captain of{" "}
@@ -134,7 +134,7 @@ async function Content({ entrantId }: ContentProps) {
             ) : (
               <TeamDisplay team={entrant.team} alwaysDisplayLogo={true} />
             )}
-          </p>
+          </div>
         </div>
       ) : (
         <div className="flex flex-col items-center">
