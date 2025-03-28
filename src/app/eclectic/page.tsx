@@ -17,6 +17,9 @@ export default async function EclecticPage() {
     <LibMain>
       <div className="flex flex-col items-center">
         <LibH1>Eclectic</LibH1>
+        <p className="text-sm text-muted-foreground">
+          To enter, contact Steve Dixon
+        </p>
       </div>
 
       <Eclectic scores={scoreData} />

@@ -2,11 +2,9 @@
 
 import { z } from "zod";
 import {
-  EntrantDisplay,
   LibCardContainer,
   LibCardNarrow,
   ScoreDisplay,
-  TeamDisplay,
 } from "~/app/_components/lib-elements";
 import { Fragment, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
@@ -27,6 +25,7 @@ import { ScorecardDisplay } from "./scorecard";
 import { Skeleton } from "~/components/ui/skeleton";
 import { type EclecticData } from "../eclectic/page";
 import { flushSync } from "react-dom";
+import Link from "next/link";
 
 type Hole = {
   holeNo: number;
@@ -386,7 +385,9 @@ export default function Eclectic({ scores }: EclecticProps) {
                       </CollapsibleTrigger>
                     </TableCell>
                     <TableCell className="px-1 sm:px-2">
-                      {score.entrantName}
+                      <Link href={`/eclectic/${score.entrantId}`}>
+                        {score.entrantName}
+                      </Link>
                     </TableCell>
 
                     <TableCell className="px-1 text-right hover:cursor-pointer sm:px-2">
