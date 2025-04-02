@@ -200,21 +200,20 @@ function AdminMenu() {
 
 function EclecticMenu() {
   const { sessionClaims } = auth();
-  if (!sessionClaims?.metadata.eclecticPermission) return null;
 
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Eclectic</SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu>
-          {/* <MenuItem
+          <MenuItem
             key="eclectic"
             item={{
-              title: "Eclectic",
+              title: "Eclectic Leaderboard",
               url: "/eclectic",
               icon: <NotebookText />,
             }}
-          /> */}
+          />
           <Protect
             condition={() =>
               !!sessionClaims?.metadata.eclecticPermission ||
