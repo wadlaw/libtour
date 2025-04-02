@@ -7,7 +7,7 @@ import {
   ScoreDisplay,
 } from "~/app/_components/lib-elements";
 import { Fragment, useState } from "react";
-import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import {
   Table,
   TableBody,
@@ -24,8 +24,10 @@ import {
 import { ScorecardDisplay } from "./scorecard";
 import { Skeleton } from "~/components/ui/skeleton";
 import { type EclecticData } from "../eclectic/page";
-import { flushSync } from "react-dom";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
+import { usePathname } from "next/navigation";
+
+type EclecticDataScorecards = EclecticData[number]["scorecards"];
 
 type Hole = {
   holeNo: number;
@@ -40,6 +42,7 @@ type Hole = {
 type EclecticScorecard = {
   entrantId: number;
   entrantName: string;
+  cards: EclecticDataScorecards;
   holes: [
     Hole,
     Hole,
@@ -69,22 +72,18 @@ type EclecticScorecard = {
 const HoleSchema = z.object({
   NR: z.boolean(),
   holeNo: z.number().min(1).max(18),
-  strokes: z.number().min(1).default(100),
-  net: z.number().default(100),
+  strokes: z.number().min(1).default(100).nullable(),
+  net: z.number().default(100).nullable(),
 });
 
-type EclecticProps = {
-  scores: EclecticData;
-};
-
-export default function Eclectic({ scores }: EclecticProps) {
-  const [grossOrNet, setGrossOrNet] = useState<"Gross" | "Net">("Gross");
+function ProcessEclecticScores(scores: EclecticData) {
+  console.log("EclecticData received", scores);
   const eclecticScores: EclecticScorecard[] = [];
-
   scores.map((entrant) => {
     const entrantEclecticCard: EclecticScorecard = {
       entrantId: entrant.id,
       entrantName: entrant.displayName,
+      cards: entrant.scorecards,
       holes: [
         {
           holeNo: 1,
@@ -255,16 +254,17 @@ export default function Eclectic({ scores }: EclecticProps) {
       NetCountback: 0,
     };
     entrant.scorecards.map((card) => {
-      if (card) {
-        card.holes.map((hole) => {
-          const safeHole = HoleSchema.parse(hole);
-          const thisHole = entrantEclecticCard.holes[safeHole.holeNo - 1];
-          if (thisHole != undefined) {
-            thisHole.strokes = Math.min(thisHole?.strokes, safeHole.strokes);
-            thisHole.net = Math.min(thisHole?.net, safeHole.net);
-          }
-        });
-      }
+      card.holes.map((hole) => {
+        const safeHole = HoleSchema.parse(hole);
+        const thisHole = entrantEclecticCard.holes[safeHole.holeNo - 1];
+        if (thisHole != undefined && !safeHole.NR) {
+          thisHole.strokes = Math.min(
+            thisHole?.strokes,
+            safeHole.strokes ?? 100,
+          );
+          thisHole.net = Math.min(thisHole?.net, safeHole.net ?? 100);
+        }
+      });
     });
     entrantEclecticCard.Gross = entrantEclecticCard.holes.reduce(
       (acc, cur) => acc + cur.strokes,
@@ -312,6 +312,13 @@ export default function Eclectic({ scores }: EclecticProps) {
           .filter((h) => h.holeNo >= 18)
           .reduce((acc, cur) => acc + (cur.net ?? 0), 0);
 
+    //Any scores still at 100 are NR
+    entrantEclecticCard.holes.forEach((hole) => {
+      if (hole.strokes === 100) {
+        hole.NR = true;
+      }
+    });
+
     eclecticScores.push(entrantEclecticCard);
   });
 
@@ -319,7 +326,8 @@ export default function Eclectic({ scores }: EclecticProps) {
 
   //Deep Copy the eclecticScores array so we can easily modify the Net to show net scores when shown on a scorecard
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const net: EclecticScorecard[] = JSON.parse(JSON.stringify(eclecticScores));
+  // const net: EclecticScorecard[] = JSON.parse(JSON.stringify(eclecticScores));
+  const net: EclecticScorecard[] = structuredClone(eclecticScores);
 
   scratch.sort((a, b) => {
     return a.GrossCountback - b.GrossCountback;
@@ -332,91 +340,42 @@ export default function Eclectic({ scores }: EclecticProps) {
       hole.strokes = hole.net;
     });
   });
+  console.log("Objects returned", scratch, net);
+  return { scratch, net };
+}
 
-  const setTab = (tabName: "Gross" | "Net") => {
-    // Fallback for browsers that don't support View Transitions:
-    if (!document.startViewTransition) {
-      setGrossOrNet(tabName);
-      return;
-    }
+type EclecticProps = {
+  scores: EclecticData;
+  title?: string;
+  defaultOpen?: boolean;
+};
 
-    // With View Transitions:
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    document.startViewTransition(() =>
-      flushSync(() => {
-        setGrossOrNet(tabName);
-      }),
-    );
-  };
+export default function Eclectic({
+  scores,
+  title = "Eclectic Leaderboard",
+  defaultOpen = false,
+}: EclecticProps) {
+  const { scratch, net } = ProcessEclecticScores(scores);
 
   return (
     <LibCardContainer>
-      <LibCardNarrow title="Eclectic Leaderboard">
-        <Tabs className="" defaultValue={grossOrNet}>
+      <LibCardNarrow title={title}>
+        <Tabs className="" defaultValue={"Gross"}>
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger onClick={() => setTab("Gross")} value="Gross">
-              Gross
-            </TabsTrigger>
-            <TabsTrigger onClick={() => setTab("Net")} value="Net">
-              Net
-            </TabsTrigger>
+            <TabsTrigger value="Gross">Gross</TabsTrigger>
+            <TabsTrigger value="Net">Net</TabsTrigger>
           </TabsList>
+          <TabsContent value="Gross">
+            <EclecticTable
+              type="Gross"
+              scores={scratch}
+              defaultOpen={defaultOpen}
+            />
+          </TabsContent>
+          <TabsContent value="Net">
+            <EclecticTable type="Net" scores={net} defaultOpen={defaultOpen} />
+          </TabsContent>
         </Tabs>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="px-1 sm:px-2">Pos</TableHead>
-              <TableHead className="px-1 sm:px-2">Name</TableHead>
-
-              <TableHead className="px-1 text-right sm:px-2">Score</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {(grossOrNet === "Gross" ? scratch : net).map((score, index) => (
-              <Collapsible key={`${grossOrNet}-${score.entrantId}`} asChild>
-                <Fragment key={score.entrantId}>
-                  <TableRow
-                    key={score.entrantId}
-                    className={`entrant${score.entrantId}`}
-                  >
-                    <TableCell className="px-1 hover:cursor-pointer sm:px-2">
-                      <CollapsibleTrigger asChild>
-                        <span>{index + 1}</span>
-                      </CollapsibleTrigger>
-                    </TableCell>
-                    <TableCell className="px-1 sm:px-2">
-                      <Link href={`/eclectic/${score.entrantId}`}>
-                        {score.entrantName}
-                      </Link>
-                    </TableCell>
-
-                    <TableCell className="px-1 text-right hover:cursor-pointer sm:px-2">
-                      <ScoreDisplay
-                        score={grossOrNet === "Gross" ? score.Gross : score.Net}
-                        displayOption="Both"
-                        collapsibleTrigger={true}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <CollapsibleContent asChild>
-                    <tr className="bg-muted">
-                      <ScorecardDisplay
-                        colSpan={4}
-                        scorecard={{
-                          id: score.entrantId,
-                          handicap: 0,
-                          stableford: false,
-                          holes: score.holes,
-                        }}
-                        strokesOnly={true}
-                      />
-                    </tr>
-                  </CollapsibleContent>
-                </Fragment>
-              </Collapsible>
-            ))}
-          </TableBody>
-        </Table>
       </LibCardNarrow>
     </LibCardContainer>
   );
@@ -469,5 +428,260 @@ export function EclecticSkeleton() {
         </Table>
       </LibCardNarrow>
     </LibCardContainer>
+  );
+}
+
+type EclecticTableProps = {
+  type: "Gross" | "Net";
+  scores: EclecticScorecard[];
+  includePosition?: boolean;
+  defaultOpen?: boolean;
+};
+
+function EclecticTable({
+  type,
+  scores,
+  includePosition = true,
+  defaultOpen = false,
+}: EclecticTableProps) {
+  const pathname = usePathname();
+  let lastCountbackScore = 0;
+  let lastPosition = 0;
+
+  const getPosition = (score: number, ordinal: number) => {
+    if (score === lastCountbackScore) return lastPosition;
+    lastCountbackScore = score;
+    lastPosition = ordinal;
+    return ordinal;
+  };
+
+  const ordinalPosition = (num: number) => {
+    return `${num}${
+      num > 0
+        ? ["th", "st", "nd", "rd"][
+            (num > 3 && num < 21) || num % 10 > 3 ? 0 : num % 10
+          ]
+        : ""
+    }`;
+  };
+
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          {includePosition && (
+            <TableHead className="px-1 sm:px-2">Pos</TableHead>
+          )}
+          <TableHead className="px-1 sm:px-2">Name</TableHead>
+
+          <TableHead className="px-1 text-right sm:px-2">{`${type} Score`}</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {scores.map((score, index) => (
+          <Collapsible
+            key={`${type}-${score.entrantId}`}
+            defaultOpen={defaultOpen}
+            asChild
+          >
+            <Fragment key={score.entrantId}>
+              <TableRow
+                key={score.entrantId}
+                className={`entrant${score.entrantId}`}
+              >
+                {includePosition && (
+                  <TableCell className="px-1 hover:cursor-pointer sm:px-2">
+                    <CollapsibleTrigger asChild>
+                      <span>
+                        {ordinalPosition(
+                          getPosition(
+                            type === "Gross"
+                              ? score.GrossCountback
+                              : score.NetCountback,
+                            index + 1,
+                          ),
+                        )}
+                      </span>
+                    </CollapsibleTrigger>
+                  </TableCell>
+                )}
+                <TableCell className="px-1 hover:cursor-pointer sm:px-2">
+                  {/* Display a collapsibletrigger if link would be to page we are already on, otherwise show a link */}
+                  {pathname === `/eclectic/${score.entrantId}` ? (
+                    <CollapsibleTrigger asChild>
+                      <span>{score.entrantName}</span>
+                    </CollapsibleTrigger>
+                  ) : (
+                    <Link href={`/eclectic/${score.entrantId}`}>
+                      {score.entrantName}
+                    </Link>
+                  )}
+                </TableCell>
+
+                <TableCell className="px-1 text-right hover:cursor-pointer sm:px-2">
+                  <ScoreDisplay
+                    score={type === "Gross" ? score.Gross : score.Net}
+                    displayOption="Both"
+                    NR={score.holes.some((hole) => hole.strokes === 100)}
+                    collapsibleTrigger={true}
+                  />
+                </TableCell>
+              </TableRow>
+              <CollapsibleContent asChild>
+                <tr className="bg-muted">
+                  <ScorecardDisplay
+                    colSpan={4}
+                    scorecard={{
+                      id: score.entrantId,
+                      handicap: 0,
+                      stableford: false,
+                      holes: score.holes,
+                    }}
+                    strokesOnly={true}
+                  />
+                </tr>
+              </CollapsibleContent>
+            </Fragment>
+          </Collapsible>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+
+type EclecticScorecardProps = {
+  scores: EclecticData;
+  defaultOpen?: boolean;
+  displayAllCards?: boolean;
+};
+
+export function EclecticScorecardView({
+  scores,
+  defaultOpen = false,
+  displayAllCards = true,
+}: EclecticScorecardProps) {
+  const pathName = usePathname();
+  const { scratch, net } = ProcessEclecticScores(scores);
+
+  return (
+    <LibCardContainer>
+      <LibCardNarrow
+        title="Eclectic Scorecard"
+        url={pathName !== "/eclectic" ? "/eclectic" : undefined}
+      >
+        <Tabs className="" defaultValue={"Gross"}>
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="Gross">Gross</TabsTrigger>
+            <TabsTrigger value="Net">Net</TabsTrigger>
+          </TabsList>
+          <TabsContent value="Gross">
+            <EclecticTable
+              type="Gross"
+              scores={scratch}
+              includePosition={false}
+              defaultOpen={defaultOpen}
+            />
+            {displayAllCards && (
+              <EclecticScorecardTable
+                type="Gross"
+                scores={scratch}
+                defaultOpen={false}
+              />
+            )}
+          </TabsContent>
+          <TabsContent value="Net">
+            <EclecticTable
+              type="Net"
+              scores={net}
+              includePosition={false}
+              defaultOpen={defaultOpen}
+            />
+            {displayAllCards && (
+              <EclecticScorecardTable
+                type="Net"
+                scores={net}
+                defaultOpen={false}
+              />
+            )}
+          </TabsContent>
+        </Tabs>
+      </LibCardNarrow>
+    </LibCardContainer>
+  );
+}
+
+type EclecticScoresTableProps = {
+  type: "Gross" | "Net";
+  scores: EclecticScorecard[];
+  defaultOpen?: boolean;
+};
+
+function EclecticScorecardTable({
+  type,
+  scores,
+  defaultOpen = false,
+}: EclecticScoresTableProps) {
+  if (scores[0]?.cards.length === 0) return null;
+  console.log("scores", scores[0]);
+  return (
+    <Table className="mt-8">
+      <TableHeader>
+        <TableRow>
+          <TableHead className="px-1 sm:px-2">Comp</TableHead>
+          <TableHead className="px-1 sm:px-2">Format</TableHead>
+          <TableHead className="px-1 text-right sm:px-2">Hcp</TableHead>
+          <TableHead className="px-1 text-right sm:px-2">{`${type} Score`}</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {scores[0]?.cards.map((card) => (
+          <Collapsible key={card.id} asChild defaultOpen={defaultOpen}>
+            <Fragment key={card.id}>
+              <TableRow key={card.id}>
+                <TableCell className="px-1 sm:px-2">
+                  <Link href={`/events/${card.compId}`}>{card.comp.name}</Link>
+                </TableCell>
+                <TableCell className="px-1 hover:cursor-pointer sm:px-2">
+                  <CollapsibleTrigger asChild>
+                    <span>{card.comp.stableford ? "Stableford" : "Medal"}</span>
+                  </CollapsibleTrigger>
+                </TableCell>
+                <TableCell className="px-1 text-right hover:cursor-pointer sm:px-2">
+                  <CollapsibleTrigger asChild>
+                    <span>{card.handicap}</span>
+                  </CollapsibleTrigger>
+                </TableCell>
+                <TableCell className="px-1 text-right hover:cursor-pointer sm:px-2">
+                  <ScoreDisplay
+                    score={
+                      type === "Gross"
+                        ? card.strokes ?? undefined
+                        : card.net ?? undefined
+                    }
+                    NR={card.NR}
+                    displayOption="Both"
+                    collapsibleTrigger={true}
+                  />
+                </TableCell>
+              </TableRow>
+              <CollapsibleContent asChild>
+                <TableRow className="bg-muted">
+                  <ScorecardDisplay
+                    scorecard={{
+                      id: card.id,
+                      handicap: card.handicap,
+                      stableford: false,
+                      holes: card.holes,
+                    }}
+                    strokesOnly={type === "Gross"}
+                    colSpan={4}
+                  />
+                </TableRow>
+              </CollapsibleContent>
+            </Fragment>
+          </Collapsible>
+        ))}
+      </TableBody>
+    </Table>
   );
 }

@@ -85,19 +85,20 @@ model Transaction {
 }
 
 model Comp {
-    igCompId     String        @unique @map("igcompid")
-    shortName    String        @unique @map("shortname")
-    name         String        @unique
-    date         DateTime
-    stableford   Boolean       @default(false)
-    open         Boolean       @default(false)
-    current      Boolean       @default(false)
-    completed    Boolean       @default(false)
-    lib          Boolean       @default(true)
-    eclectic     Boolean       @default(true)
-    entrants     CompEntrant[]
-    teamPoints   TeamPoints[]
-    transactions Transaction[]
+    igCompId           String              @unique @map("igcompid")
+    shortName          String              @unique @map("shortname")
+    name               String              @unique
+    date               DateTime
+    stableford         Boolean             @default(false)
+    open               Boolean             @default(false)
+    current            Boolean             @default(false)
+    completed          Boolean             @default(false)
+    lib                Boolean             @default(true)
+    eclectic           Boolean             @default(true)
+    entrants           CompEntrant[]
+    teamPoints         TeamPoints[]
+    transactions       Transaction[]
+    eclecticScorecards EclecticScorecard[]
 
     @@map("comps")
 }
@@ -194,6 +195,7 @@ model EclecticScorecard {
     netCountback     BigInt?         @map("netcountback")
     holes            EclecticHole[]
     entrant          EclecticEntrant @relation(fields: [entrantId], references: [id])
+    comp             Comp            @relation(fields: [compId], references: [igCompId])
 
     @@unique([compId, entrantId])
     @@map("eclecticscorecards")

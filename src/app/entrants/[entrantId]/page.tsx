@@ -28,6 +28,7 @@ import {
   CollapsibleTrigger,
 } from "~/components/ui/collapsible";
 import { ScorecardDisplay } from "~/app/_components/scorecard";
+import { EclecticScorecardView } from "~/app/_components/eclectic";
 
 export async function generateMetadata({
   params,
@@ -95,7 +96,13 @@ async function Content({ entrantId }: ContentProps) {
   const entrant = await api.entrant.getOne({
     entrantId: parseInt(entrantId),
   });
-  // await new Promise((resolve) => setTimeout(resolve, 10000));
+
+  const eclectic = entrant
+    ? await api.eclectic.getEntrantBySystemName({
+        systemName: entrant?.systemName,
+      })
+    : null;
+
   const ordinal = (num: number) => {
     return num > 0
       ? ["th", "st", "nd", "rd"][
@@ -233,7 +240,13 @@ async function Content({ entrantId }: ContentProps) {
             </TableBody>
           </Table>
         </LibCardNarrow>
-        {/* </div> */}
+        {eclectic && eclectic?.scorecards.length > 0 && (
+          <EclecticScorecardView
+            scores={[eclectic]}
+            displayAllCards={false}
+            defaultOpen={true}
+          />
+        )}
       </LibCardContainer>
     </LibMain>
   );

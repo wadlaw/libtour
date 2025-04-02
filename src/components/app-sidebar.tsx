@@ -69,6 +69,9 @@ const items = [
 export async function AppSidebar() {
   const user = await currentUser();
   const entrant = user ? await api.entrant.getMe() : null;
+  const eclectic = entrant
+    ? await api.eclectic.entrantQuickCheck({ systemName: entrant.systemName })
+    : 0;
   const { sessionClaims } = auth();
   // const router = useRouter();
 
@@ -90,6 +93,7 @@ export async function AppSidebar() {
               firstName={entrant?.user?.firstName ?? ""}
               surname={entrant?.user?.surname ?? ""}
               email={entrant?.user?.email ?? ""}
+              eclecticEntrantId={eclectic}
             />
           </Protect>
         </SidebarMenu>
@@ -130,6 +134,7 @@ export async function AppSidebar() {
           entrantId={entrant?.id ?? 0}
           teamName={entrant?.team.teamName ?? ""}
           teamLinkName={entrant?.team.linkName ?? ""}
+          eclecticEntrantId={eclectic}
         />
       </Protect>
     </Sidebar>

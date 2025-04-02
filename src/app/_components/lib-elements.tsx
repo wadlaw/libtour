@@ -191,6 +191,16 @@ type ScoreDisplayProps = {
   collapsibleTrigger?: boolean;
 };
 
+type OptionalTriggerProps = {
+  addTrigger?: boolean;
+  children: React.ReactNode;
+};
+
+function OptionalTrigger({ addTrigger, children }: OptionalTriggerProps) {
+  if (!addTrigger) return <>{children}</>;
+  return <CollapsibleTrigger>{children}</CollapsibleTrigger>;
+}
+
 export function ScoreDisplay({
   stableford = false,
   score = 0,
@@ -199,9 +209,13 @@ export function ScoreDisplay({
   collapsibleTrigger = false,
 }: ScoreDisplayProps) {
   const overUnder = stableford ? 36 - score : score - 72;
+  if (NR)
+    return (
+      <OptionalTrigger addTrigger={collapsibleTrigger}>{"NR"}</OptionalTrigger>
+    );
+
   return (
     <>
-      {NR && "NR"}
       {displayOption === "ScoreOnly" &&
         (collapsibleTrigger ? (
           <CollapsibleTrigger>

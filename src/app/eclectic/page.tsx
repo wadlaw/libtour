@@ -1,5 +1,5 @@
 import { api } from "~/trpc/server";
-import LibMain, { LibH1 } from "~/app/_components/lib-elements";
+import LibMain, { LibH1, LibMainFixed } from "~/app/_components/lib-elements";
 import Eclectic from "../_components/eclectic";
 
 export const metadata = {
@@ -10,6 +10,7 @@ export const metadata = {
 export type EclecticData = Awaited<
   ReturnType<typeof api.scorecard.EclecticScores>
 >;
+
 
 export default async function EclecticPage() {
   const scoreData = await api.scorecard.EclecticScores();
