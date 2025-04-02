@@ -501,10 +501,9 @@ export const scorecardRouter = createTRPCRouter({
                                 scorecard: {
                                     include: {
                                         holes: {
-                                            where: {
-                                                NR: false
-                                            },
-                                            
+                                            orderBy: {
+                                                holeNo: "asc"
+                                            }
                                         }
                                     }
                                 }
@@ -521,12 +520,8 @@ export const scorecardRouter = createTRPCRouter({
                     include: {
                         scorecards: {
                             include: {
-                                holes: {
-                                    where: {
-                                        NR: false
-                                    },
-                                    
-                                }
+                                comp: true,
+                                holes: true,
                             }
                         }
                     }

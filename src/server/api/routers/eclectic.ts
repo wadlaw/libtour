@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { ensure } from "~/lib/utils";
+
 
 import { createTRPCRouter, publicProcedure, protectedProcedure,  wildcardProcedure, adminProcedure, eclecticProcedure } from "~/server/api/trpc";
 
@@ -25,11 +25,50 @@ export const eclecticRouter = createTRPCRouter({
                 include: {
                     scorecards: {
                         include: {
-                            holes: true
+                            comp: true,
+                            holes: {
+                                orderBy: {
+                                    holeNo: "asc"
+                                }
+                            }
                         }
                     }
                 }
             })
+        }),
+        getEntrantBySystemName: publicProcedure
+        .input(z.object({ systemName: z.string() }))
+        .query(({ ctx, input }) => {
+            return ctx.db.eclecticEntrant.findFirst({
+                where: {
+                    systemName: input.systemName
+                },
+                include: {
+                    scorecards: {
+                        include: {
+                            comp: true,
+                            holes: {
+                                orderBy: {
+                                    holeNo: "asc"
+                                }
+                            }
+                        }
+                    }
+                }
+            })
+        }),
+        entrantQuickCheck: publicProcedure
+        .input(z.object({ systemName: z.string().min(1).describe("The system name of the entrant to check") }))
+        .query(async({ ctx, input }) => {
+            const eclecticEntrant = await ctx.db.eclecticEntrant.findFirst({
+                where: {
+                    systemName: input.systemName
+                },
+                include: {
+                    scorecards: true
+                }
+            })
+            return (eclecticEntrant && eclecticEntrant?.scorecards.length > 0) ? eclecticEntrant.id : 0;
         }),
     getEntrants: publicProcedure
         .query(({ ctx }) => {
@@ -40,7 +79,12 @@ export const eclecticRouter = createTRPCRouter({
                 include: {
                     scorecards: {
                         include: {
-                            holes: true
+                            comp: true,
+                            holes: {
+                                orderBy: {
+                                    holeNo: "asc"
+                                }
+                            }
                         }
                     }
                 }

@@ -1,7 +1,7 @@
 import { api } from "~/trpc/server";
 import { NextResponse } from "next/server";
-import LibMain, { LibH1 } from "~/app/_components/lib-elements";
-import Eclectic from "~/app/_components/eclectic";
+import { LibH1, LibMainFixed } from "~/app/_components/lib-elements";
+import { EclecticScorecardView } from "~/app/_components/eclectic";
 
 export default async function EclecticEntrant({
   params,
@@ -16,11 +16,11 @@ export default async function EclecticEntrant({
     return NextResponse.redirect("/eclectic");
   }
   return (
-    <LibMain>
+    <LibMainFixed>
       <div className="flex flex-col items-center ">
-        <LibH1>{entrant.displayName}</LibH1>
+        <LibH1>{entrant.displayName} Eclectic</LibH1>
       </div>
-      <Eclectic scores={[entrant]} />
-    </LibMain>
+      <EclecticScorecardView scores={[entrant]} defaultOpen={true} />
+    </LibMainFixed>
   );
 }

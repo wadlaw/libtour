@@ -7,6 +7,7 @@ import {
   ChevronsUpDown,
   LogOut,
   UserRoundPen,
+  BookUser,
 } from "lucide-react";
 // import Link from "next/link";
 import { Link } from "next-view-transitions";
@@ -99,9 +100,15 @@ type MyMenuProps = {
   entrantId: number;
   teamName: string;
   teamLinkName: string;
+  eclecticEntrantId?: number;
 };
 
-export function MyMenu({ entrantId, teamName, teamLinkName }: MyMenuProps) {
+export function MyMenu({
+  entrantId,
+  teamName,
+  teamLinkName,
+  eclecticEntrantId = 0,
+}: MyMenuProps) {
   const path = usePathname();
   const { setOpenMobile } = useSidebar();
 
@@ -123,6 +130,7 @@ export function MyMenu({ entrantId, teamName, teamLinkName }: MyMenuProps) {
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
+
         <SidebarMenuItem>
           <SidebarMenuButton
             asChild
@@ -134,6 +142,20 @@ export function MyMenu({ entrantId, teamName, teamLinkName }: MyMenuProps) {
             >
               <UsersRound />
               {teamName} Results
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            asChild
+            isActive={path === `/eclectic/${eclecticEntrantId}`}
+          >
+            <Link
+              href={`/eclectic/${eclecticEntrantId}`}
+              onClick={() => setOpenMobile(false)}
+            >
+              <BookUser />
+              My Eclectic
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
@@ -153,7 +175,12 @@ export function MyMenu({ entrantId, teamName, teamLinkName }: MyMenuProps) {
   );
 }
 
-export function MyFooter({ entrantId, teamName, teamLinkName }: MyMenuProps) {
+export function MyFooter({
+  entrantId,
+  teamName,
+  teamLinkName,
+  eclecticEntrantId = 0,
+}: MyMenuProps) {
   const path = usePathname();
   const { setOpenMobile } = useSidebar();
 
@@ -174,6 +201,7 @@ export function MyFooter({ entrantId, teamName, teamLinkName }: MyMenuProps) {
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
+
         <SidebarMenuItem>
           <SidebarMenuButton
             asChild
@@ -188,6 +216,22 @@ export function MyFooter({ entrantId, teamName, teamLinkName }: MyMenuProps) {
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
+        {eclecticEntrantId > 0 && (
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              isActive={path === `/eclectic/${eclecticEntrantId}`}
+            >
+              <Link
+                href={`/eclectic/${eclecticEntrantId}`}
+                onClick={() => setOpenMobile(false)}
+              >
+                <BookUser />
+                My Eclectic
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        )}
         <SidebarMenuItem>
           <SidebarMenuButton asChild isActive={path === "/account"}>
             <Link href="/account" onClick={() => setOpenMobile(false)}>
@@ -212,6 +256,7 @@ type UserDropdownProps = {
   avatar: string;
   firstName: string;
   surname: string;
+  eclecticEntrantId?: number;
 };
 
 export function UserDropdown({
@@ -222,6 +267,7 @@ export function UserDropdown({
   avatar,
   firstName,
   surname,
+  eclecticEntrantId = 0,
 }: UserDropdownProps) {
   const { setOpenMobile } = useSidebar();
   const clerk = useClerk();
@@ -301,6 +347,22 @@ export function UserDropdown({
             </Link>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
+          {eclecticEntrantId > 0 && (
+            <>
+              <DropdownMenuGroup>
+                <Link
+                  href={`/eclectic/${eclecticEntrantId}`}
+                  onClick={() => setOpenMobile(false)}
+                >
+                  <DropdownMenuItem>
+                    <BookUser size={16} />
+                    My Eclectic
+                  </DropdownMenuItem>
+                </Link>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+            </>
+          )}
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={() => clerk.openUserProfile()}>
               <UserRoundPen size={16} />

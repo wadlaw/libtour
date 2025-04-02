@@ -46,24 +46,25 @@ export function ScorecardDisplay({
   strokesOnly,
 }: ScorecardDisplayProps) {
   if (!scorecard) return null;
+  console.log("ScorecardDisplay", scorecard);
   return (
     <Fragment>
       <TableCell
         colSpan={colSpan}
-        className="@2xl/libcard:px-2 @5xl/libcard:px-4 px-1"
+        className="px-1 @2xl/libcard:px-2 @5xl/libcard:px-4"
       >
         <div
-          className={`@3xl/libcard:flex-nowrap flex w-full flex-wrap justify-between gap-6 ${!!formatForSplitView && "lg:flex-wrap"}`}
+          className={`flex w-full flex-wrap justify-between gap-6 @3xl/libcard:flex-nowrap ${!!formatForSplitView && "lg:flex-wrap"}`}
         >
           {/* Front 9 */}
           <div className="flex w-full flex-wrap gap-1">
             <div className="grid w-full grid-cols-11 place-content-center justify-center gap-1 text-slate-500">
               {/* Hole Numbering */}
 
-              <div className="@2xl/libcard:text-xs text-[0.65rem]">Hole</div>
+              <div className="text-[0.65rem] @2xl/libcard:text-xs">Hole</div>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, "Out"].map((hole) => (
                 <div key={hole} className="flex justify-center">
-                  <div className="@2xl/libcard:text-xs text-[0.65rem]">
+                  <div className="text-[0.65rem] @2xl/libcard:text-xs">
                     {hole}
                   </div>
                 </div>
@@ -72,7 +73,7 @@ export function ScorecardDisplay({
             {/* Strokes row */}
             <div className="grid w-full grid-cols-11 place-content-center justify-center gap-1">
               <div className="flex flex-col justify-center">
-                <div className="@2xl/libcard:text-xs text-[0.65rem] text-slate-500">
+                <div className="text-[0.65rem] text-slate-500 @2xl/libcard:text-xs">
                   Score
                 </div>
               </div>
@@ -105,7 +106,7 @@ export function ScorecardDisplay({
             {!strokesOnly && (
               <div className="grid w-full grid-cols-11 place-content-center justify-center gap-1">
                 <div className="flex flex-col justify-center">
-                  <div className="@2xl/libcard:text-xs text-[0.65rem] text-slate-500">
+                  <div className="text-[0.65rem] text-slate-500 @2xl/libcard:text-xs">
                     {scorecard.stableford ? "Pts" : "Net"}
                   </div>
                 </div>
@@ -149,31 +150,31 @@ export function ScorecardDisplay({
           {/* Back 9 */}
           <div className="flex w-full flex-wrap gap-1">
             <div
-              className={`@3xl/libcard:grid-cols-10 grid w-full grid-cols-11 place-content-center justify-center gap-1 text-slate-500 ${!!formatForSplitView && "@5xl/libcard:grid-cols-11"}`}
+              className={`grid w-full grid-cols-11 place-content-center justify-center gap-1 text-slate-500 @3xl/libcard:grid-cols-10 ${!!formatForSplitView && "@5xl/libcard:grid-cols-11"}`}
             >
               {/* Hole numbering */}
               <div
-                className={`@2xl/libcard:text-xs @3xl/libcard:hidden text-[0.65rem] ${!!formatForSplitView && "@5xl/libcard:block"}`}
+                className={`text-[0.65rem] @2xl/libcard:text-xs @3xl/libcard:hidden ${!!formatForSplitView && "@5xl/libcard:block"}`}
               >
                 Hole
               </div>
               {[10, 11, 12, 13, 14, 15, 16, 17, 18, "In"].map((hole) => (
                 <div key={hole} className="flex justify-center">
-                  <div className="@2xl/libcard:text-xs text-[0.65rem]">
+                  <div className="text-[0.65rem] @2xl/libcard:text-xs">
                     {hole}
                   </div>
                 </div>
               ))}
             </div>
             <div
-              className={`@3xl/libcard:grid-cols-10 grid w-full grid-cols-11 place-content-center justify-center gap-1 ${!!formatForSplitView && "@5xl/libcard:grid-cols-11"}`}
+              className={`grid w-full grid-cols-11 place-content-center justify-center gap-1 @3xl/libcard:grid-cols-10 ${!!formatForSplitView && "@5xl/libcard:grid-cols-11"}`}
             >
               {/* Strokes row */}
               <div
-                className={`@3xl/libcard:hidden flex flex-col justify-center ${!!formatForSplitView && "@5xl/libcard:flex"}`}
+                className={`flex flex-col justify-center @3xl/libcard:hidden ${!!formatForSplitView && "@5xl/libcard:flex"}`}
               >
                 <div
-                  className={`@2xl/libcard:text-xs @3xl/libcard:hidden text-[0.65rem] text-slate-500 ${!!formatForSplitView && "@5xl/libcard:block"}`}
+                  className={`text-[0.65rem] text-slate-500 @2xl/libcard:text-xs @3xl/libcard:hidden ${!!formatForSplitView && "@5xl/libcard:block"}`}
                 >
                   Score
                 </div>
@@ -209,13 +210,13 @@ export function ScorecardDisplay({
             {/* Derived scores row (net/points etc) */}
             {!strokesOnly && (
               <div
-                className={`@3xl/libcard:grid-cols-10 grid w-full grid-cols-11 place-content-center justify-center gap-1 ${!!formatForSplitView && "@5xl/libcard:grid-cols-11"}`}
+                className={`grid w-full grid-cols-11 place-content-center justify-center gap-1 @3xl/libcard:grid-cols-10 ${!!formatForSplitView && "@5xl/libcard:grid-cols-11"}`}
               >
                 <div
-                  className={`@3xl/libcard:hidden flex flex-col justify-center ${!!formatForSplitView && "@5xl/libcard:flex"}`}
+                  className={`flex flex-col justify-center @3xl/libcard:hidden ${!!formatForSplitView && "@5xl/libcard:flex"}`}
                 >
                   <div
-                    className={`@2xl/libcard:text-xs @3xl/libcard:hidden text-[0.65rem] text-slate-500 ${!!formatForSplitView && "@5xl/libcard:block"}`}
+                    className={`text-[0.65rem] text-slate-500 @2xl/libcard:text-xs @3xl/libcard:hidden ${!!formatForSplitView && "@5xl/libcard:block"}`}
                   >
                     {scorecard.stableford ? "Pts" : "Net"}
                   </div>
