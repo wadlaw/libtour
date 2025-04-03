@@ -381,12 +381,20 @@ export default function Eclectic({
   );
 }
 
-export function EclecticSkeleton() {
+type EclecticSkeletonProps = {
+  title?: string;
+  rowCount?: number;
+};
+
+export function EclecticSkeleton({
+  title = "Eclectic Leaderboard",
+  rowCount = 40,
+}: EclecticSkeletonProps) {
   const [grossOrNet, setGrossOrNet] = useState<"Gross" | "Net">("Gross");
-  const fakeArray = [...Array<string>(40)];
+  const fakeArray = [...Array<string>(rowCount)];
   return (
     <LibCardContainer>
-      <LibCardNarrow title="Eclectic Leaderboard">
+      <LibCardNarrow title={title}>
         <Tabs className="" defaultValue={grossOrNet}>
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger onClick={() => setGrossOrNet("Gross")} value="Gross">
