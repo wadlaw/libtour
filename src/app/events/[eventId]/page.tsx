@@ -181,52 +181,7 @@ export default async function Event({
         </LibCardContainer>
       )}
 
-      {/* <Protect condition={() => !!sessionClaims?.metadata?.adminPermission}>
-        <div className="flex flex-col items-center ">
-          <Accordion className="px-2" type="single" collapsible>
-            <AccordionItem value="item-1">
-              <AccordionTrigger>Admin</AccordionTrigger>
-              <AccordionContent>
-                <ScrapeResults eventId={comp.igCompId} />
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
-      </Protect> */}
-
-      {/* {comp.completed ? (
-        <LibCardContainer>
-          <Results compId={comp.igCompId} stableford={comp.stableford} />
-          <TeamResultsForComp compId={comp.igCompId} />
-        </LibCardContainer>
-      ) : (
-        <LibCardContainer>
-          <EventEntrants compId={comp.igCompId} isOpen={comp.open} />
-        </LibCardContainer>
-      )} */}
-
-      {/* <div className="flex  flex-col items-center ">
-        <Protect
-          condition={() =>
-            !!sessionClaims?.metadata?.captain ||
-            !!sessionClaims?.metadata?.entryPermission ||
-            !!sessionClaims?.metadata?.adminPermission
-          }
-        >
-          {comp.open && (
-            <Accordion type="single" collapsible>
-              <AccordionItem value="item-1">
-                <AccordionTrigger className="mx-36 sm:mx-64 lg:mx-96 ">
-                  Not Entered
-                </AccordionTrigger>
-                <AccordionContent>
-                  <EventNonEntrants compId={comp.igCompId} isOpen={comp.open} />
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          )}
-        </Protect>
-      </div> */}
+      
     </LibMainFixed>
   );
 }
