@@ -1,12 +1,11 @@
 import { LibH1, LibMainFixed } from "~/app/_components/lib-elements";
-
 import { EclecticSkeleton } from "~/app/_components/eclectic";
 
 export default async function EclecticLoader() {
   return (
     <LibMainFixed>
       <div className="flex flex-col items-center">
-        <LibH1>Loading Entrant Eclectic</LibH1>
+        <LibH1>{`Loading Entrant Eclectic`}</LibH1>
       </div>
 
       <EclecticSkeleton

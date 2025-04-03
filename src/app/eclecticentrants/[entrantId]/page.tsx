@@ -23,7 +23,7 @@ export default async function EclecticEntrant({
   return (
     <LibMainFixed>
       <div className="flex flex-col items-center ">
-        <Suspense fallback={<LibH1>Loading Eclectic Scorecard</LibH1>}>
+        <Suspense fallback={<LibH1>Loading Entrant Eclectic</LibH1>}>
           <LibH1>{entrant.displayName} Eclectic</LibH1>
         </Suspense>
       </div>
