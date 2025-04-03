@@ -384,14 +384,17 @@ export default function Eclectic({
 type EclecticSkeletonProps = {
   title?: string;
   rowCount?: number;
+  scorecardCount?: number;
 };
 
 export function EclecticSkeleton({
   title = "Eclectic Leaderboard",
   rowCount = 40,
+  scorecardCount = 0,
 }: EclecticSkeletonProps) {
   const [grossOrNet, setGrossOrNet] = useState<"Gross" | "Net">("Gross");
   const fakeArray = [...Array<string>(rowCount)];
+  const fakeCards = [...Array<string>(scorecardCount)];
   return (
     <LibCardContainer>
       <LibCardNarrow title={title}>
@@ -434,6 +437,39 @@ export function EclecticSkeleton({
             })}
           </TableBody>
         </Table>
+
+        {scorecardCount > 0 && (
+          <Table className="mt-8">
+            <TableHeader>
+              <TableRow>
+                <TableHead className="px-1 sm:px-2">Comp</TableHead>
+                <TableHead className="px-1 sm:px-2">Format</TableHead>
+                <TableHead className="px-1 text-right sm:px-2">Hcp</TableHead>
+                <TableHead className="px-1 text-right sm:px-2">
+                  Gross Score
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {fakeCards.map((card, index) => (
+                <TableRow key={index}>
+                  <TableCell className="px-1 sm:px-2">
+                    <Skeleton className="h-4 w-24 " />
+                  </TableCell>
+                  <TableCell className="px-1 sm:px-2">
+                    <Skeleton className="h-4 w-8 " />
+                  </TableCell>
+                  <TableCell className="px-1 text-right sm:px-2">
+                    <Skeleton className="h-4 w-2 " />
+                  </TableCell>
+                  <TableCell className="px-1 text-right hover:cursor-pointer sm:px-2">
+                    <Skeleton className="h-4 w-6 " />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </LibCardNarrow>
     </LibCardContainer>
   );

@@ -1,4 +1,5 @@
 import { LibH1, LibMainFixed } from "~/app/_components/lib-elements";
+
 import { EclecticSkeleton } from "~/app/_components/eclectic";
 
 export default async function EclecticLoader() {
@@ -7,7 +8,12 @@ export default async function EclecticLoader() {
       <div className="flex flex-col items-center">
         <LibH1>Loading Eclectic</LibH1>
       </div>
-      <EclecticSkeleton title={`Eclectic Scorecard`} rowCount={1} />
+
+      <EclecticSkeleton
+        title={`Eclectic Scorecard`}
+        rowCount={1}
+        scorecardCount={2}
+      />
     </LibMainFixed>
   );
 }

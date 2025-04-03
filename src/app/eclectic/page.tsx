@@ -1,5 +1,5 @@
 import { api } from "~/trpc/server";
-import LibMain, { LibH1, LibMainFixed } from "~/app/_components/lib-elements";
+import { LibH1, LibMainFixed } from "~/app/_components/lib-elements";
 import Eclectic from "../_components/eclectic";
 
 export const metadata = {
@@ -11,11 +11,10 @@ export type EclecticData = Awaited<
   ReturnType<typeof api.scorecard.EclecticScores>
 >;
 
-
 export default async function EclecticPage() {
   const scoreData = await api.scorecard.EclecticScores();
   return (
-    <LibMain>
+    <LibMainFixed>
       <div className="flex flex-col items-center">
         <LibH1>Eclectic</LibH1>
         <p className="text-sm text-muted-foreground">
@@ -24,6 +23,6 @@ export default async function EclecticPage() {
       </div>
 
       <Eclectic scores={scoreData} />
-    </LibMain>
+    </LibMainFixed>
   );
 }
