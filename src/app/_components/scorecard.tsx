@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment } from "react";
+import { Skeleton } from "~/components/ui/skeleton";
 import { TableCell } from "~/components/ui/table";
 
 type ScorecardDisplayProps = {
@@ -260,5 +261,108 @@ export function ScorecardDisplay({
         </div>
       </TableCell>
     </Fragment>
+  );
+}
+
+type ScorecardDisplaySkeletonProps = {
+  colSpan: number;
+};
+
+export function ScorecardDisplaySkeleton({
+  colSpan,
+}: ScorecardDisplaySkeletonProps) {
+  return (
+    <>
+      <TableCell
+        colSpan={colSpan}
+        className="bg-muted px-1 @2xl/libcard:px-2 @5xl/libcard:px-4"
+      >
+        <div
+          className={`flex w-full flex-wrap justify-between gap-6 @3xl/libcard:flex-nowrap`}
+        >
+          {/* Front 9 */}
+          <div className="flex w-full flex-wrap gap-1">
+            <div className="grid w-full grid-cols-11 place-content-center justify-center gap-1 text-slate-500">
+              {/* Hole Numbering */}
+
+              <div className="text-[0.65rem] @2xl/libcard:text-xs">Hole</div>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, "Out"].map((hole) => (
+                <div key={hole} className="flex justify-center">
+                  <div className="text-[0.65rem] @2xl/libcard:text-xs">
+                    {hole}
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Strokes row */}
+            <div className="grid w-full grid-cols-11 place-content-center justify-center gap-1">
+              <div className="flex flex-col justify-center">
+                <div className="text-[0.65rem] text-slate-500 @2xl/libcard:text-xs">
+                  Score
+                </div>
+              </div>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((hole) => (
+                <div key={hole} className="flex justify-center">
+                  <div
+                    className={`flex h-7 w-7 items-center justify-center font-bold `}
+                  >
+                    <Skeleton className="h-7 w-7" />
+                  </div>
+                </div>
+              ))}
+              {/* Strokes Total */}
+              <div className=" flex justify-center">
+                <div
+                  className={`flex h-7 w-7 items-center justify-center font-bold ring-2`}
+                >
+                  <Skeleton className="h-7 w-7" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Back 9 */}
+          <div className="flex w-full flex-wrap gap-1">
+            <div className="grid w-full grid-cols-11 place-content-center justify-center gap-1 text-slate-500">
+              {/* Hole Numbering */}
+
+              <div className="text-[0.65rem] @2xl/libcard:text-xs">Hole</div>
+              {[10, 11, 12, 13, 14, 15, 16, 17, 18, "In"].map((hole) => (
+                <div key={hole} className="flex justify-center">
+                  <div className="text-[0.65rem] @2xl/libcard:text-xs">
+                    {hole}
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Strokes row */}
+            <div className="grid w-full grid-cols-11 place-content-center justify-center gap-1">
+              <div className="flex flex-col justify-center">
+                <div className="text-[0.65rem] text-slate-500 @2xl/libcard:text-xs">
+                  Score
+                </div>
+              </div>
+              {[10, 11, 12, 13, 14, 15, 16, 17, 18].map((hole) => (
+                <div key={hole} className="flex justify-center">
+                  <div
+                    className={`flex h-7 w-7 items-center justify-center font-bold `}
+                  >
+                    <Skeleton className="h-7 w-7" />
+                  </div>
+                </div>
+              ))}
+              {/* Strokes Total */}
+              <div className=" flex justify-center">
+                <div
+                  className={`flex h-7 w-7 items-center justify-center font-bold ring-2`}
+                >
+                  <Skeleton className="h-7 w-7" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </TableCell>
+    </>
   );
 }

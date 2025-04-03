@@ -21,7 +21,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "~/components/ui/collapsible";
-import { ScorecardDisplay } from "./scorecard";
+import { ScorecardDisplay, ScorecardDisplaySkeleton } from "./scorecard";
 import { Skeleton } from "~/components/ui/skeleton";
 import { type EclecticData } from "../eclectic/page";
 import { Link } from "next-view-transitions";
@@ -385,12 +385,16 @@ type EclecticSkeletonProps = {
   title?: string;
   rowCount?: number;
   scorecardCount?: number;
+  defaultOpen?: boolean;
+  includePosition?: boolean;
 };
 
 export function EclecticSkeleton({
   title = "Eclectic Leaderboard",
   rowCount = 40,
   scorecardCount = 0,
+  defaultOpen = false,
+  includePosition = true,
 }: EclecticSkeletonProps) {
   const [grossOrNet, setGrossOrNet] = useState<"Gross" | "Net">("Gross");
   const fakeArray = [...Array<string>(rowCount)];
@@ -411,7 +415,7 @@ export function EclecticSkeleton({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Pos</TableHead>
+              {includePosition && <TableHead>Pos</TableHead>}
               <TableHead>Name</TableHead>
               <TableHead className="text-right">Score</TableHead>
             </TableRow>
@@ -419,20 +423,29 @@ export function EclecticSkeleton({
           <TableBody>
             {fakeArray.map((fakeScore, index) => {
               return (
-                <TableRow key={index}>
-                  <TableCell>
-                    <Skeleton className="h-4 w-4" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-4 w-24 " />
-                  </TableCell>
+                <Fragment key={index}>
+                  <TableRow key={index}>
+                    {includePosition && (
+                      <TableCell>
+                        <Skeleton className="h-4 w-4" />
+                      </TableCell>
+                    )}
+                    <TableCell>
+                      <Skeleton className="h-4 w-24 " />
+                    </TableCell>
 
-                  <TableCell>
-                    <div className="flex w-full justify-end">
-                      <Skeleton className="h-4 w-8" />
-                    </div>
-                  </TableCell>
-                </TableRow>
+                    <TableCell>
+                      <div className="flex w-full justify-end">
+                        <Skeleton className="h-4 w-8" />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                  {defaultOpen && (
+                    <ScorecardDisplaySkeleton
+                      colSpan={includePosition ? 3 : 2}
+                    />
+                  )}
+                </Fragment>
               );
             })}
           </TableBody>

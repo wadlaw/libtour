@@ -1,11 +1,11 @@
 import { api } from "~/trpc/server";
-import { NextResponse } from "next/server";
 import { LibH1, LibMainFixed } from "~/app/_components/lib-elements";
 import {
   EclecticScorecardView,
   EclecticSkeleton,
 } from "~/app/_components/eclectic";
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
 
 export default async function EclecticEntrant({
   params,
@@ -17,7 +17,7 @@ export default async function EclecticEntrant({
   });
 
   if (!entrant) {
-    return NextResponse.redirect("/eclectic");
+    redirect("/eclectic");
   }
   return (
     <LibMainFixed>
@@ -32,6 +32,8 @@ export default async function EclecticEntrant({
             title={`Eclectic Scorecard`}
             rowCount={1}
             scorecardCount={2}
+            defaultOpen={true}
+            includePosition={false}
           />
         }
       >

@@ -1,6 +1,7 @@
 import { api } from "~/trpc/server";
 import { LibH1, LibMainFixed } from "~/app/_components/lib-elements";
-import Eclectic from "../_components/eclectic";
+import Eclectic, { EclecticSkeleton } from "../_components/eclectic";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Eclectic",
@@ -21,8 +22,9 @@ export default async function EclecticPage() {
           To enter, contact Steve Dixon
         </p>
       </div>
-
-      <Eclectic scores={scoreData} />
+      <Suspense fallback={<EclecticSkeleton />}>
+        <Eclectic scores={scoreData} />
+      </Suspense>
     </LibMainFixed>
   );
 }
