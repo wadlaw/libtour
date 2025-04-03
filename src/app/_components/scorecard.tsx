@@ -306,7 +306,7 @@ export function ScorecardDisplaySkeleton({
                   <div
                     className={`flex h-7 w-7 items-center justify-center font-bold `}
                   >
-                    <Skeleton className="h-7 w-7" />
+                    <Skeleton className="h-7 w-7 rounded-none bg-gray-200 dark:bg-gray-800" />
                   </div>
                 </div>
               ))}
@@ -315,7 +315,7 @@ export function ScorecardDisplaySkeleton({
                 <div
                   className={`flex h-7 w-7 items-center justify-center font-bold ring-2`}
                 >
-                  <Skeleton className="h-7 w-7" />
+                  <Skeleton className="h-7 w-7 rounded-none bg-gray-200 dark:bg-gray-800" />
                 </div>
               </div>
             </div>
@@ -323,10 +323,12 @@ export function ScorecardDisplaySkeleton({
 
           {/* Back 9 */}
           <div className="flex w-full flex-wrap gap-1">
-            <div className="grid w-full grid-cols-11 place-content-center justify-center gap-1 text-slate-500">
+            <div className="grid w-full grid-cols-11 place-content-center justify-center gap-1 text-slate-500 @3xl/libcard:grid-cols-10">
               {/* Hole Numbering */}
 
-              <div className="text-[0.65rem] @2xl/libcard:text-xs">Hole</div>
+              <div className="text-[0.65rem] @2xl/libcard:text-xs  @3xl/libcard:hidden">
+                Hole
+              </div>
               {[10, 11, 12, 13, 14, 15, 16, 17, 18, "In"].map((hole) => (
                 <div key={hole} className="flex justify-center">
                   <div className="text-[0.65rem] @2xl/libcard:text-xs">
@@ -336,9 +338,9 @@ export function ScorecardDisplaySkeleton({
               ))}
             </div>
             {/* Strokes row */}
-            <div className="grid w-full grid-cols-11 place-content-center justify-center gap-1">
-              <div className="flex flex-col justify-center">
-                <div className="text-[0.65rem] text-slate-500 @2xl/libcard:text-xs">
+            <div className="grid w-full grid-cols-11 place-content-center justify-center gap-1 @3xl/libcard:grid-cols-10">
+              <div className="flex flex-col justify-center @3xl/libcard:hidden">
+                <div className="text-[0.65rem] text-slate-500 @2xl/libcard:text-xs  ">
                   Score
                 </div>
               </div>
@@ -347,7 +349,7 @@ export function ScorecardDisplaySkeleton({
                   <div
                     className={`flex h-7 w-7 items-center justify-center font-bold `}
                   >
-                    <Skeleton className="h-7 w-7" />
+                    <Skeleton className="h-7 w-7 rounded-none  bg-gray-200 dark:bg-gray-800" />
                   </div>
                 </div>
               ))}
@@ -356,7 +358,7 @@ export function ScorecardDisplaySkeleton({
                 <div
                   className={`flex h-7 w-7 items-center justify-center font-bold ring-2`}
                 >
-                  <Skeleton className="h-7 w-7" />
+                  <Skeleton className="h-7 w-7 rounded-none  bg-gray-200 dark:bg-gray-800" />
                 </div>
               </div>
             </div>

@@ -19,6 +19,7 @@ export default async function EclecticEntrant({
   if (!entrant) {
     redirect("/eclectic");
   }
+
   return (
     <LibMainFixed>
       <div className="flex flex-col items-center ">

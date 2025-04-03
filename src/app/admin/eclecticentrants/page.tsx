@@ -62,21 +62,21 @@ export default async function Entrants() {
                     <TableCell
                       className={`px-1 @2xl/libcard:px-2 ${!entrant.paid && "text-red-500"}`}
                     >
-                      <Link href={`/eclectic/${entrant.id}`}>
+                      <Link href={`/eclecticentrants/${entrant.id}`}>
                         {entrant.displayName}
                       </Link>
                     </TableCell>
                     <TableCell
                       className={`hidden px-1 @2xl/libcard:px-2 @4xl/libcard:table-cell ${!entrant.paid && "text-red-500"}`}
                     >
-                      <Link href={`/eclectic/${entrant.id}`}>
+                      <Link href={`/eclecticentrants/${entrant.id}`}>
                         {entrant.systemName}
                       </Link>
                     </TableCell>
                     <TableCell
                       className={`px-1 @2xl/libcard:px-2 @4xl/libcard:table-cell ${!entrant.paid && "text-red-500"}`}
                     >
-                      <Link href={`/eclectic/${entrant.id}`}>
+                      <Link href={`/eclecticentrants/${entrant.id}`}>
                         {entrant.paid ? "Yes" : "No"}
                       </Link>
                     </TableCell>

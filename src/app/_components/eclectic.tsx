@@ -412,12 +412,16 @@ export function EclecticSkeleton({
             </TabsTrigger>
           </TabsList>
         </Tabs>
-        <Table>
+        <Table className="mt-2">
           <TableHeader>
             <TableRow>
-              {includePosition && <TableHead>Pos</TableHead>}
-              <TableHead>Name</TableHead>
-              <TableHead className="text-right">Score</TableHead>
+              {includePosition && (
+                <TableHead className="px-1 sm:px-2">Pos</TableHead>
+              )}
+              <TableHead className="px-1 sm:px-2">Name</TableHead>
+              <TableHead className="px-1 text-right sm:px-2">
+                Gross Score
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -426,17 +430,17 @@ export function EclecticSkeleton({
                 <Fragment key={index}>
                   <TableRow key={index}>
                     {includePosition && (
-                      <TableCell>
-                        <Skeleton className="h-4 w-4" />
+                      <TableCell className="sm:px- px-1">
+                        <Skeleton className="h-5 w-4" />
                       </TableCell>
                     )}
-                    <TableCell>
-                      <Skeleton className="h-4 w-24 " />
+                    <TableCell className="px-1 sm:px-2">
+                      <Skeleton className="h-5 w-24 " />
                     </TableCell>
 
-                    <TableCell>
+                    <TableCell className="px-1 sm:px-2">
                       <div className="flex w-full justify-end">
-                        <Skeleton className="h-4 w-8" />
+                        <Skeleton className="h-5 w-8" />
                       </div>
                     </TableCell>
                   </TableRow>
@@ -564,12 +568,12 @@ function EclecticTable({
                 )}
                 <TableCell className="px-1 hover:cursor-pointer sm:px-2">
                   {/* Display a collapsibletrigger if link would be to page we are already on, otherwise show a link */}
-                  {pathname === `/eclectic/${score.entrantId}` ? (
+                  {pathname === `/eclecticentrants/${score.entrantId}` ? (
                     <CollapsibleTrigger asChild>
                       <span>{score.entrantName}</span>
                     </CollapsibleTrigger>
                   ) : (
-                    <Link href={`/eclectic/${score.entrantId}`}>
+                    <Link href={`/eclecticentrants/${score.entrantId}`}>
                       {score.entrantName}
                     </Link>
                   )}

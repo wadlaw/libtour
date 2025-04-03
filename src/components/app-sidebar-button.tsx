@@ -148,10 +148,10 @@ export function MyMenu({
         <SidebarMenuItem>
           <SidebarMenuButton
             asChild
-            isActive={path === `/eclectic/${eclecticEntrantId}`}
+            isActive={path === `/eclecticentrants/${eclecticEntrantId}`}
           >
             <Link
-              href={`/eclectic/${eclecticEntrantId}`}
+              href={`/eclecticentrants/${eclecticEntrantId}`}
               onClick={() => setOpenMobile(false)}
             >
               <BookUser />
@@ -220,10 +220,10 @@ export function MyFooter({
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              isActive={path === `/eclectic/${eclecticEntrantId}`}
+              isActive={path === `/eclecticentrants/${eclecticEntrantId}`}
             >
               <Link
-                href={`/eclectic/${eclecticEntrantId}`}
+                href={`/eclecticentrants/${eclecticEntrantId}`}
                 onClick={() => setOpenMobile(false)}
               >
                 <BookUser />
@@ -351,7 +351,7 @@ export function UserDropdown({
             <>
               <DropdownMenuGroup>
                 <Link
-                  href={`/eclectic/${eclecticEntrantId}`}
+                  href={`/eclecticentrants/${eclecticEntrantId}`}
                   onClick={() => setOpenMobile(false)}
                 >
                   <DropdownMenuItem>
