@@ -36,7 +36,7 @@ export default async function Team({
     <LibMain>
       <div className=" flex flex-col items-center">
         <div
-          className={`h-[100px] w-[100px] overflow-hidden rounded-full ${team.linkName}`}
+          className={`h-[100px] w-[100px] overflow-hidden rounded-full  ${team.linkName}`}
         >
           <ImagePopup imageUrl={`/${team.linkName}.png`} />
           {/* <Image

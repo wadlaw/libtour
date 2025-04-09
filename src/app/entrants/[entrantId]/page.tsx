@@ -6,7 +6,7 @@ import LibMain, {
   TeamDisplay,
 } from "~/app/_components/lib-elements";
 import { Link } from "next-view-transitions";
-import Image from "next/image";
+// import Image from "next/image";
 
 import {
   Table,
@@ -117,7 +117,7 @@ async function Content({ entrantId }: ContentProps) {
       {entrant ? (
         <div className="flex flex-col items-center">
           <div
-            className={`h-[100px] w-[100px] overflow-hidden rounded-full ring-2 ring-[hsl(var(--muted))] ${entrant.team.linkName}`}
+            className={`h-[100px] w-[100px] overflow-hidden rounded-full  ${entrant.team.linkName}`}
           >
             {entrant?.user?.avatarUrl ? (
               <ImagePopup imageUrl={entrant.user.avatarUrl} />
