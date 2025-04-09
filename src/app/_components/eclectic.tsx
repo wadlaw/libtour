@@ -1,11 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import {
-  LibCardContainer,
-  LibCardNarrow,
-  ScoreDisplay,
-} from "~/app/_components/lib-elements";
+import { LibCardNarrow, ScoreDisplay } from "~/app/_components/lib-elements";
 import { Fragment, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import {
