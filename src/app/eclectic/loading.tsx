@@ -1,4 +1,7 @@
-import LibMain, { LibH1 } from "~/app/_components/lib-elements";
+import LibMain, {
+  LibCardContainer,
+  LibH1,
+} from "~/app/_components/lib-elements";
 import { EclecticSkeleton } from "../_components/eclectic";
 
 export default async function EclecticLoader() {
@@ -11,8 +14,9 @@ export default async function EclecticLoader() {
           To enter, contact Steve Dixon
         </p>
       </div>
-
-      <EclecticSkeleton />
+      <LibCardContainer>
+        <EclecticSkeleton />
+      </LibCardContainer>
     </LibMain>
   );
 }

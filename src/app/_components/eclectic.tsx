@@ -358,26 +358,24 @@ export default function Eclectic({
   const { scratch, net } = ProcessEclecticScores(scores);
 
   return (
-    <LibCardContainer>
-      <LibCardNarrow title={title}>
-        <Tabs className="" defaultValue={"Gross"}>
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="Gross">Gross</TabsTrigger>
-            <TabsTrigger value="Net">Net</TabsTrigger>
-          </TabsList>
-          <TabsContent value="Gross">
-            <EclecticTable
-              type="Gross"
-              scores={scratch}
-              defaultOpen={defaultOpen}
-            />
-          </TabsContent>
-          <TabsContent value="Net">
-            <EclecticTable type="Net" scores={net} defaultOpen={defaultOpen} />
-          </TabsContent>
-        </Tabs>
-      </LibCardNarrow>
-    </LibCardContainer>
+    <LibCardNarrow title={title}>
+      <Tabs className="" defaultValue={"Gross"}>
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="Gross">Gross</TabsTrigger>
+          <TabsTrigger value="Net">Net</TabsTrigger>
+        </TabsList>
+        <TabsContent value="Gross">
+          <EclecticTable
+            type="Gross"
+            scores={scratch}
+            defaultOpen={defaultOpen}
+          />
+        </TabsContent>
+        <TabsContent value="Net">
+          <EclecticTable type="Net" scores={net} defaultOpen={defaultOpen} />
+        </TabsContent>
+      </Tabs>
+    </LibCardNarrow>
   );
 }
 
@@ -400,95 +398,91 @@ export function EclecticSkeleton({
   const fakeArray = [...Array<string>(rowCount)];
   const fakeCards = [...Array<string>(scorecardCount)];
   return (
-    <LibCardContainer>
-      <LibCardNarrow title={title}>
-        <Tabs className="" defaultValue={grossOrNet}>
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger onClick={() => setGrossOrNet("Gross")} value="Gross">
-              Gross
-            </TabsTrigger>
-            <TabsTrigger onClick={() => setGrossOrNet("Net")} value="Net">
-              Net
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
-        <Table className="mt-2">
+    <LibCardNarrow title={title}>
+      <Tabs className="" defaultValue={grossOrNet}>
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger onClick={() => setGrossOrNet("Gross")} value="Gross">
+            Gross
+          </TabsTrigger>
+          <TabsTrigger onClick={() => setGrossOrNet("Net")} value="Net">
+            Net
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
+      <Table className="mt-2">
+        <TableHeader>
+          <TableRow>
+            {includePosition && (
+              <TableHead className="px-1 sm:px-2">Pos</TableHead>
+            )}
+            <TableHead className="px-1 sm:px-2">Name</TableHead>
+            <TableHead className="px-1 text-right sm:px-2">
+              Gross Score
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {fakeArray.map((fakeScore, index) => {
+            return (
+              <Fragment key={index}>
+                <TableRow key={index}>
+                  {includePosition && (
+                    <TableCell className="sm:px- px-1">
+                      <Skeleton className="h-5 w-4" />
+                    </TableCell>
+                  )}
+                  <TableCell className="px-1 sm:px-2">
+                    <Skeleton className="h-5 w-24 " />
+                  </TableCell>
+
+                  <TableCell className="px-1 sm:px-2">
+                    <div className="flex w-full justify-end">
+                      <Skeleton className="h-5 w-8" />
+                    </div>
+                  </TableCell>
+                </TableRow>
+                {defaultOpen && (
+                  <ScorecardDisplaySkeleton colSpan={includePosition ? 3 : 2} />
+                )}
+              </Fragment>
+            );
+          })}
+        </TableBody>
+      </Table>
+
+      {scorecardCount > 0 && (
+        <Table className="mt-8">
           <TableHeader>
             <TableRow>
-              {includePosition && (
-                <TableHead className="px-1 sm:px-2">Pos</TableHead>
-              )}
-              <TableHead className="px-1 sm:px-2">Name</TableHead>
+              <TableHead className="px-1 sm:px-2">Comp</TableHead>
+              <TableHead className="px-1 sm:px-2">Format</TableHead>
+              <TableHead className="px-1 text-right sm:px-2">Hcp</TableHead>
               <TableHead className="px-1 text-right sm:px-2">
                 Gross Score
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {fakeArray.map((fakeScore, index) => {
-              return (
-                <Fragment key={index}>
-                  <TableRow key={index}>
-                    {includePosition && (
-                      <TableCell className="sm:px- px-1">
-                        <Skeleton className="h-5 w-4" />
-                      </TableCell>
-                    )}
-                    <TableCell className="px-1 sm:px-2">
-                      <Skeleton className="h-5 w-24 " />
-                    </TableCell>
-
-                    <TableCell className="px-1 sm:px-2">
-                      <div className="flex w-full justify-end">
-                        <Skeleton className="h-5 w-8" />
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                  {defaultOpen && (
-                    <ScorecardDisplaySkeleton
-                      colSpan={includePosition ? 3 : 2}
-                    />
-                  )}
-                </Fragment>
-              );
-            })}
+            {fakeCards.map((card, index) => (
+              <TableRow key={index}>
+                <TableCell className="px-1 sm:px-2">
+                  <Skeleton className="h-4 w-24 " />
+                </TableCell>
+                <TableCell className="px-1 sm:px-2">
+                  <Skeleton className="h-4 w-8 " />
+                </TableCell>
+                <TableCell className="px-1 text-right sm:px-2">
+                  <Skeleton className="h-4 w-2 " />
+                </TableCell>
+                <TableCell className="px-1 text-right hover:cursor-pointer sm:px-2">
+                  <Skeleton className="h-4 w-6 " />
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
-
-        {scorecardCount > 0 && (
-          <Table className="mt-8">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="px-1 sm:px-2">Comp</TableHead>
-                <TableHead className="px-1 sm:px-2">Format</TableHead>
-                <TableHead className="px-1 text-right sm:px-2">Hcp</TableHead>
-                <TableHead className="px-1 text-right sm:px-2">
-                  Gross Score
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {fakeCards.map((card, index) => (
-                <TableRow key={index}>
-                  <TableCell className="px-1 sm:px-2">
-                    <Skeleton className="h-4 w-24 " />
-                  </TableCell>
-                  <TableCell className="px-1 sm:px-2">
-                    <Skeleton className="h-4 w-8 " />
-                  </TableCell>
-                  <TableCell className="px-1 text-right sm:px-2">
-                    <Skeleton className="h-4 w-2 " />
-                  </TableCell>
-                  <TableCell className="px-1 text-right hover:cursor-pointer sm:px-2">
-                    <Skeleton className="h-4 w-6 " />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-      </LibCardNarrow>
-    </LibCardContainer>
+      )}
+    </LibCardNarrow>
   );
 }
 
@@ -625,49 +619,47 @@ export function EclecticScorecardView({
   const { scratch, net } = ProcessEclecticScores(scores);
 
   return (
-    <LibCardContainer>
-      <LibCardNarrow
-        title="Eclectic Scorecard"
-        url={pathName !== "/eclectic" ? "/eclectic" : undefined}
-      >
-        <Tabs className="" defaultValue={"Gross"}>
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="Gross">Gross</TabsTrigger>
-            <TabsTrigger value="Net">Net</TabsTrigger>
-          </TabsList>
-          <TabsContent value="Gross">
-            <EclecticTable
+    <LibCardNarrow
+      title="Eclectic Scorecard"
+      url={pathName !== "/eclectic" ? "/eclectic" : undefined}
+    >
+      <Tabs className="" defaultValue={"Gross"}>
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="Gross">Gross</TabsTrigger>
+          <TabsTrigger value="Net">Net</TabsTrigger>
+        </TabsList>
+        <TabsContent value="Gross">
+          <EclecticTable
+            type="Gross"
+            scores={scratch}
+            includePosition={false}
+            defaultOpen={defaultOpen}
+          />
+          {displayAllCards && (
+            <EclecticScorecardTable
               type="Gross"
               scores={scratch}
-              includePosition={false}
-              defaultOpen={defaultOpen}
+              defaultOpen={false}
             />
-            {displayAllCards && (
-              <EclecticScorecardTable
-                type="Gross"
-                scores={scratch}
-                defaultOpen={false}
-              />
-            )}
-          </TabsContent>
-          <TabsContent value="Net">
-            <EclecticTable
+          )}
+        </TabsContent>
+        <TabsContent value="Net">
+          <EclecticTable
+            type="Net"
+            scores={net}
+            includePosition={false}
+            defaultOpen={defaultOpen}
+          />
+          {displayAllCards && (
+            <EclecticScorecardTable
               type="Net"
               scores={net}
-              includePosition={false}
-              defaultOpen={defaultOpen}
+              defaultOpen={false}
             />
-            {displayAllCards && (
-              <EclecticScorecardTable
-                type="Net"
-                scores={net}
-                defaultOpen={false}
-              />
-            )}
-          </TabsContent>
-        </Tabs>
-      </LibCardNarrow>
-    </LibCardContainer>
+          )}
+        </TabsContent>
+      </Tabs>
+    </LibCardNarrow>
   );
 }
 

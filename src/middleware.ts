@@ -61,7 +61,7 @@ export default authMiddleware({
     return NextResponse.next();
   },
   // Allow signed out users to access the specified routes:
-  publicRoutes: ['/', '/teams', '/teams/:path', '/events', '/events/:path', '/entrants', '/entrants/:path', '/api/webhooks/user', '/sign-in', '/prizewinners', '/halloffame', '/wallofshame',  '/eclectic', '/eclectic/:path', '/eclecticentrants/:path', '/libeclectic', '/honoursboards'],
+  publicRoutes: ['/', '/teams', '/teams/:path', '/events', '/events/:path', '/entrants', '/entrants/:path', '/api/webhooks/user', '/sign-in', '/prizewinners', '/halloffame', '/wallofshame',  '/eclectic', '/eclectic/:path', '/eclecticentrants/:path', '/libeclectic', '/honoursboards', '/podcast'],
   // Prevent the specified routes from accessing
   // authentication information:
   // ignoredRoutes: ['/no-auth-in-this-route'],

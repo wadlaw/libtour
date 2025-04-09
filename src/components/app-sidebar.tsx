@@ -14,6 +14,7 @@ import {
   BadgePoundSterling,
   PoundSterling,
   ChevronRight,
+  Podcast,
 } from "lucide-react";
 
 import {
@@ -118,6 +119,7 @@ export async function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <EclecticMenu />
+        <PodcastMenu />
         <Protect
           condition={() =>
             !!sessionClaims?.metadata?.adminPermission ||
@@ -229,6 +231,26 @@ function EclecticMenu() {
               }}
             />
           </Protect>
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  );
+}
+
+function PodcastMenu() {
+  return (
+    <SidebarGroup>
+      <SidebarGroupLabel>Libpod</SidebarGroupLabel>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          <MenuItem
+            key="podcast"
+            item={{
+              title: "Podcast",
+              url: "/podcast",
+              icon: <Podcast />,
+            }}
+          />
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

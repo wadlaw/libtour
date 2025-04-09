@@ -1,5 +1,5 @@
 import { api } from "~/trpc/server";
-import Image from "next/image";
+// import Image from "next/image";
 import { TeamEntrants } from "~/app/_components/team-entrants";
 import LibMain, {
   LibH1,
