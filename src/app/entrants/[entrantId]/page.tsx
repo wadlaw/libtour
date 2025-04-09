@@ -29,6 +29,7 @@ import {
 } from "~/components/ui/collapsible";
 import { ScorecardDisplay } from "~/app/_components/scorecard";
 import { EclecticScorecardView } from "~/app/_components/eclectic";
+import { ImagePopup } from "~/app/_components/image-popup";
 
 export async function generateMetadata({
   params,
@@ -118,18 +119,24 @@ async function Content({ entrantId }: ContentProps) {
           <div
             className={`h-[100px] w-[100px] overflow-hidden rounded-full ring-2 ring-[hsl(var(--muted))] ${entrant.team.linkName}`}
           >
-            <Link href={`/entrants/${entrant.id}`}>
-              {entrant?.user?.avatarUrl ? (
-                <Image
-                  src={entrant.user.avatarUrl}
-                  height={100}
-                  width={100}
-                  alt="avatar"
-                />
-              ) : (
-                <IdentityIcon username={entrant.name} width={100} />
-              )}
-            </Link>
+            {entrant?.user?.avatarUrl ? (
+              <ImagePopup imageUrl={entrant.user.avatarUrl} />
+            ) : (
+              <IdentityIcon username={entrant.name} width={100} />
+            )}
+
+            {/* // <Link href={`/entrants/${entrant.id}`}>
+            //   {entrant?.user?.avatarUrl ? (
+            //     <Image
+            //       src={entrant.user.avatarUrl}
+            //       height={100}
+            //       width={100}
+            //       alt="avatar"
+            //     />
+            //   ) : (
+            //     <IdentityIcon username={entrant.name} width={100} />
+            //   )}
+            // </Link> */}
           </div>
           <LibH1>{entrant?.name}</LibH1>
           <div className="mt-1 sm:mt-2">
