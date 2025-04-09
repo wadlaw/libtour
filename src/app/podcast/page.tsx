@@ -19,6 +19,11 @@ const playerLinks = {
     "https://embed.podcasts.apple.com/gb/podcast/libpod/id1807327572?itscg=30200&amp;itsct=podcast_box_player&amp;ls=1&amp;mttnsubad=1807327572&amp;theme=auto",
 };
 
+export const metadata = {
+  title: "Libtour - Libpod",
+  description: "Libtour: the Podcast",
+};
+
 export default function Podcast() {
   return (
     <LibMainFixed>
