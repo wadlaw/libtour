@@ -6,6 +6,7 @@ import LibMain, {
   LibCardContainer,
 } from "~/app/_components/lib-elements";
 import { TeamResultsByTeam } from "~/app/_components/team-results";
+import { ImagePopup } from "~/app/_components/image-popup";
 
 export async function generateMetadata({
   params,
@@ -34,13 +35,16 @@ export default async function Team({
   return (
     <LibMain>
       <div className=" flex flex-col items-center">
-        <div className={`overflow-hidden rounded-full ${team.linkName}`}>
-          <Image
+        <div
+          className={`h-[100px] w-[100px] overflow-hidden rounded-full  ${team.linkName}`}
+        >
+          <ImagePopup imageUrl={`/${team.linkName}.png`} />
+          {/* <Image
             src={`/${team.linkName}.png`}
             height={100}
             width={100}
             alt={`${team.teamName} logo`}
-          ></Image>
+          ></Image> */}
         </div>
         <LibH1>{team.teamName}</LibH1>
         <p>{`${teamPoints} point${teamPoints != 1 ? "s" : ""}`}</p>
