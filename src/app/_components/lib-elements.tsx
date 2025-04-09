@@ -398,16 +398,18 @@ export function LibCardNarrow({
 }
 type LibCardContainerProps = {
   splitAtLargeSizes?: boolean;
+  forceWidth?: boolean;
   children: React.ReactNode;
 };
 
 export function LibCardContainer({
   splitAtLargeSizes,
+  forceWidth = false,
   children,
 }: LibCardContainerProps) {
   return (
     <div
-      className={`mx-1 mt-4 grid grid-cols-1 gap-1 @2xl/main:mx-2 @2xl/main:gap-2 ${splitAtLargeSizes && "@4xl/main:grid-cols-2"} @8xl/main:mx-0  @8xl/main:gap-4`}
+      className={`${forceWidth && "w-[calc(100%-theme(spacing.2))] @2xl/main:w-[calc(100%-theme(spacing.4))] @8xl/main:w-full"} mx-1 mt-4 grid grid-cols-1 gap-1 @2xl/main:mx-2 @2xl/main:gap-2 ${splitAtLargeSizes && "@4xl/main:grid-cols-2"}  @8xl/main:mx-0 @8xl/main:gap-4`}
     >
       {children}
     </div>
