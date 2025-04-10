@@ -19,6 +19,16 @@ import { Link } from "next-view-transitions";
 import { TransactionPopover } from "./account-transactions";
 import { EntrantDisplay, TeamDisplay } from "./lib-elements";
 
+export function MasterBalance() {
+  const bal = api.account.masterBalance.useQuery();
+
+  if (!bal.data || bal.isLoading) return <span>Loading...</span>;
+
+  return (
+    <LibMoney amountInPence={bal.data._sum.netAmount ?? 0} negativeRed={true} />
+  );
+}
+
 export default function Balances() {
   const entrants = api.account.entrantsWithTransactions.useQuery();
   // if (true) return <BalancesSkeleton />;
