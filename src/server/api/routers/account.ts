@@ -4,11 +4,42 @@ import { createTRPCRouter, protectedProcedure, transactionProcedure } from "~/se
 import { TRPCError } from "@trpc/server";
 
 export const accountRouter = createTRPCRouter({
+    masterBalance: transactionProcedure
+        .query(async ({ ctx }) => {
+
+            return  ctx.db.transaction.aggregate({
+                _sum: {
+                    netAmount: true
+                },
+                where: {
+                    comp: null,
+                    NOT: { description: 'Libtour Entry Fee'}
+                }
+            
+        })
+    }),
+    masterTransactions: transactionProcedure
+        .query(({ ctx }) => {
+            return ctx.db.transaction.findMany({
+                where: {
+                    comp: null,
+                    NOT: { description: 'Libtour Entry Fee'}
+                },
+                orderBy: [
+                    {createdAt: "desc"},
+                    {id: "desc"}
+                ],
+                include: {
+                    entrant: true
+                    } 
+                
+                
+            })
+        }),
     myBalance: protectedProcedure
         .query(async ({ ctx }) => {
 
-            // simulate a slow db call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+       
             return  ctx.db.transaction.aggregate({
                 _sum: {
                     netAmount: true
