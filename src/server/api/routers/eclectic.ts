@@ -1,8 +1,7 @@
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 
-import { createTRPCRouter, publicProcedure, protectedProcedure,  wildcardProcedure, adminProcedure, eclecticProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure, eclecticProcedure } from "~/server/api/trpc";
 
 export const eclecticRouter = createTRPCRouter({
     getEntrantList: publicProcedure

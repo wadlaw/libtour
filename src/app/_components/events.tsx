@@ -22,7 +22,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Checkbox } from "~/components/ui/checkbox";
 
 import { Calendar } from "~/components/ui/calendar";
-import { format } from "date-fns";
 
 type EditEventType = {
   igCompId: string;
