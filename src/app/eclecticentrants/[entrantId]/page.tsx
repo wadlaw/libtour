@@ -1,5 +1,9 @@
 import { api } from "~/trpc/server";
-import { LibH1, LibMainFixed } from "~/app/_components/lib-elements";
+import {
+  LibH1,
+  LibMainFixed,
+  LibCardContainer,
+} from "~/app/_components/lib-elements";
 import {
   EclecticScorecardView,
   EclecticSkeleton,
@@ -27,19 +31,21 @@ export default async function EclecticEntrant({
           <LibH1>{entrant.displayName} Eclectic</LibH1>
         </Suspense>
       </div>
-      <Suspense
-        fallback={
-          <EclecticSkeleton
-            title={`Eclectic Scorecard`}
-            rowCount={1}
-            scorecardCount={2}
-            defaultOpen={true}
-            includePosition={false}
-          />
-        }
-      >
-        <EclecticScorecardView scores={[entrant]} defaultOpen={true} />
-      </Suspense>
+      <LibCardContainer>
+        <Suspense
+          fallback={
+            <EclecticSkeleton
+              title={`Eclectic Scorecard`}
+              rowCount={1}
+              scorecardCount={2}
+              defaultOpen={true}
+              includePosition={false}
+            />
+          }
+        >
+          <EclecticScorecardView scores={[entrant]} defaultOpen={true} />
+        </Suspense>
+      </LibCardContainer>
     </LibMainFixed>
   );
 }
