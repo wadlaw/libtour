@@ -47,7 +47,7 @@ export function ScorecardDisplay({
   strokesOnly,
 }: ScorecardDisplayProps) {
   if (!scorecard) return null;
-  console.log("ScorecardDisplay", scorecard);
+  // console.log("ScorecardDisplay", scorecard);
   return (
     <Fragment>
       <TableCell

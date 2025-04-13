@@ -73,7 +73,7 @@ const HoleSchema = z.object({
 });
 
 function ProcessEclecticScores(scores: EclecticData) {
-  console.log("EclecticData received", scores);
+  // console.log("EclecticData received", scores);
   const eclecticScores: EclecticScorecard[] = [];
   scores.map((entrant) => {
     const entrantEclecticCard: EclecticScorecard = {
@@ -336,7 +336,7 @@ function ProcessEclecticScores(scores: EclecticData) {
       hole.strokes = hole.net;
     });
   });
-  console.log("Objects returned", scratch, net);
+  // console.log("Objects returned", scratch, net);
   return { scratch, net };
 }
 
@@ -677,7 +677,7 @@ function EclecticScorecardTable({
   defaultOpen = false,
 }: EclecticScoresTableProps) {
   if (scores[0]?.cards.length === 0) return null;
-  console.log("scores", scores[0]);
+  // console.log("scores", scores[0]);
   return (
     <Table className="mt-8">
       <TableHeader>
