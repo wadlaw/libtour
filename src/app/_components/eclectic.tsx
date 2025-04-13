@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { LibCardNarrow, ScoreDisplay } from "~/app/_components/lib-elements";
-import { Fragment, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import {
   Table,
@@ -351,7 +351,10 @@ export default function Eclectic({
   title = "Eclectic Leaderboard",
   defaultOpen = false,
 }: EclecticProps) {
-  const { scratch, net } = ProcessEclecticScores(scores);
+  const { scratch, net } = useMemo(
+    () => ProcessEclecticScores(scores),
+    [scores],
+  );
 
   return (
     <LibCardNarrow title={title}>
@@ -612,7 +615,10 @@ export function EclecticScorecardView({
   displayAllCards = true,
 }: EclecticScorecardProps) {
   const pathName = usePathname();
-  const { scratch, net } = ProcessEclecticScores(scores);
+  const { scratch, net } = useMemo(
+    () => ProcessEclecticScores(scores),
+    [scores],
+  );
 
   return (
     <LibCardNarrow
