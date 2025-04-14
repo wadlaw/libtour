@@ -384,7 +384,7 @@ export const scorecardRouter = createTRPCRouter({
                     },
                     where: {
                         stableford: true,
-                        NR: false
+                        pointsCountback: { gt: 0}
                     },
                     orderBy: [
                         { pointsCountback: `asc` }
