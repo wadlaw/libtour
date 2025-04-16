@@ -46,6 +46,39 @@ type NotableHole = {
   toString: () => string;
 };
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { eventId: string };
+}) {
+  const comp = await api.comp.getOne({
+    comp: params.eventId,
+  });
+
+  let desc = "";
+  if (comp) {
+    if (comp?.completed) {
+      desc = `Timeline of the ${comp.name}`;
+    } else {
+      desc = `${comp.stableford ? "Stableford" : "Medal"} - ${comp?.date.toLocaleDateString(
+        "en-GB",
+        {
+          weekday: "short",
+          month: "long",
+          day: "numeric",
+        },
+      )}`;
+    }
+  } else {
+    desc = "Libtour event not found";
+  }
+
+  return {
+    title: `Libtour - ${comp ? comp?.name : params.eventId} Timeline`,
+    description: desc,
+  };
+}
+
 // Function that returns a sorted leaderboard as at a given hole - in order to recreate a live scoring narrative as if everyone were playing at the same time
 // comp: the id of the competition to produce a leaderboard for
 // thru: the number of holes to mimic having been played
