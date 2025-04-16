@@ -213,6 +213,40 @@ export const compRouter = createTRPCRouter({
     })
   }),
 
+  getOneWithScores: publicProcedure
+    .input(z.object({ comp: z.string().min(3) }))
+    .query(({ ctx, input }) => {
+      
+    return ctx.db.comp.findFirst({
+        where: {
+          OR: [
+            { igCompId: input.comp },
+            { shortName: input.comp.toLowerCase() }
+          ]
+
+        },
+        include: {
+          entrants: {
+            orderBy: {
+              position: 'asc'
+            },
+            include: {
+              entrant: true,
+              scorecard: {
+                include: {
+                  holes: {
+                    orderBy: {
+                      holeNo: 'asc'
+                    }
+                  }
+                }
+              }
+            }
+          },
+        }
+    })
+  }),
+
   isEntered: protectedProcedure
     .input(z.object({ comp: z.string().min(4) }))
     .query(async ({ ctx, input }) => {

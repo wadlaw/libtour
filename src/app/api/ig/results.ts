@@ -220,7 +220,7 @@ export async function ProcessResults(compId: string): Promise<ScrapedResultsChec
       results.push(m)
     } else {
       
-      const missing = allEntrants.findIndex(entrant => (entrant.name == result.entrantName))
+      const missing = allEntrants.findIndex(entrant => (entrant.systemName == result.entrantName))
       if (missing != -1) {
         missingEntrants.push( ensure(allEntrants[missing]))
       } 
