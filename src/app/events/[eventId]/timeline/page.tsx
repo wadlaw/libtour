@@ -29,6 +29,22 @@ type LeaderboardEntrant = {
   NR: boolean;
   notableHoles: NotableHole[];
 };
+const disasterHoleStrings = [
+  "Trainwreck",
+  "Meltdown",
+  "Catastrophe",
+  "Debacle",
+  "Blowup",
+  "Total Collapse",
+  "Scorecard Ruiner",
+  "Fiasco",
+  "Car Crash",
+  "Dumpster Fire",
+  "Nightmare",
+  "Horrorshow",
+  "Card Wrecker",
+] as const;
+type DisasterHole = (typeof disasterHoleStrings)[number];
 
 type NotableHole = {
   holeNo: number;
@@ -41,8 +57,11 @@ type NotableHole = {
     | "Bogey"
     | "Double Bogey"
     | "Triple Bogey"
+    | "Quadruple Bogey"
+    | "Quintuple Bogey"
+    | "Sextuple Bogey"
     | "Blob"
-    | "Nightmare";
+    | DisasterHole;
   toString: () => string;
 };
 
@@ -95,7 +114,7 @@ function leaderboardThruXHoles(
       const lbEntrant: LeaderboardEntrant = {
         name: entrant.entrant.name,
         entrantId: entrant.entrantId,
-        position: 0,
+        position: thru === 18 ? entrant.position ?? 0 : 0,
         tied: false,
         NR: !!(
           !comp.stableford &&
@@ -145,7 +164,18 @@ function leaderboardThruXHoles(
                                     ? "Double Bogey"
                                     : hole.par - hole.strokes === -3
                                       ? "Triple Bogey"
-                                      : "Nightmare",
+                                      : hole.par - hole.strokes === -4
+                                        ? "Quadruple Bogey"
+                                        : hole.par - hole.strokes === -5
+                                          ? "Quintuple Bogey"
+                                          : hole.par - hole.strokes === -6
+                                            ? "Sextuple Bogey"
+                                            : disasterHoleStrings[
+                                                Math.floor(
+                                                  Math.random() *
+                                                    disasterHoleStrings.length,
+                                                )
+                                              ] ?? "Nightmare",
                 };
                 return note;
               }),
@@ -168,8 +198,10 @@ function leaderboardThruXHoles(
     if (score.score !== prevScore) {
       position = i + 1;
     }
-    score.position = position;
-    score.tied = scores.filter((sco) => sco.score === score.score).length > 1;
+    if (thru < 18) {
+      score.position = position;
+      score.tied = scores.filter((sco) => sco.score === score.score).length > 1;
+    }
     prevScore = score.score;
   }
 
@@ -208,7 +240,7 @@ export default async function EventTimeline({
           <LeaderboardSnapshot
             thru={3}
             data={thru3}
-            places={15}
+            places={20}
             stableford={comp.stableford}
           />
           <p>After 6 holes...</p>
@@ -238,6 +270,7 @@ export default async function EventTimeline({
             thru={15}
             data={thru15}
             prevData={thru12}
+            places={15}
             stableford={comp.stableford}
           />
           <p>After 18 holes...</p>
@@ -246,7 +279,6 @@ export default async function EventTimeline({
             data={thru18}
             prevData={thru15}
             places={40}
-            allowTies={false}
             stableford={comp.stableford}
           />
         </LibCardNarrow>
