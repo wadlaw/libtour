@@ -14,6 +14,7 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { ChevronDown } from "lucide-react";
+import TeamResultsForComp from "~/app/_components/team-results";
 
 type Leaderboard = {
   entrants: LeaderboardEntrant[];
@@ -282,6 +283,7 @@ export default async function EventTimeline({
             stableford={comp.stableford}
           />
         </LibCardNarrow>
+        <TeamResultsForComp compId={comp.igCompId} />
       </LibCardContainer>
     </LibMainFixed>
   );
