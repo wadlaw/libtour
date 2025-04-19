@@ -77,8 +77,9 @@ export async function AppSidebar() {
   // const router = useRouter();
 
   return (
-    <nav>
-      <Sidebar variant="inset">
+    // <nav>
+    <Sidebar variant="inset">
+      <nav>
         <SidebarHeader>
           <SignedOut>
             <SidebarMenu className="hidden md:flex">
@@ -140,8 +141,8 @@ export async function AppSidebar() {
             eclecticEntrantId={eclectic}
           />
         </Protect>
-      </Sidebar>
-    </nav>
+      </nav>
+    </Sidebar>
   );
 }
 function AdminMenu() {
