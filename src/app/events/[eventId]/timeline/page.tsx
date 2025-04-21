@@ -49,6 +49,7 @@ type DisasterHole = (typeof disasterHoleStrings)[number];
 
 type NotableHole = {
   holeNo: number;
+  veryNotable: boolean;
   score:
     | "Hole in One"
     | "Albatross"
@@ -177,6 +178,12 @@ function leaderboardThruXHoles(
                                                     disasterHoleStrings.length,
                                                 )
                                               ] ?? "Nightmare",
+                  veryNotable: !!(
+                    !hole.NR &&
+                    hole.strokes &&
+                    (hole.par - hole.strokes > 0 ||
+                      hole.par - hole.strokes <= -5)
+                  ),
                 };
                 return note;
               }),
@@ -343,7 +350,16 @@ function LeaderboardSnapshot({
       </TableHeader>
       <TableBody>
         {data.entrants
-          .filter((entrant) => entrant.position <= places)
+          .filter(
+            (entrant) =>
+              entrant.position <= places ||
+              entrant.notableHoles.some(
+                (hole) =>
+                  hole.holeNo <= thru &&
+                  hole.holeNo >= thru - holeCount + 1 &&
+                  hole.veryNotable,
+              ),
+          )
           .map((entrant, index) => {
             return (
               <TableRow key={entrant.entrantId}>
@@ -374,9 +390,12 @@ function LeaderboardSnapshot({
                 )}
                 <TableCell className="mx-1 @2xl/libcard:mx-2">
                   {entrant.notableHoles
-                    .filter(
-                      (hole) =>
-                        hole.holeNo > thru - holeCount && hole.holeNo <= thru,
+                    .filter((hole) =>
+                      entrant.position > places
+                        ? hole.holeNo > thru - holeCount &&
+                          hole.holeNo <= thru &&
+                          hole.veryNotable
+                        : hole.holeNo > thru - holeCount && hole.holeNo <= thru,
                     )
                     .join(", ")}
                 </TableCell>
