@@ -79,69 +79,69 @@ export async function AppSidebar() {
   return (
     // <nav>
     <Sidebar variant="inset">
-      <nav>
-        <SidebarHeader>
-          <SignedOut>
-            <SidebarMenu className="hidden md:flex">
-              <SignInButton />
-            </SidebarMenu>
-          </SignedOut>
+      {/* <nav> */}
+      <SidebarHeader>
+        <SignedOut>
           <SidebarMenu className="hidden md:flex">
-            <Protect>
-              <UserDropdown
-                entrantId={entrant?.id ?? 0}
-                teamName={entrant?.team.teamName ?? ""}
-                teamLinkName={entrant?.team.linkName ?? ""}
-                avatar={entrant?.user?.avatarUrl ?? ""}
-                firstName={entrant?.user?.firstName ?? ""}
-                surname={entrant?.user?.surname ?? ""}
-                email={entrant?.user?.email ?? ""}
-                eclecticEntrantId={eclectic}
-              />
-            </Protect>
+            <SignInButton />
           </SidebarMenu>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>Menu</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <MenuItem
-                  key="home"
-                  item={{ title: "Home", url: "/", icon: <Home /> }}
-                />
-
-                <UpcomingEvents />
-                <Results />
-                <TeamsTable />
-                {items.map((item) => (
-                  <MenuItem key={item.title} item={item} />
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-          <EclecticMenu />
-          <PodcastMenu />
-          <Protect
-            condition={() =>
-              !!sessionClaims?.metadata?.adminPermission ||
-              !!sessionClaims?.metadata?.financePermission
-            }
-          >
-            <AdminMenu />
+        </SignedOut>
+        <SidebarMenu className="hidden md:flex">
+          <Protect>
+            <UserDropdown
+              entrantId={entrant?.id ?? 0}
+              teamName={entrant?.team.teamName ?? ""}
+              teamLinkName={entrant?.team.linkName ?? ""}
+              avatar={entrant?.user?.avatarUrl ?? ""}
+              firstName={entrant?.user?.firstName ?? ""}
+              surname={entrant?.user?.surname ?? ""}
+              email={entrant?.user?.email ?? ""}
+              eclecticEntrantId={eclectic}
+            />
           </Protect>
-        </SidebarContent>
-        <SidebarSeparator className="hidden md:block" />
+        </SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Menu</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <MenuItem
+                key="home"
+                item={{ title: "Home", url: "/", icon: <Home /> }}
+              />
 
-        <Protect>
-          <MyFooter
-            entrantId={entrant?.id ?? 0}
-            teamName={entrant?.team.teamName ?? ""}
-            teamLinkName={entrant?.team.linkName ?? ""}
-            eclecticEntrantId={eclectic}
-          />
+              <UpcomingEvents />
+              <Results />
+              <TeamsTable />
+              {items.map((item) => (
+                <MenuItem key={item.title} item={item} />
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <EclecticMenu />
+        <PodcastMenu />
+        <Protect
+          condition={() =>
+            !!sessionClaims?.metadata?.adminPermission ||
+            !!sessionClaims?.metadata?.financePermission
+          }
+        >
+          <AdminMenu />
         </Protect>
-      </nav>
+      </SidebarContent>
+      <SidebarSeparator className="hidden md:block" />
+
+      <Protect>
+        <MyFooter
+          entrantId={entrant?.id ?? 0}
+          teamName={entrant?.team.teamName ?? ""}
+          teamLinkName={entrant?.team.linkName ?? ""}
+          eclecticEntrantId={eclectic}
+        />
+      </Protect>
+      {/* </nav> */}
     </Sidebar>
   );
 }
