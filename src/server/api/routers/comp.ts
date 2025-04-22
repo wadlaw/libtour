@@ -247,6 +247,35 @@ export const compRouter = createTRPCRouter({
     })
   }),
 
+  getOneWithPrizes: publicProcedure
+    .input(z.object({ comp: z.string().min(3) }))
+    .query(({ ctx, input }) => {
+      
+    return ctx.db.comp.findFirst({
+        where: {
+          OR: [
+            { igCompId: input.comp },
+            { shortName: input.comp.toLowerCase() }
+          ]
+
+        },
+        include: {
+         transactions: {
+          where: {
+            winnings: true
+          },
+          orderBy: [
+            { amount: 'desc' },
+          ],
+          include: {
+            entrant: true
+           }
+         },
+         
+        }
+    })
+  }),
+
   isEntered: protectedProcedure
     .input(z.object({ comp: z.string().min(4) }))
     .query(async ({ ctx, input }) => {
