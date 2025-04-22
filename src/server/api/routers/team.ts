@@ -1,4 +1,5 @@
 
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
@@ -95,6 +96,33 @@ export const teamRouter = createTRPCRouter({
       orderBy: [{teamName: "asc"}]
     })
   }),
+
+  getAllWithPointsAfterComp: publicProcedure
+    .input(z.object({ comp: z.string() }))
+    .query( async ({ input, ctx }) => {
+      const anchorComp = await ctx.db.comp.findFirst({
+        where: {
+          OR: [
+            {igCompId: input.comp},
+            {shortName: input.comp}
+          ]
+        }
+      })
+
+      if (!anchorComp) throw new TRPCError({ code: "PRECONDITION_FAILED", message: "Invalid Comp Id passed" })
+      return ctx.db.team.findMany({
+        include: {
+          teamPoints: {
+            where: {
+              comp: {
+                date: { lte: anchorComp.date }
+              }
+            }
+          }
+        },
+        orderBy: [{teamName: "asc"}],
+      })
+    }),
 
   getAllWithPointsAndComps: publicProcedure.query(({ ctx }) =>{
     return ctx.db.team.findMany({

@@ -10,8 +10,14 @@ import {
 } from "~/components/ui/table";
 import { LibCardNarrow, TeamDisplay } from "~/app/_components/lib-elements";
 
-export async function LeagueTable() {
-  const teams = await api.team.getAllWithPoints();
+type LeagueTableProps = {
+  uptoComp?: string;
+};
+
+export async function LeagueTable({ uptoComp = "" }: LeagueTableProps) {
+  const teams = uptoComp
+    ? await api.team.getAllWithPointsAfterComp({ comp: uptoComp })
+    : await api.team.getAllWithPoints();
   const reducedTeams: typeof teams = [];
   teams.forEach((team) => {
     reducedTeams.push({
