@@ -60,7 +60,9 @@ type NotableHole = {
     | "Hole in One"
     | "Albatross"
     | "Eagle"
+    | "Net Eagle"
     | "Birdie"
+    | "Net Birdie"
     | "Par"
     | "Bogey"
     | "Double Bogey"
@@ -189,26 +191,32 @@ function leaderboardThruXHoles(
                             ? "Eagle"
                             : hole.par - hole.strokes === 1
                               ? "Birdie"
-                              : hole.par - hole.strokes === 0
-                                ? "Par"
-                                : hole.par - hole.strokes === -1
-                                  ? "Bogey"
-                                  : hole.par - hole.strokes === -2
-                                    ? "Double Bogey"
-                                    : hole.par - hole.strokes === -3
-                                      ? "Triple Bogey"
-                                      : hole.par - hole.strokes === -4
-                                        ? "Quadruple Bogey"
-                                        : hole.par - hole.strokes === -5
-                                          ? "Quintuple Bogey"
-                                          : hole.par - hole.strokes === -6
-                                            ? "Sextuple Bogey"
-                                            : disasterHoleStrings[
-                                                Math.floor(
-                                                  Math.random() *
-                                                    disasterHoleStrings.length,
-                                                )
-                                              ] ?? "Nightmare",
+                              : hole.par - hole.strokes === 0 &&
+                                  hole.points === 4
+                                ? "Net Eagle"
+                                : hole.par - hole.strokes === 0
+                                  ? "Par"
+                                  : hole.par - hole.strokes === -1 &&
+                                      hole.points === 3
+                                    ? "Net Birdie"
+                                    : hole.par - hole.strokes === -1
+                                      ? "Bogey"
+                                      : hole.par - hole.strokes === -2
+                                        ? "Double Bogey"
+                                        : hole.par - hole.strokes === -3
+                                          ? "Triple Bogey"
+                                          : hole.par - hole.strokes === -4
+                                            ? "Quadruple Bogey"
+                                            : hole.par - hole.strokes === -5
+                                              ? "Quintuple Bogey"
+                                              : hole.par - hole.strokes === -6
+                                                ? "Sextuple Bogey"
+                                                : disasterHoleStrings[
+                                                    Math.floor(
+                                                      Math.random() *
+                                                        disasterHoleStrings.length,
+                                                    )
+                                                  ] ?? "Nightmare",
                   veryNotable: !!(
                     !hole.NR &&
                     hole.strokes &&
