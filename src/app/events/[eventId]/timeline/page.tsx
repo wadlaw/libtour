@@ -55,6 +55,7 @@ type DisasterHole = (typeof disasterHoleStrings)[number];
 
 type NotableHole = {
   holeNo: number;
+  strokes?: number;
   veryNotable: boolean;
   score:
     | "Hole in One"
@@ -176,7 +177,7 @@ function leaderboardThruXHoles(
               .map((hole) => {
                 const note: NotableHole = {
                   toString: function (): string {
-                    return `${this.score} on ${this.holeNo}`;
+                    return `${this.score}${this.veryNotable && this.strokes && this.strokes > 4 ? " " + this.strokes : ""} on ${this.holeNo}`;
                   },
                   holeNo: hole.holeNo,
                   score: hole.NR
@@ -207,22 +208,19 @@ function leaderboardThruXHoles(
                                           ? "Triple Bogey"
                                           : hole.par - hole.strokes === -4
                                             ? "Quadruple Bogey"
-                                            : hole.par - hole.strokes === -5
-                                              ? "Quintuple Bogey"
-                                              : hole.par - hole.strokes === -6
-                                                ? "Sextuple Bogey"
-                                                : disasterHoleStrings[
-                                                    Math.floor(
-                                                      Math.random() *
-                                                        disasterHoleStrings.length,
-                                                    )
-                                                  ] ?? "Nightmare",
+                                            : disasterHoleStrings[
+                                                Math.floor(
+                                                  Math.random() *
+                                                    disasterHoleStrings.length,
+                                                )
+                                              ] ?? "Nightmare",
                   veryNotable: !!(
                     !hole.NR &&
                     hole.strokes &&
                     (hole.par - hole.strokes > 0 ||
                       hole.par - hole.strokes <= -5)
                   ),
+                  strokes: hole.strokes ? hole.strokes : undefined,
                 };
                 return note;
               }),

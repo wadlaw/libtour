@@ -9,7 +9,7 @@ import LinkCopyButton from "../_components/link-copy-button";
 import Image from "next/image";
 
 const playerLinks = {
-  overcast: "https://overcast.fm/+BOmwyFKcN8",
+  overcast: "https://overcast.fm/itunes1807327572",
   apple: "https://podcasts.apple.com/gb/podcast/libpod/id1807327572",
   spotify: "https://open.spotify.com/show/6KvVVcTXd0lrHSu3Xx7Wng",
   pocketcasts: "https://pca.st/qx080zz0",
