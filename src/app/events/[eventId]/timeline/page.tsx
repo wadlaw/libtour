@@ -338,7 +338,6 @@ export default async function EventTimeline({
           uptoComp={comp.igCompId}
           subHeading={`After ${comp.name}`}
         />
-        <RandomOtherTable />
       </LibCardContainer>
     </LibMainFixed>
   );
@@ -706,39 +705,6 @@ async function EventPrizes({ igCompId }: EventPrizesProps) {
               </TableRow>
             );
           })}
-        </TableBody>
-      </Table>
-    </LibCardNarrow>
-  );
-}
-
-function RandomOtherTable() {
-  return (
-    <LibCardNarrow title="Random Stuff">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Heading1</TableHead>
-            <TableHead>Heading2</TableHead>
-            <TableHead>Heading3</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell>Row2</TableCell>
-            <TableCell>Row2-1</TableCell>
-            <TableCell>Row3-2</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Row3</TableCell>
-            <TableCell>Row3-1</TableCell>
-            <TableCell>Row3-2</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Row4</TableCell>
-            <TableCell>Row4-1</TableCell>
-            <TableCell>Row4-2</TableCell>
-          </TableRow>
         </TableBody>
       </Table>
     </LibCardNarrow>
