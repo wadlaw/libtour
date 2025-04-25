@@ -124,6 +124,10 @@ export default async function Event({
             <>
               <Results compId={comp.igCompId} stableford={comp.stableford} />
               <TeamResultsForComp compId={comp.igCompId} />
+              <LeagueTable
+                uptoComp={comp.igCompId}
+                subHeading={`After ${comp.name}`}
+              />
             </>
           ) : (
             <EventEntrants compId={comp.igCompId} isOpen={comp.open} />
