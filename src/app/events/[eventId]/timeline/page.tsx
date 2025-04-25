@@ -684,7 +684,7 @@ async function EventPrizes({ igCompId }: EventPrizesProps) {
   if (!prizes) return null;
 
   return (
-    <LibCardNarrow title="Event Prizes">
+    <LibCardNarrow title="Event Prizes" subHeading={`For ${prizes.name}`}>
       <Table>
         <TableHeader>
           <TableRow>

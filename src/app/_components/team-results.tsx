@@ -69,7 +69,10 @@ export default async function TeamResultsForComp({ compId }: TeamResultsProps) {
   if (!compResults) return <p>No results</p>;
 
   return (
-    <LibCardNarrow title="Team Results">
+    <LibCardNarrow
+      title="Team Results"
+      subHeading={`For ${compResults[0]?.comp.name}`}
+    >
       <Table>
         {/* <TableCaption>Event Results</TableCaption> */}
         <TableHeader>

@@ -319,6 +319,7 @@ export const compRouter = createTRPCRouter({
           position: "asc"
         },
         include: {
+          comp: true,
           entrant: true,
           transactions: {
             where: {
