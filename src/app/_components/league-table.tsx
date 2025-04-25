@@ -41,7 +41,7 @@ export async function LeagueTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="px-1 sm:px-2">Team</TableHead>
+            <TableHead className="px-1 @2xl/libcard:px-2">Team</TableHead>
             <TableHead className="px-1 text-center @2xl/libcard:px-2">
               Events
             </TableHead>
