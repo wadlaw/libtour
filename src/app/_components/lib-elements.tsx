@@ -1,6 +1,12 @@
 import Image from "next/image";
 import { Link } from "next-view-transitions";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 // import IdentityIcon from "./identicons";
 import { Badge } from "~/components/ui/badge";
 import { CollapsibleTrigger } from "~/components/ui/collapsible";
@@ -178,6 +184,7 @@ export function EntrantDisplay({
 
 type LibCardProps = {
   title?: string;
+  subHeading?: string;
   url?: string;
   transitionClass?: string;
   children: React.ReactNode;
@@ -355,6 +362,7 @@ export function TeamScoreDisplay({
 
 export function LibCard({
   title,
+  subHeading,
   url,
   transitionClass = "",
   children,
@@ -369,6 +377,7 @@ export function LibCard({
         ) : (
           title && <CardTitle>{title}</CardTitle>
         )}
+        {subHeading && <CardDescription>{subHeading}</CardDescription>}
       </CardHeader>
       <CardContent>{children}</CardContent>
     </Card>
@@ -377,6 +386,7 @@ export function LibCard({
 
 export function LibCardNarrow({
   title,
+  subHeading,
   url,
   transitionClass = "",
   children,
@@ -391,6 +401,7 @@ export function LibCardNarrow({
         ) : (
           title && <CardTitle>{title}</CardTitle>
         )}
+        {subHeading && <CardDescription>{subHeading}</CardDescription>}
       </CardHeader>
       <CardContent className="px-2 @2xl/libcard:px-6">{children}</CardContent>
     </Card>

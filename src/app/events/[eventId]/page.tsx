@@ -23,6 +23,7 @@ import EnterWithdraw from "~/app/_components/entry-buttons";
 import TeamResultsForComp from "~/app/_components/team-results";
 import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
+import { LeagueTable } from "~/app/_components/league-table";
 
 export async function generateMetadata({
   params,
@@ -170,6 +171,10 @@ export default async function Event({
               <div className="flex flex-col gap-2">
                 <Results compId={comp.igCompId} stableford={comp.stableford} />
                 <TeamResultsForComp compId={comp.igCompId} />
+                <LeagueTable
+                  uptoComp={comp.igCompId}
+                  subHeading={`After ${comp.name}`}
+                />
               </div>
             </TabsContent>
             <TabsContent value="admin">
@@ -180,8 +185,6 @@ export default async function Event({
           </Tabs>
         </LibCardContainer>
       )}
-
-      
     </LibMainFixed>
   );
 }

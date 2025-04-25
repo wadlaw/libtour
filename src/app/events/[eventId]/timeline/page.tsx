@@ -334,7 +334,10 @@ export default async function EventTimeline({
         </LibCardNarrow>
         <TeamResultsForComp compId={comp.igCompId} />
         <EventPrizes igCompId={comp.igCompId} />
-        <LeagueTable uptoComp={comp.igCompId} />
+        <LeagueTable
+          uptoComp={comp.igCompId}
+          subHeading={`After ${comp.name}`}
+        />
       </LibCardContainer>
     </LibMainFixed>
   );

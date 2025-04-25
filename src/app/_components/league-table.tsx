@@ -12,9 +12,13 @@ import { LibCardNarrow, TeamDisplay } from "~/app/_components/lib-elements";
 
 type LeagueTableProps = {
   uptoComp?: string;
+  subHeading?: string;
 };
 
-export async function LeagueTable({ uptoComp = "" }: LeagueTableProps) {
+export async function LeagueTable({
+  uptoComp = "",
+  subHeading,
+}: LeagueTableProps) {
   const teams = uptoComp
     ? await api.team.getAllWithPointsAfterComp({ comp: uptoComp })
     : await api.team.getAllWithPoints();
@@ -30,6 +34,7 @@ export async function LeagueTable({ uptoComp = "" }: LeagueTableProps) {
   return (
     <LibCardNarrow
       title="Lib Standings"
+      subHeading={subHeading}
       url="/teams"
       transitionClass="league-table"
     >
