@@ -183,7 +183,10 @@ export default async function Event({
             </TabsContent>
             <TabsContent value="admin">
               <LibCardNarrow title="Admin Panel">
-                <ScrapeResults eventId={comp.igCompId} />
+                <ScrapeResults
+                  eventId={comp.igCompId}
+                  resultsPage={comp.resultsPage}
+                />
               </LibCardNarrow>
             </TabsContent>
           </Tabs>

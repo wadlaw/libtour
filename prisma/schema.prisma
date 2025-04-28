@@ -95,6 +95,7 @@ model Comp {
     completed          Boolean             @default(false)
     lib                Boolean             @default(true)
     eclectic           Boolean             @default(true)
+    resultsPage        String              @default("")
     entrants           CompEntrant[]
     teamPoints         TeamPoints[]
     transactions       Transaction[]
