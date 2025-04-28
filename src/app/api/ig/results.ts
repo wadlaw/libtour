@@ -574,8 +574,6 @@ export async function GetEclectic(
     console.log("Go to page", url);
     await page.goto(url, { waitUntil: "load" });
     await waitTillHTMLRendered(page);
-    const source = await page.content();
-    console.log("page source", source);
 
     //Select iframe
     const iframeSelector = 'iframe[name="page_iframe"]';
