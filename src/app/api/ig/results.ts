@@ -125,6 +125,8 @@ export async function GetResults(
   );
   const browser = await puppeteer.launch(browserArgs);
   const page = await browser.newPage();
+  if (process.env.PUPPETEER_USER_AGENT)
+    await page.setUserAgent(process.env.PUPPETEER_USER_AGENT);
   // //Intelligent golf
   // await page.goto(url);
   // const loginElement = await page.waitForSelector("#login");
@@ -566,9 +568,14 @@ export async function GetEclectic(
     const browser = await puppeteer.launch(browserArgs);
 
     const page = await browser.newPage();
+    if (process.env.PUPPETEER_USER_AGENT)
+      await page.setUserAgent(process.env.PUPPETEER_USER_AGENT);
+
     console.log("Go to page", url);
     await page.goto(url, { waitUntil: "load" });
     await waitTillHTMLRendered(page);
+    const source = await page.content();
+    console.log("page source", source);
 
     //Select iframe
     const iframeSelector = 'iframe[name="page_iframe"]';
