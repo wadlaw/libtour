@@ -566,9 +566,15 @@ export async function GetEclectic(
     const browser = await puppeteer.launch(browserArgs);
 
     const page = await browser.newPage();
+    await page.setUserAgent(
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
+    );
+
     console.log("Go to page", url);
     await page.goto(url, { waitUntil: "load" });
     await waitTillHTMLRendered(page);
+    const source = await page.content();
+    console.log("page source", source);
 
     //Select iframe
     const iframeSelector = 'iframe[name="page_iframe"]';
