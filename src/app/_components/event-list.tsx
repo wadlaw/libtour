@@ -85,6 +85,7 @@ type EventListDisplayProps = {
     stableford: boolean;
     lib: boolean;
     eclectic: boolean;
+    resultsPage: string;
   }>;
   title?: string;
   lastHeaderText?: string;
@@ -150,6 +151,7 @@ function EventListDisplay({
                       stableford={comp.stableford}
                       lib={comp.lib}
                       eclectic={comp.eclectic}
+                      resultsPage={comp.resultsPage}
                     />
                   )}
                 </TableCell>

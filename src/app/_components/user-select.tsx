@@ -71,7 +71,7 @@ export default function UserSelect({
                 </SelectItem>
               );
             })}
-          <SelectLabel>Asssigned Users</SelectLabel>
+          <SelectLabel>Assigned Users</SelectLabel>
           {users
             .filter((user) => !!user.entrantId)
             .map((user) => {

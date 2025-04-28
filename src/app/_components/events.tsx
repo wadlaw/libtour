@@ -31,6 +31,7 @@ type EditEventType = {
   stableford: boolean;
   lib: boolean;
   eclectic: boolean;
+  resultsPage: string;
 };
 export function EditEventDialog({
   igCompId,
@@ -40,6 +41,7 @@ export function EditEventDialog({
   stableford,
   lib,
   eclectic,
+  resultsPage,
 }: EditEventType) {
   const [linkName, setLinkName] = useState<string>(shortName);
   const [fullName, setFullName] = useState<string>(name);
@@ -47,6 +49,7 @@ export function EditEventDialog({
   const [isStableford, setIsStableford] = useState<boolean>(stableford);
   const [isLib, setIsLib] = useState<boolean>(lib);
   const [isEclectic, setIsEclectic] = useState<boolean>(eclectic);
+  const [results, setResults] = useState<string>(resultsPage);
   const router = useRouter();
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -58,6 +61,7 @@ export function EditEventDialog({
     setIsStableford(stableford);
     setIsLib(lib);
     setIsEclectic(eclectic);
+    setResults(resultsPage);
   };
 
   const event = api.comp.update.useMutation({
@@ -159,6 +163,16 @@ export function EditEventDialog({
             />
             <Label htmlFor="eclectic">Eclectic event?</Label>
           </div>
+          <div className="grid gap-2">
+            <Label htmlFor="fullname">GG Results Page</Label>
+            <Input
+              id="ggResults"
+              type="text"
+              placeholder="Enter Results Page Number"
+              value={results}
+              onChange={(evt) => setResults(evt.target.value)}
+            />
+          </div>
         </div>
 
         <AlertDialogFooter>
@@ -182,7 +196,8 @@ export function EditEventDialog({
               compDate.valueOf() == date.valueOf() &&
               isStableford === stableford &&
               isLib === lib &&
-              isEclectic === eclectic
+              isEclectic === eclectic &&
+              resultsPage === results
             }
             onClick={() => {
               event.mutate({
@@ -193,6 +208,7 @@ export function EditEventDialog({
                 stableford: isStableford,
                 lib: isLib,
                 eclectic: isEclectic,
+                resultsPage: results,
               });
             }}
           >

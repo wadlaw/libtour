@@ -9,7 +9,7 @@ import { createTRPCRouter, publicProcedure, protectedProcedure, entryProcedure, 
 
 export const compRouter = createTRPCRouter({
     update: adminProcedure
-      .input(z.object({ igCompId: z.string().min(4), shortName: z.string().min(1), name: z.string().min(1), date: z.date(), stableford: z.boolean(), lib: z.boolean(), eclectic: z.boolean() }))
+      .input(z.object({ igCompId: z.string().min(4), shortName: z.string().min(1), name: z.string().min(1), date: z.date(), stableford: z.boolean(), lib: z.boolean(), eclectic: z.boolean(), resultsPage: z.string() }))
       .mutation(async ({ ctx, input}) => {
         const comp = await ctx.db.comp.findFirst({
           where: {
@@ -29,7 +29,8 @@ export const compRouter = createTRPCRouter({
               date: input.date,
               stableford: input.stableford,
               lib: input.lib,
-              eclectic: input.eclectic
+              eclectic: input.eclectic,
+              resultsPage: input.resultsPage
             }
           })
         }
