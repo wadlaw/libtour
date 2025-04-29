@@ -338,7 +338,7 @@ export default async function EventTimeline({
           uptoComp={comp.igCompId}
           subHeading={`After ${comp.name}`}
         />
-        {/* <CompStats /> */}
+        <CompStats comp={comp} />
       </LibCardContainer>
     </LibMainFixed>
   );
@@ -657,7 +657,6 @@ function getTeamScores(thru: number, data: Leaderboard) {
   const sorted = [...scores.entries()].sort((a, b) => {
     return a[1].score - b[1].score;
   });
-  console.log(`Team Leaderboard ${thru} holes`, scores);
 
   let previousScore = -500;
   let previousPosition = 1;
@@ -712,170 +711,311 @@ async function EventPrizes({ igCompId }: EventPrizesProps) {
   );
 }
 
-// type IndividualScoringStat = {
-//   player: string;
-//   score: number;
-// };
+type IndividualScoringStat = {
+  player: string;
+  score: number;
+};
 
-// type IndividualNumberStat = {
-//   player: string;
-//   count: number;
-// };
+type HoleAveStat = {
+  holeNo: number;
+  ave: number;
+  toPar: number;
+};
 
-// type HoleAveStat = {
-//   holeNo: number;
-//   ave: number;
-// };
+type HoleScore = {
+  strokes: number | null;
+  blob: boolean;
+  par: number;
+};
 
-// type HoleScore = {
-//   strokes: number;
-//   blob: boolean;
-// }
+type CompStats = {
+  bestGross: IndividualScoringStat[];
+  bestFront9: IndividualScoringStat[];
+  bestBack9: IndividualScoringStat[];
+  mostBirdies: IndividualScoringStat[];
+  par3s: IndividualScoringStat[];
+  par5s: IndividualScoringStat[];
+  mostImprovedBack9: IndividualScoringStat[];
+  biggestBack9Collapse: IndividualScoringStat[];
+  easiestHole: HoleAveStat[];
+  hardestHole: HoleAveStat[];
+  mostBlobbedHole: IndividualScoringStat[];
+};
 
-// type CompStats = {
-//   bestGross: IndividualScoringStat[];
-//   bestFront9: IndividualScoringStat[];
-//   bestBack9: IndividualScoringStat[];
-//   mostBirdies: IndividualNumberStat[];
-//   par3s: IndividualScoringStat[];
-//   par5s: IndividualScoringStat[];
-//   mostImprovedBack9: IndividualScoringStat[];
-//   biggestBack9Collapse: IndividualScoringStat[];
-//   fullTeam: string[];
-//   easiestHole: HoleAveStat[];
-//   hardestHole: HoleAveStat[];
-// };
+const lowestWins = (
+  stat: IndividualScoringStat,
+  current: IndividualScoringStat[],
+): IndividualScoringStat[] => {
+  if (current[0] === undefined || stat.score === current[0].score) {
+    return [...current, stat];
+  }
+  if (stat.score < current[0].score) {
+    return [stat];
+  }
+  return current;
+};
 
-// const lowestWins = (
-//   stat: IndividualScoringStat,
-//   current: IndividualScoringStat[],
-// ) => {
-//   if (current[0] === undefined || stat.score === current[0].score) {
-//     current.push(stat);
-//     return;
-//   }
-//   if (stat.score < current[0].score) {
-//     current = [stat];
-//     return;
-//   }
-// };
+const highestWins = (
+  stat: IndividualScoringStat,
+  current: IndividualScoringStat[],
+): IndividualScoringStat[] => {
+  if (current[0] === undefined || stat.score === current[0].score) {
+    return [...current, stat];
+  }
+  if (stat.score > current[0].score) {
+    return [stat];
+  }
+  return current;
+};
 
-// const highestWins = (
-//   stat: IndividualScoringStat,
-//   current: IndividualScoringStat[],
-// ) => {
-//   if (current[0] === undefined || stat.score === current[0].score) {
-//     current.push(stat);
-//     return;
-//   }
-//   if (stat.score > current[0].score) {
-//     current = [stat];
-//     return;
-//   }
-// };
+const lowestAveWins = (
+  stat: HoleAveStat,
+  current: HoleAveStat[],
+): HoleAveStat[] => {
+  if (current[0] === undefined || stat.toPar === current[0].toPar)
+    return [...current, stat];
+  if (stat.toPar < current[0].toPar) return [stat];
+  return current;
+};
 
-// type CompStatsProps = {
-//   comp: Awaited<ReturnType<typeof api.comp.getOneWithScores>>;
-// };
+const highestAveWins = (
+  stat: HoleAveStat,
+  current: HoleAveStat[],
+): HoleAveStat[] => {
+  if (current[0] === undefined || stat.toPar === current[0].toPar)
+    return [...current, stat];
+  if (stat.toPar > current[0].toPar) return [stat];
+  return current;
+};
 
-// function CompStats({ comp }: CompStatsProps) {
-//   const stats: CompStats = {
-//     bestGross: [],
-//     bestFront9: [],
-//     bestBack9: [],
-//     mostBirdies: [],
-//     par3s: [],
-//     par5s: [],
-//     mostImprovedBack9: [],
-//     biggestBack9Collapse: [],
-//     fullTeam: [],
-//     easiestHole: [],
-//     hardestHole: [],
-//   };
-//   const holeScores = new Map<number, HoleScore[]>([[1,[]],[2,[]],[3,[]],[4,[]],[5,[]],[6,[]],[7,[]],[8,[]],[9,[]],[10,[]],[11,[]],[12,[]],[13,[]],[14,[]],[15,[]],[16,[]],[17,[]],[18,[]]])
-//   comp?.entrants.forEach((ent) => {
-//     //check best gross
-//     if (!ent.scorecard?.NR && !ent.scorecard?.holes.some((hole) => hole.NR)) {
-//       lowestWins(
-//         { player: ent.entrant.name, score: ent.scorecard?.strokes ?? 1800 },
-//         stats.bestGross,
-//       );
-//     }
-//     //check best front 9
-//     comp.stableford
-//       ? highestWins(
-//           {
-//             player: ent.entrant.name,
-//             score:
-//               ent.scorecard?.holes
-//                 .filter((hole) => hole.holeNo < 10)
-//                 .reduce((acc, cur) => acc + cur.points, 0) ?? 0,
-//           },
-//           stats.bestFront9,
-//         )
-//       : lowestWins(
-//           {
-//             player: ent.entrant.name,
-//             score:
-//               ent.scorecard?.holes
-//                 .filter((hole) => hole.holeNo < 10)
-//                 .reduce((acc, cur) => acc + (cur.net ?? 100), 0) ?? 900,
-//           },
-//           stats.bestFront9,
-//         );
+type CompStatsProps = {
+  comp: Awaited<ReturnType<typeof api.comp.getOneWithScores>>;
+};
 
-//     //check best back 9
-//     comp.stableford
-//       ? highestWins(
-//           {
-//             player: ent.entrant.name,
-//             score:
-//               ent.scorecard?.holes
-//                 .filter((hole) => hole.holeNo > 9)
-//                 .reduce((acc, cur) => acc + cur.points, 0) ?? 0,
-//           },
-//           stats.bestFront9,
-//         )
-//       : lowestWins(
-//           {
-//             player: ent.entrant.name,
-//             score:
-//               ent.scorecard?.holes
-//                 .filter((hole) => hole.holeNo > 9)
-//                 .reduce((acc, cur) => acc + (cur.net ?? 100), 0) ?? 900,
-//           },
-//           stats.bestBack9,
-//         );
-//     //check best score on par 3's
-//     lowestWins(
-//       {
-//         player: ent.entrant.name,
-//         score:
-//           ent.scorecard?.holes
-//             .filter((hole) => hole.par === 3)
-//             .reduce((acc, cur) => acc + (cur.strokes ?? 100), 0) ?? 400,
-//       },
-//       stats.par3s,
-//     );
-//     //check best score on par 5's
-//     lowestWins(
-//       {
-//         player: ent.entrant.name,
-//         score:
-//           ent.scorecard?.holes
-//             .filter((hole) => hole.par === 5)
-//             .reduce((acc, cur) => acc + (cur.strokes ?? 100), 0) ?? 400,
-//       },
-//       stats.par3s,
-//     );
-//     //Difference between Front 9 and Back 9
-//     const frontToBack = comp.stableford ? (ent.scorecard?.holes.filter(hole => hole.holeNo < 10).reduce((acc, cur) => acc + cur.points, 0) ?? 0) - (ent.scorecard?.holes.filter(hole => hole.holeNo > 9).reduce((acc, cur) => acc + cur.points, 0) ?? 0) : (ent.scorecard?.holes.filter(hole => hole.holeNo < 10).reduce((acc, cur) => acc + (cur.net ?? 100), 0) ?? 0) - (ent.scorecard?.holes.filter(hole => hole.holeNo > 9).reduce((acc, cur) => acc + (cur.net ?? 100), 0) ?? 0)
-//     //Easiest/Hardest Hole
+function CompStats({ comp }: CompStatsProps) {
+  const stats: CompStats = {
+    bestGross: [],
+    bestFront9: [],
+    bestBack9: [],
+    mostBirdies: [],
+    par3s: [],
+    par5s: [],
+    mostImprovedBack9: [],
+    biggestBack9Collapse: [],
+    easiestHole: [],
+    hardestHole: [],
+    mostBlobbedHole: [],
+  };
+  const holeScores = new Map<number, HoleScore[]>([
+    [1, []],
+    [2, []],
+    [3, []],
+    [4, []],
+    [5, []],
+    [6, []],
+    [7, []],
+    [8, []],
+    [9, []],
+    [10, []],
+    [11, []],
+    [12, []],
+    [13, []],
+    [14, []],
+    [15, []],
+    [16, []],
+    [17, []],
+    [18, []],
+  ]);
 
-//     //Full team playing
+  comp?.entrants.forEach((ent) => {
+    //check best gross
+    if (!ent.scorecard?.NR && !ent.scorecard?.holes.some((hole) => hole.NR)) {
+      stats.bestGross = lowestWins(
+        { player: ent.entrant.name, score: ent.scorecard?.strokes ?? 1800 },
+        stats.bestGross,
+      );
+    }
+    //check best front 9
+    comp.stableford
+      ? (stats.bestFront9 = highestWins(
+          {
+            player: ent.entrant.name,
+            score:
+              ent.scorecard?.holes
+                .filter((hole) => hole.holeNo < 10)
+                .reduce((acc, cur) => acc + cur.points, 0) ?? 0,
+          },
+          stats.bestFront9,
+        ))
+      : (stats.bestFront9 = lowestWins(
+          {
+            player: ent.entrant.name,
+            score:
+              ent.scorecard?.holes
+                .filter((hole) => hole.holeNo < 10)
+                .reduce((acc, cur) => acc + (cur.net ?? 100), 0) ?? 900,
+          },
+          stats.bestFront9,
+        ));
 
-//     //Wildcard wasters
+    //check best back 9
+    comp.stableford
+      ? (stats.bestBack9 = highestWins(
+          {
+            player: ent.entrant.name,
+            score:
+              ent.scorecard?.holes
+                .filter((hole) => hole.holeNo > 9)
+                .reduce((acc, cur) => acc + cur.points, 0) ?? 0,
+          },
+          stats.bestBack9,
+        ))
+      : (stats.bestBack9 = lowestWins(
+          {
+            player: ent.entrant.name,
+            score:
+              ent.scorecard?.holes
+                .filter((hole) => hole.holeNo > 9)
+                .reduce((acc, cur) => acc + (cur.net ?? 100), 0) ?? 900,
+          },
+          stats.bestBack9,
+        ));
+    //check best score on par 3's
+    stats.par3s = lowestWins(
+      {
+        player: ent.entrant.name,
+        score:
+          ent.scorecard?.holes
+            .filter((hole) => hole.par === 3)
+            .reduce((acc, cur) => acc + (cur.strokes ?? 100), 0) ?? 400,
+      },
+      stats.par3s,
+    );
+    //check best score on par 5's
+    stats.par5s = lowestWins(
+      {
+        player: ent.entrant.name,
+        score:
+          ent.scorecard?.holes
+            .filter((hole) => hole.par === 5)
+            .reduce((acc, cur) => acc + (cur.strokes ?? 100), 0) ?? 400,
+      },
+      stats.par5s,
+    );
+    //Check most birdies or better
+    stats.mostBirdies = highestWins(
+      {
+        player: ent.entrant.name,
+        score:
+          ent.scorecard?.holes.filter(
+            (hole) => (hole.strokes ?? hole.par) < hole.par,
+          ).length ?? 0,
+      },
+      stats.mostBirdies,
+    );
 
-//   });
-//   return <p>Competition stats...</p>;
-// }
+    //Difference between Front 9 and Back 9
+    const frontToBack = comp.stableford
+      ? (ent.scorecard?.holes
+          .filter((hole) => hole.holeNo > 9)
+          .reduce((acc, cur) => acc + cur.points, 0) ?? 0) -
+        (ent.scorecard?.holes
+          .filter((hole) => hole.holeNo < 10)
+          .reduce((acc, cur) => acc + cur.points, 0) ?? 0)
+      : (ent.scorecard?.holes
+          .filter((hole) => hole.holeNo < 10)
+          .reduce((acc, cur) => acc + (cur.net ?? 100), 0) ?? 0) -
+        (ent.scorecard?.holes
+          .filter((hole) => hole.holeNo > 9)
+          .reduce((acc, cur) => acc + (cur.net ?? 100), 0) ?? 0);
+
+    stats.mostImprovedBack9 = highestWins(
+      { player: ent.entrant.name, score: frontToBack },
+      stats.mostImprovedBack9,
+    );
+    stats.biggestBack9Collapse = lowestWins(
+      { player: ent.entrant.name, score: frontToBack },
+      stats.biggestBack9Collapse,
+    );
+
+    //Easiest/Hardest Hole
+    ent.scorecard?.holes.forEach((hole) => {
+      const h = holeScores.get(hole.holeNo);
+      h?.push({
+        strokes: hole.strokes,
+        blob: hole.NR || (comp.stableford && hole.points === 0),
+        par: hole.par,
+      });
+    });
+
+    //Full team playing
+
+    //Wildcard wasters
+  });
+  //Summarise the holes
+  for (let i = 1; i <= 18; i++) {
+    const allScores = holeScores.get(i) ?? [];
+    const theScores = allScores.filter((sc) => sc.strokes) ?? [];
+    const scoreAve =
+      theScores?.reduce((acc, cur) => acc + (cur.strokes ?? 100), 0) /
+      theScores?.length;
+
+    const hole: HoleAveStat = {
+      holeNo: i,
+      ave: scoreAve,
+      toPar: scoreAve - (theScores[0]?.par ?? 4),
+    };
+    stats.easiestHole = lowestAveWins(hole, stats.easiestHole);
+    stats.hardestHole = highestAveWins(hole, stats.hardestHole);
+
+    const blobs = allScores.filter((sc) => sc.blob) ?? [];
+    if (blobs.length > 0) {
+      const blobStat: IndividualScoringStat = {
+        player: i.toString(),
+        score: blobs.length,
+      };
+      stats.mostBlobbedHole = highestWins(blobStat, stats.mostBlobbedHole);
+    }
+  }
+
+  return (
+    <LibCardNarrow title="Competition stats">
+      <p>
+        {`Best Front 9: ${stats.bestFront9.map((score) => score.player).join(", ")} with ${stats.bestFront9[0]?.score} ${comp?.stableford ? "points" : "strokes"}`}
+      </p>
+      <p>
+        {`Best Back 9: ${stats.bestBack9.map((score) => score.player).join(", ")} with ${stats.bestBack9[0]?.score} ${comp?.stableford ? "points" : "strokes"}`}
+      </p>
+      <p>
+        {`Best Gross: ${stats.bestGross.map((score) => score.player).join(", ")} with ${stats.bestGross[0]?.score} strokes`}
+      </p>
+      <p>
+        {`Best on Par 3's: ${stats.par3s.map((score) => score.player).join(", ")} with ${stats.par3s[0]?.score} strokes (${(stats.par3s[0]?.score ?? 0) > 12 ? "+" : ""}${stats.par3s[0]?.score === 12 ? "E" : (stats.par3s[0]?.score ?? 0) - 12})`}
+      </p>
+      <p>
+        {`Best on Par 5's: ${stats.par5s.map((score) => score.player).join(", ")} with ${stats.par5s[0]?.score} strokes (${(stats.par5s[0]?.score ?? 0) > 20 ? "+" : ""}${stats.par5s[0]?.score === 20 ? "E" : (stats.par5s[0]?.score ?? 0) - 20})`}
+      </p>
+      <p>
+        {`Most birdies or better: ${stats.mostBirdies.map((score) => score.player).join(", ")} with ${stats.mostBirdies[0]?.score ?? 0}`}
+      </p>
+      <p>
+        {`Biggest Back 9 improvement: ${stats.mostImprovedBack9.map((score) => score.player).join(", ")} who ${stats.mostImprovedBack9.length === 1 ? "was" : "were"} ${Math.abs(stats.mostImprovedBack9[0]?.score ?? 0)} ${comp?.stableford ? "points" : "shots"} better on the back `}
+      </p>
+      <p>
+        {`Biggest Back 9 collapse: ${stats.biggestBack9Collapse.map((score) => score.player).join(", ")} who ${stats.biggestBack9Collapse.length === 1 ? "was" : "were"} ${Math.abs(stats.biggestBack9Collapse[0]?.score ?? 0)} ${comp?.stableford ? "points" : "shots"} worse on the back`}
+      </p>
+      <p>{`Easiest Hole${stats.easiestHole.length > 1 ? "s" : ""}: Hole${stats.hardestHole.length > 1 ? "s" : ""} ${stats.easiestHole.map((h) => h.holeNo).join(", ")} with an average of ${Math.round((stats.easiestHole[0]?.ave ?? 0) * 100) / 100} strokes (+${Math.round((stats.easiestHole[0]?.toPar ?? 0) * 100) / 100})`}</p>
+      <p>{`Hardest Hole${stats.hardestHole.length > 1 ? "s" : ""}: Hole${stats.hardestHole.length > 1 ? "s" : ""} ${stats.hardestHole.map((h) => h.holeNo).join(", ")} with an average of ${Math.round((stats.hardestHole[0]?.ave ?? 0) * 100) / 100} strokes (+${Math.round((stats.hardestHole[0]?.toPar ?? 0) * 100) / 100})`}</p>
+      {stats.mostBlobbedHole.length > 0 && stats.mostBlobbedHole.length < 3 ? (
+        <p>
+          Most Blobbed Hole{stats.mostBlobbedHole.length > 1 ? "s" : ""}:
+          {" Hole "}
+          {stats.mostBlobbedHole.length > 1 ? "s" : ""}
+          {stats.mostBlobbedHole.map((sc) => sc.player).join(", ")} with{" "}
+          {stats.mostBlobbedHole[0]?.score} blob
+          {(stats.mostBlobbedHole[0]?.score ?? 0) > 1 ? "s" : ""}
+        </p>
+      ) : null}
+    </LibCardNarrow>
+  );
+}
