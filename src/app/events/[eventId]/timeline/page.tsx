@@ -39,17 +39,26 @@ type LeaderboardEntrant = {
 const disasterHoleStrings = [
   "Trainwreck",
   "Meltdown",
-  "Catastrophe",
   "Debacle",
   "Blowup",
   "Total Collapse",
   "Scorecard Ruiner",
-  "Fiasco",
+  "Farcical",
   "Car Crash",
   "Dumpster Fire",
   "Nightmare",
   "Horrorshow",
   "Card Wrecker",
+  "Disasterpiece",
+  "Basket Case",
+  "Clown Car",
+  "Catastrophic",
+  "Comedy of Errors",
+  "Spectacular",
+  "Craptacular",
+  "Steaming Pile of",
+  "Embarrassing",
+  "Humiliating",
 ] as const;
 type DisasterHole = (typeof disasterHoleStrings)[number];
 
