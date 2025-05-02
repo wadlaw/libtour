@@ -40,6 +40,7 @@ import { LibCardNarrow, Spinner } from "./lib-elements";
 type ScrapeResultProps = {
   eventId: string;
   resultsPage: string;
+  compFormat: "Medal" | "Stableford";
 };
 
 type ResultsObjectType = {
@@ -49,7 +50,11 @@ type ResultsObjectType = {
   compId: string;
 };
 
-export function ScrapeResults({ eventId, resultsPage }: ScrapeResultProps) {
+export function ScrapeResults({
+  eventId,
+  resultsPage,
+  compFormat,
+}: ScrapeResultProps) {
   const [results, setResults] = useState<ScrapedResultsType | null>(null);
   const [eclectic, setEclectic] = useState<ScrapedEclecticType | null>(null);
   const [noShows, setNoShows] = useState<EntrantType[] | null>(null);
@@ -91,7 +96,11 @@ export function ScrapeResults({ eventId, resultsPage }: ScrapeResultProps) {
 
   const processResults = () => {
     startScrape(async () => {
-      const processedResults = await ProcessResults(eventId, resultsPage);
+      const processedResults = await ProcessResults(
+        eventId,
+        resultsPage,
+        compFormat,
+      );
       setResults(processedResults.results);
       setMissingEntrants(processedResults.checks.missingEntrants);
       setNoShows(processedResults.checks.noShows);
@@ -229,7 +238,11 @@ export function ScrapeResults({ eventId, resultsPage }: ScrapeResultProps) {
 
   const scrapeEclectic = () => {
     startEclecticScrape(async () => {
-      const scrapedEclectic = await GetEclectic(eventId, resultsPage);
+      const scrapedEclectic = await GetEclectic(
+        eventId,
+        resultsPage,
+        compFormat,
+      );
       // console.log("========Scraped Scores--------", scrapedEclectic);
       setEclectic(scrapedEclectic);
     });

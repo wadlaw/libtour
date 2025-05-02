@@ -186,6 +186,7 @@ export default async function Event({
                 <ScrapeResults
                   eventId={comp.igCompId}
                   resultsPage={comp.resultsPage}
+                  compFormat={comp.stableford ? "Stableford" : "Medal"}
                 />
               </LibCardNarrow>
             </TabsContent>

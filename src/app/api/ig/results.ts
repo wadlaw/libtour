@@ -99,13 +99,14 @@ function ensure<T>(
 export async function GetResults(
   compId: string,
   resultsPage: string,
+  compFormat: "Medal" | "Stableford",
 ): Promise<ScrapedResultsType> {
   const { sessionClaims } = auth();
   if (!sessionClaims?.metadata.adminPermission)
     throw new Error("NOT AUTHORIZED");
   const returnData: ScrapedResultsType = {
     comp: compId,
-    compFormat: "",
+    compFormat: compFormat,
     scrapedResults: [],
   };
 
@@ -182,15 +183,6 @@ export async function GetResults(
     const resultsTable = await iframe.$("table.result_scope");
 
     if (resultsTable) {
-      console.log("resultsTable found", resultsTable);
-      //wait for page to finish loading
-      // await page.waitForSelector('div.scorecards-container')
-      // const compFormat = await Promise.race([iframe.waitForSelector('a[contains(text(), "Individual Medal")]').then((resolve, reject) => resolve("Medal")),iframe.waitforSelector('a[contains(text(), "Individual Stableford")]').then((resolve, reject) => resolve("Stableford"))])
-      const compFormat = "Medal";
-      // await iframe.waitForSelector('a[contains(text(), "Individual Medal")]')
-      // const format = await iframe.$('a[contains(text(), "Individual Medal")]')
-      // console.log("format", format)
-      returnData.compFormat = compFormat;
       const results: {
         igPosition: string;
         entrantName: string | null;
@@ -232,6 +224,7 @@ export async function GetResults(
 export async function ProcessResults(
   compId: string,
   resultsPage: string,
+  compFormat: "Medal" | "Stableford",
 ): Promise<ScrapedResultsCheckType> {
   const { sessionClaims } = auth();
   if (!sessionClaims?.metadata.adminPermission)
@@ -242,7 +235,7 @@ export async function ProcessResults(
   const [compEntrants, allEntrants, ggResults] = await Promise.all([
     api.comp.getEntrants({ comp: compId }),
     api.entrant.getAll(),
-    GetResults(compId, resultsPage),
+    GetResults(compId, resultsPage, compFormat),
   ]);
   // wildcard adjustment variable - used after this to check whether medal or stableford
   const wildcardAdjustment = ggResults.compFormat === "Medal" ? -3 : 3;
@@ -535,13 +528,14 @@ export type ScrapedEclecticType = {
 export async function GetEclectic(
   compId: string,
   resultsPage: string,
+  compFormat: "Medal" | "Stableford",
 ): Promise<ScrapedEclecticType> {
   const { sessionClaims } = auth();
   if (!sessionClaims?.metadata.adminPermission)
     throw new Error("NOT AUTHORISED");
   const returnData: ScrapedEclecticType = {
     comp: compId,
-    compFormat: "Medal",
+    compFormat: compFormat,
     // scrapedResults: [],
     scrapedScores: [],
   };
@@ -590,15 +584,6 @@ export async function GetEclectic(
       const scorecardTable = await iframe.$("table.scorecard");
 
       if (scorecardTable) {
-        // console.log("scorecardTable found", scorecardTable)
-        //wait for page to finish loading
-        // await page.waitForSelector('div.scorecards-container')
-        // const compFormat = await Promise.race([iframe.waitForSelector('//a[contains(text(), "Individual Medal")]').then((resolve, reject) => resolve("Medal")),iframe.waitforSelector('//a[contains(text(), "Individual Stableford")]').then((resolve, reject) => resolve("Stableford"))])
-        const compFormat = "Medal";
-        // await iframe.waitForSelector('a[contains(text(), "Individual Medal")]')
-        // const format = await iframe.$('a[contains(text(), "Individual Medal")]')
-        // console.log("format", format)
-        returnData.compFormat = compFormat;
         const results: {
           entrant: string;
           handicap: string;
