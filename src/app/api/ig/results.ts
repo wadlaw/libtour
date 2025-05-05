@@ -173,12 +173,18 @@ export async function GetResults(
   await waitTillHTMLRendered(page);
 
   //Select iframe
-  const iframeSelector = 'iframe[name="page_iframe"]';
+  const iframeSelector = "iframe";
   const iframeElementHandle = await page.$(iframeSelector);
 
   //Select element inside iframe
   if (iframeElementHandle) {
     const iframe = await iframeElementHandle.contentFrame();
+    await iframe.waitForSelector("a.expand-tournament");
+    const expandTournamentLinks = await iframe.$$("a.expand-tournament");
+
+    await expandTournamentLinks[0]?.click();
+
+    await waitTillHTMLRendered(page);
     await iframe.waitForSelector("table.result_scope");
     const resultsTable = await iframe.$("table.result_scope");
 
@@ -570,12 +576,17 @@ export async function GetEclectic(
     await waitTillHTMLRendered(page);
 
     //Select iframe
-    const iframeSelector = 'iframe[name="page_iframe"]';
+    const iframeSelector = "iframe";
     const iframeElementHandle = await page.$(iframeSelector);
 
     //Select element inside iframe
     if (iframeElementHandle) {
       const iframe = await iframeElementHandle.contentFrame();
+      await iframe.waitForSelector("a.expand-tournament");
+      const expandTournamentLinks = await iframe.$$("a.expand-tournament");
+
+      await expandTournamentLinks[0]?.click();
+      await waitTillHTMLRendered(page);
       await iframe.waitForSelector("a.expand-all");
       const expandLink = await iframe.$("a.expand-all");
       await expandLink?.click();
