@@ -266,9 +266,16 @@ function leaderboardThruXHoles(
 
 export default async function EventTimeline({
   params,
+  searchParams,
 }: {
   params: { eventId: string };
+  searchParams: { stats?: string; standings?: string; prizes?: string };
 }) {
+  console.log("searchParams", searchParams);
+  const showStats = !(searchParams.stats === "false");
+  const showStandings = !(searchParams.standings === "false");
+  const showPrizes = !(searchParams.prizes === "false");
+
   const comp = await api.comp.getOneWithScores({
     comp: params.eventId,
   });
@@ -344,12 +351,14 @@ export default async function EventTimeline({
           />
         </LibCardNarrow>
         <TeamResultsForComp compId={comp.igCompId} />
-        <EventPrizes igCompId={comp.igCompId} />
-        <LeagueTable
-          uptoComp={comp.igCompId}
-          subHeading={`After ${comp.name}`}
-        />
-        <CompStats comp={comp} />
+        {showPrizes && <EventPrizes igCompId={comp.igCompId} />}
+        {showStandings && (
+          <LeagueTable
+            uptoComp={comp.igCompId}
+            subHeading={`After ${comp.name}`}
+          />
+        )}
+        {showStats && <CompStats comp={comp} />}
       </LibCardContainer>
     </LibMainFixed>
   );
