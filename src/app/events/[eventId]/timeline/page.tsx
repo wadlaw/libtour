@@ -42,7 +42,7 @@ const disasterHoleStrings = [
   "Debacle",
   "Blowup",
   "Total Collapse",
-  "Scorecard Ruiner",
+  "Scorecard Ruining",
   "Farcical",
   "Car Crash",
   "Dumpster Fire",
@@ -61,6 +61,14 @@ const disasterHoleStrings = [
   "Humiliating",
   "Comedy",
   "Eyebrow-raising",
+  "Eye-watering",
+  "Woeful",
+  "Unfortunate",
+  "Comical",
+  "Highly amusing",
+  "Laughable",
+  "Implausible",
+  "Disastrous",
 ] as const;
 type DisasterHole = (typeof disasterHoleStrings)[number];
 
@@ -269,11 +277,27 @@ export default async function EventTimeline({
   searchParams,
 }: {
   params: { eventId: string };
-  searchParams: { stats?: string; standings?: string; prizes?: string };
+  searchParams: {
+    stats?: string;
+    standings?: string;
+    prizes?: string;
+    front1?: string;
+    front2?: string;
+    back1?: string;
+    back2?: string;
+    back3?: string;
+  };
 }) {
+  //Load queryParam Options
   const showStats = !(searchParams.stats === "false");
   const showStandings = !(searchParams.standings === "false");
   const showPrizes = !(searchParams.prizes === "false");
+
+  const front9First = Number(searchParams.front1 ?? 3);
+  const front9Second = Number(searchParams.front2 ?? 6);
+  const back9First = Number(searchParams.back1 ?? 12);
+  const back9Second = Number(searchParams.back2 ?? 15);
+  const back9Third = Number(searchParams.back3 ?? 0);
 
   const comp = await api.comp.getOneWithScores({
     comp: params.eventId,
@@ -285,11 +309,14 @@ export default async function EventTimeline({
         <LibH1>Event Not Completed Yet!</LibH1>
       </LibMainFixed>
     );
-  const thru3 = leaderboardThruXHoles(comp, 3);
-  const thru6 = leaderboardThruXHoles(comp, 6);
+  const front9FirstLeaderboard = leaderboardThruXHoles(comp, front9First);
+  const front9SecondLeaderboard = leaderboardThruXHoles(comp, front9Second);
   const thru9 = leaderboardThruXHoles(comp, 9);
-  const thru12 = leaderboardThruXHoles(comp, 12);
-  const thru15 = leaderboardThruXHoles(comp, 15);
+  const back9FirstLeaderboard = leaderboardThruXHoles(comp, back9First);
+  const back9SecondLeaderboard = leaderboardThruXHoles(comp, back9Second);
+  const back9ThirdOptionalLeaderboard = back9Third
+    ? leaderboardThruXHoles(comp, back9Third)
+    : null;
   const thru18 = leaderboardThruXHoles(comp, 18);
 
   return (
@@ -298,53 +325,90 @@ export default async function EventTimeline({
       <LibCardContainer>
         <LibCardNarrow title="Event Timeline">
           <h3>Front 9</h3>
-          <p>After 3 holes...</p>
+          <p>
+            After {front9First} hole{front9First > 1 ? "s" : ""}...
+          </p>
           <LeaderboardSnapshot
-            thru={3}
-            data={thru3}
+            thru={front9First}
+            holeCount={front9First}
+            data={front9FirstLeaderboard}
             places={20}
             stableford={comp.stableford}
           />
-          <TeamLeaderboardSnapshot thru={3} data={thru3} />
-          <p>After 6 holes...</p>
+          <TeamLeaderboardSnapshot
+            thru={front9First}
+            data={front9FirstLeaderboard}
+          />
+          <p>After {front9Second} holes...</p>
           <LeaderboardSnapshot
-            thru={6}
-            data={thru6}
-            prevData={thru3}
+            thru={front9Second}
+            holeCount={front9Second - front9First}
+            data={front9SecondLeaderboard}
+            prevData={front9FirstLeaderboard}
             stableford={comp.stableford}
           />
-          <TeamLeaderboardSnapshot thru={6} data={thru6} />
+          <TeamLeaderboardSnapshot
+            thru={front9Second}
+            data={front9SecondLeaderboard}
+          />
           <p>At the turn...</p>
           <LeaderboardSnapshot
             thru={9}
+            holeCount={9 - front9Second}
             data={thru9}
-            prevData={thru6}
+            prevData={front9SecondLeaderboard}
             stableford={comp.stableford}
           />
           <TeamLeaderboardSnapshot thru={9} data={thru9} />
           <h3>Back 9</h3>
-          <p>After 12 holes...</p>
+          <p>After {back9First} holes...</p>
           <LeaderboardSnapshot
-            thru={12}
-            data={thru12}
+            thru={back9First}
+            holeCount={back9First - 9}
+            data={back9FirstLeaderboard}
             prevData={thru9}
             stableford={comp.stableford}
           />
-          <TeamLeaderboardSnapshot thru={12} data={thru12} />
-          <p>After 15 holes...</p>
+          <TeamLeaderboardSnapshot
+            thru={back9First}
+            data={back9FirstLeaderboard}
+          />
+          <p>After {back9Second} holes...</p>
           <LeaderboardSnapshot
-            thru={15}
-            data={thru15}
-            prevData={thru12}
+            thru={back9Second}
+            holeCount={back9Second - back9First}
+            data={back9SecondLeaderboard}
+            prevData={back9FirstLeaderboard}
             places={15}
             stableford={comp.stableford}
           />
-          <TeamLeaderboardSnapshot thru={15} data={thru15} />
+          <TeamLeaderboardSnapshot
+            thru={back9Second}
+            data={back9SecondLeaderboard}
+          />
+          {back9ThirdOptionalLeaderboard && <p>After {back9Third} holes...</p>}
+          {back9ThirdOptionalLeaderboard && (
+            <LeaderboardSnapshot
+              thru={back9Third}
+              holeCount={back9Third - back9Second}
+              data={back9ThirdOptionalLeaderboard}
+              prevData={back9SecondLeaderboard}
+              places={15}
+              stableford={comp.stableford}
+            />
+          )}
+          {back9ThirdOptionalLeaderboard && (
+            <TeamLeaderboardSnapshot
+              thru={back9Third}
+              data={back9ThirdOptionalLeaderboard}
+            />
+          )}
           <p>After 18 holes...</p>
           <LeaderboardSnapshot
             thru={18}
+            holeCount={18 - (back9Third || back9Second)}
             data={thru18}
-            prevData={thru15}
+            prevData={back9ThirdOptionalLeaderboard ?? back9SecondLeaderboard}
             places={40}
             stableford={comp.stableford}
           />
@@ -486,7 +550,9 @@ function TeamLeaderboardSnapshot({ thru, data }: TeamLeaderboardSnapshotProps) {
 
   return (
     <div>
-      <p>Team standings after {thru} holes</p>
+      <p>
+        Team standings after {thru} hole{thru > 1 ? "s" : ""}
+      </p>
       <Table className="mb-4">
         <TableHeader>
           <TableRow>
