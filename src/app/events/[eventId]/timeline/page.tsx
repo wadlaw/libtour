@@ -271,7 +271,6 @@ export default async function EventTimeline({
   params: { eventId: string };
   searchParams: { stats?: string; standings?: string; prizes?: string };
 }) {
-  console.log("searchParams", searchParams);
   const showStats = !(searchParams.stats === "false");
   const showStandings = !(searchParams.standings === "false");
   const showPrizes = !(searchParams.prizes === "false");
