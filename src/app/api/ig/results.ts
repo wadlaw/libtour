@@ -168,6 +168,7 @@ export async function GetResults(
   // }
 
   //Golf Genius
+  console.log(compFormat);
 
   await page.goto(url, { waitUntil: "load" });
   await waitTillHTMLRendered(page);
@@ -182,7 +183,7 @@ export async function GetResults(
     await iframe.waitForSelector("a.expand-tournament");
     const expandTournamentLinks = await iframe.$$("a.expand-tournament");
 
-    await expandTournamentLinks[0]?.click();
+    // await expandTournamentLinks[0]?.click();
 
     await waitTillHTMLRendered(page);
     await iframe.waitForSelector("table.result_scope");
@@ -193,19 +194,28 @@ export async function GetResults(
         igPosition: string;
         entrantName: string | null;
         score: string;
-      }[] = await iframe.$$eval("tr.aggregate-row", (rows) => {
-        // console.log("rows", rows)
-        return rows.map((row) => {
-          const pos = row.querySelector("td.pos")!;
-          const name = row.querySelector("td.name")!;
-          const total = row.querySelector("td.total")!;
-          return {
-            igPosition: pos.textContent ?? "",
-            entrantName: name.textContent ?? "",
-            score: total.textContent ?? "",
-          };
-        });
-      });
+      }[] = await iframe.$$eval(
+        "tr.aggregate-row",
+        (rows, compFormat) => {
+          return rows.map((row) => {
+            const pos = row.querySelector("td.pos");
+            const name = row.querySelector("td.name");
+            let total;
+            if (compFormat === "Stableford") {
+              total = row.querySelector("td.score");
+            } else {
+              total = row.querySelector("td.total");
+            }
+            return {
+              igPosition: pos?.textContent ?? "",
+              entrantName: name?.textContent ?? "",
+              score: total?.textContent ?? "",
+            };
+          });
+        },
+        compFormat,
+      );
+      // Map results to correct types
       const parsedResults = results.map((result, index) => {
         return {
           igPosition: Number(result.igPosition.trim()) || index + 1,
@@ -585,7 +595,7 @@ export async function GetEclectic(
       await iframe.waitForSelector("a.expand-tournament");
       const expandTournamentLinks = await iframe.$$("a.expand-tournament");
 
-      await expandTournamentLinks[0]?.click();
+      // await expandTournamentLinks[0]?.click();
       await waitTillHTMLRendered(page);
       await iframe.waitForSelector("a.expand-all");
       const expandLink = await iframe.$("a.expand-all");
