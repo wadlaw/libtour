@@ -100,6 +100,7 @@ export async function GetResults(
   compId: string,
   resultsPage: string,
   compFormat: "Medal" | "Stableford",
+  compName: string,
 ): Promise<ScrapedResultsType> {
   const { sessionClaims } = auth();
   if (!sessionClaims?.metadata.adminPermission)
@@ -183,12 +184,14 @@ export async function GetResults(
     await iframe.waitForSelector("a.expand-tournament");
     const expandTournamentLinks = await iframe.$$("a.expand-tournament");
 
-    const needToClick = await iframe.evaluate(() => {
-      const el = document.querySelector("table.result_scope");
-      return el ? false : true;
-    });
+    console.log("compName", compName);
 
-    if (needToClick) {
+    if (
+      compName.toLowerCase().split(" ").includes("stableford") ||
+      compName.toLowerCase().split(" ").includes("medal") ||
+      compName.toLowerCase().split(" ").includes("club")
+    ) {
+      console.log("clicking expand tournament");
       await expandTournamentLinks[0]?.click();
     }
 
@@ -248,6 +251,7 @@ export async function ProcessResults(
   compId: string,
   resultsPage: string,
   compFormat: "Medal" | "Stableford",
+  compName: string,
 ): Promise<ScrapedResultsCheckType> {
   const { sessionClaims } = auth();
   if (!sessionClaims?.metadata.adminPermission)
@@ -258,7 +262,7 @@ export async function ProcessResults(
   const [compEntrants, allEntrants, ggResults] = await Promise.all([
     api.comp.getEntrants({ comp: compId }),
     api.entrant.getAll(),
-    GetResults(compId, resultsPage, compFormat),
+    GetResults(compId, resultsPage, compFormat, compName),
   ]);
   // wildcard adjustment variable - used after this to check whether medal or stableford
   const wildcardAdjustment = ggResults.compFormat === "Medal" ? -3 : 3;
@@ -552,6 +556,7 @@ export async function GetEclectic(
   compId: string,
   resultsPage: string,
   compFormat: "Medal" | "Stableford",
+  compName: string,
 ): Promise<ScrapedEclecticType> {
   const { sessionClaims } = auth();
   if (!sessionClaims?.metadata.adminPermission)
@@ -602,12 +607,13 @@ export async function GetEclectic(
       await iframe.waitForSelector("a.expand-tournament");
       const expandTournamentLinks = await iframe.$$("a.expand-tournament");
 
-      const needToClick = await iframe.evaluate(() => {
-        const el = document.querySelector("table.result_scope");
-        return el ? false : true;
-      });
-
-      if (needToClick) {
+      console.log("compName", compName);
+      if (
+        compName.toLowerCase().split(" ").includes("stableford") ||
+        compName.toLowerCase().split(" ").includes("medal") ||
+        compName.toLowerCase().split(" ").includes("club")
+      ) {
+        console.log("clicking expand tournament");
         await expandTournamentLinks[0]?.click();
       }
 
