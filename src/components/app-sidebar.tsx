@@ -2,6 +2,7 @@ import { api } from "~/trpc/server";
 import { SignInButton, SignedOut, currentUser } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import {
+  Calculator,
   Calendar,
   CalendarCheck,
   CalendarCog,
@@ -121,6 +122,7 @@ export async function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <EclecticMenu />
+        {/* <HandicapMenu /> */}
         <PodcastMenu />
         <Protect
           condition={() =>
@@ -252,6 +254,26 @@ function PodcastMenu() {
               title: "Podcast",
               url: "/podcast",
               icon: <Podcast />,
+            }}
+          />
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  );
+}
+
+function HandicapMenu() {
+  return (
+    <SidebarGroup>
+      <SidebarGroupLabel>Handicap</SidebarGroupLabel>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          <MenuItem
+            key="handicap"
+            item={{
+              title: "Calculator",
+              url: "/handicap",
+              icon: <Calculator />,
             }}
           />
         </SidebarMenu>
