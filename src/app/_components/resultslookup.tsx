@@ -41,6 +41,7 @@ type ScrapeResultProps = {
   eventId: string;
   resultsPage: string;
   compFormat: "Medal" | "Stableford";
+  compName: string;
 };
 
 type ResultsObjectType = {
@@ -54,6 +55,7 @@ export function ScrapeResults({
   eventId,
   resultsPage,
   compFormat,
+  compName,
 }: ScrapeResultProps) {
   const [results, setResults] = useState<ScrapedResultsType | null>(null);
   const [eclectic, setEclectic] = useState<ScrapedEclecticType | null>(null);
@@ -100,6 +102,7 @@ export function ScrapeResults({
         eventId,
         resultsPage,
         compFormat,
+        compName,
       );
       setResults(processedResults.results);
       setMissingEntrants(processedResults.checks.missingEntrants);
@@ -242,6 +245,7 @@ export function ScrapeResults({
         eventId,
         resultsPage,
         compFormat,
+        compName,
       );
       // console.log("========Scraped Scores--------", scrapedEclectic);
       setEclectic(scrapedEclectic);

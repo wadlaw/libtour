@@ -187,6 +187,7 @@ export default async function Event({
                   eventId={comp.igCompId}
                   resultsPage={comp.resultsPage}
                   compFormat={comp.stableford ? "Stableford" : "Medal"}
+                  compName={comp.name}
                 />
               </LibCardNarrow>
             </TabsContent>
