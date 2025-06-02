@@ -602,6 +602,15 @@ export async function GetEclectic(
       await iframe.waitForSelector("a.expand-tournament");
       const expandTournamentLinks = await iframe.$$("a.expand-tournament");
 
+      const needToClick = await iframe.evaluate(() => {
+        const el = document.querySelector("table.result_scope");
+        return el ? false : true;
+      });
+
+      if (needToClick) {
+        await expandTournamentLinks[0]?.click();
+      }
+
       // await expandTournamentLinks[0]?.click();
       await waitTillHTMLRendered(page);
       await iframe.waitForSelector("a.expand-all");
