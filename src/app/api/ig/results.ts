@@ -189,7 +189,8 @@ export async function GetResults(
     if (
       compName.toLowerCase().split(" ").includes("stableford") ||
       compName.toLowerCase().split(" ").includes("medal") ||
-      compName.toLowerCase().split(" ").includes("club")
+      compName.toLowerCase().split(" ").includes("club") ||
+      compName.toLowerCase().split(" ").includes("foundation")
     ) {
       console.log("clicking expand tournament");
       await expandTournamentLinks[0]?.click();
@@ -611,7 +612,8 @@ export async function GetEclectic(
       if (
         compName.toLowerCase().split(" ").includes("stableford") ||
         compName.toLowerCase().split(" ").includes("medal") ||
-        compName.toLowerCase().split(" ").includes("club")
+        compName.toLowerCase().split(" ").includes("club") ||
+        compName.toLowerCase().split(" ").includes("foundation")
       ) {
         console.log("clicking expand tournament");
         await expandTournamentLinks[0]?.click();
