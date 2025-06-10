@@ -1008,12 +1008,14 @@ function CompStats({ comp }: CompStatsProps) {
         (ent.scorecard?.holes
           .filter((hole) => hole.holeNo < 10)
           .reduce((acc, cur) => acc + cur.points, 0) ?? 0)
-      : (ent.scorecard?.holes
-          .filter((hole) => hole.holeNo < 10)
-          .reduce((acc, cur) => acc + (cur.net ?? 100), 0) ?? 0) -
-        (ent.scorecard?.holes
-          .filter((hole) => hole.holeNo > 9)
-          .reduce((acc, cur) => acc + (cur.net ?? 100), 0) ?? 0);
+      : ent.scorecard?.NR
+        ? 0
+        : (ent.scorecard?.holes
+            .filter((hole) => hole.holeNo < 10)
+            .reduce((acc, cur) => acc + (cur.net ?? 100), 0) ?? 0) -
+          (ent.scorecard?.holes
+            .filter((hole) => hole.holeNo > 9)
+            .reduce((acc, cur) => acc + (cur.net ?? 100), 0) ?? 0);
 
     stats.mostImprovedBack9 = highestWins(
       { player: ent.entrant.name, score: frontToBack },
