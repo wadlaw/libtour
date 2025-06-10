@@ -74,6 +74,7 @@ const disasterHoleStrings = [
   "Rubbish",
   "Shameful",
   "Barely imaginable",
+  "Shambolic",
 ] as const;
 type DisasterHole = (typeof disasterHoleStrings)[number];
 
