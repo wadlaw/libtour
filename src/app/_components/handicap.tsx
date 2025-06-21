@@ -18,6 +18,9 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import { Label } from "~/components/ui/label";
+import { Input } from "~/components/ui/input";
+import { SetHandicapIndex } from "../api/handicap/handicap";
 
 type Tee = {
   name: string;
@@ -36,23 +39,35 @@ const libbets = {
     { name: "Black", courseRating: 72.8, slopeRating: 130, par: 72 },
     { name: "White", courseRating: 70.8, slopeRating: 128, par: 72 },
     { name: "Gold", courseRating: 68.2, slopeRating: 123, par: 72 },
+    { name: "Gold-Women", courseRating: 73.4, slopeRating: 128, par: 72 },
   ],
 };
 
-export function Handicap() {
-  const [handicapIndex, setHandicapIndex] = useState<number | null>(null);
+type HandicapProps = {
+  hi?: number;
+};
+
+export function Handicap({ hi = 0 }: HandicapProps) {
+  const [handicapIndex, setHandicapIndex] = useState<number>(hi);
   const [tee, setTee] = useState<Tee>(libbets.tees[0]!);
 
+  const setHI = async (hi: number) => {
+    const response = await SetHandicapIndex(hi);
+    if (response.success) {
+      setHandicapIndex(hi);
+    }
+  };
   return (
     <LibCardNarrow title="Handicap Calculator">
       <div className="flex flex-col gap-2">
+        <Label htmlFor="tee">Tee</Label>
         <Select
           defaultValue={tee.name ?? undefined}
           onValueChange={(teeName) => {
             setTee(libbets.tees.filter((tee) => tee.name === teeName)[0]!);
           }}
         >
-          <SelectTrigger className="w-[180px] @2xl/libcard:w-[200px]">
+          <SelectTrigger id="tee" className="w-[180px] @2xl/libcard:w-[200px]">
             <SelectValue placeholder="Which Teebox?" />
           </SelectTrigger>
           <SelectContent>
@@ -68,13 +83,14 @@ export function Handicap() {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <label htmlFor="hi">Handicap Index</label>
-        <input
+        <Label htmlFor="hi">Handicap Index</Label>
+        <Input
           type="number"
           step={0.1}
           name="index"
           id="hi"
-          onChange={(e) => setHandicapIndex(Number(e.target.value))}
+          value={handicapIndex}
+          onChange={(e) => setHI(Number(e.target.value))}
         />
         <div>{`Handicap Index: ${handicapIndex ?? 0}`}</div>
         <HandicapTable handicapIndex={handicapIndex ?? 0} tee={tee} />

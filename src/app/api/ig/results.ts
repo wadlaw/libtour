@@ -101,6 +101,7 @@ export async function GetResults(
   resultsPage: string,
   compFormat: "Medal" | "Stableford",
   compName: string,
+  expand: boolean,
 ): Promise<ScrapedResultsType> {
   const { sessionClaims } = auth();
   if (!sessionClaims?.metadata.adminPermission)
@@ -186,12 +187,7 @@ export async function GetResults(
 
     console.log("compName", compName);
 
-    if (
-      compName.toLowerCase().split(" ").includes("stableford") ||
-      compName.toLowerCase().split(" ").includes("medal") ||
-      compName.toLowerCase().split(" ").includes("club") ||
-      compName.toLowerCase().split(" ").includes("foundation")
-    ) {
+    if (expand) {
       console.log("clicking expand tournament");
       await expandTournamentLinks[0]?.click();
     }
@@ -253,6 +249,7 @@ export async function ProcessResults(
   resultsPage: string,
   compFormat: "Medal" | "Stableford",
   compName: string,
+  expand: boolean,
 ): Promise<ScrapedResultsCheckType> {
   const { sessionClaims } = auth();
   if (!sessionClaims?.metadata.adminPermission)
@@ -263,7 +260,7 @@ export async function ProcessResults(
   const [compEntrants, allEntrants, ggResults] = await Promise.all([
     api.comp.getEntrants({ comp: compId }),
     api.entrant.getAll(),
-    GetResults(compId, resultsPage, compFormat, compName),
+    GetResults(compId, resultsPage, compFormat, compName, expand),
   ]);
   // wildcard adjustment variable - used after this to check whether medal or stableford
   const wildcardAdjustment = ggResults.compFormat === "Medal" ? -3 : 3;
@@ -558,6 +555,7 @@ export async function GetEclectic(
   resultsPage: string,
   compFormat: "Medal" | "Stableford",
   compName: string,
+  expand: boolean,
 ): Promise<ScrapedEclecticType> {
   const { sessionClaims } = auth();
   if (!sessionClaims?.metadata.adminPermission)
@@ -609,12 +607,7 @@ export async function GetEclectic(
       const expandTournamentLinks = await iframe.$$("a.expand-tournament");
 
       console.log("compName", compName);
-      if (
-        compName.toLowerCase().split(" ").includes("stableford") ||
-        compName.toLowerCase().split(" ").includes("medal") ||
-        compName.toLowerCase().split(" ").includes("club") ||
-        compName.toLowerCase().split(" ").includes("foundation")
-      ) {
+      if (expand) {
         console.log("clicking expand tournament");
         await expandTournamentLinks[0]?.click();
       }

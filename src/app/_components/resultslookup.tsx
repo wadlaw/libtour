@@ -103,6 +103,26 @@ export function ScrapeResults({
         resultsPage,
         compFormat,
         compName,
+        true,
+      );
+      setResults(processedResults.results);
+      setMissingEntrants(processedResults.checks.missingEntrants);
+      setNoShows(processedResults.checks.noShows);
+      setMissingWildcards(processedResults.checks.missingWildcards);
+      // setCompEntrants(processedResults.resultsObject.compEntrants);
+      setTeamPoints(processedResults.resultsObject.teamPoints);
+      setTransactions(processedResults.resultsObject.transactions);
+      setResultsObject(processedResults.resultsObject);
+    });
+  };
+  const processResultsWithoutExpanding = () => {
+    startScrape(async () => {
+      const processedResults = await ProcessResults(
+        eventId,
+        resultsPage,
+        compFormat,
+        compName,
+        false,
       );
       setResults(processedResults.results);
       setMissingEntrants(processedResults.checks.missingEntrants);
@@ -246,6 +266,20 @@ export function ScrapeResults({
         resultsPage,
         compFormat,
         compName,
+        true,
+      );
+      // console.log("========Scraped Scores--------", scrapedEclectic);
+      setEclectic(scrapedEclectic);
+    });
+  };
+  const scrapeEclecticWithoutExpanding = () => {
+    startEclecticScrape(async () => {
+      const scrapedEclectic = await GetEclectic(
+        eventId,
+        resultsPage,
+        compFormat,
+        compName,
+        false,
       );
       // console.log("========Scraped Scores--------", scrapedEclectic);
       setEclectic(scrapedEclectic);
@@ -284,6 +318,16 @@ export function ScrapeResults({
             </div>
           </Button>
           <Button
+            className=""
+            onClick={processResultsWithoutExpanding}
+            disabled={isScrapePending}
+          >
+            <div className="flex gap-2">
+              {isScrapePending ? <Spinner /> : null}
+              <span>Process Results (alt)</span>
+            </div>
+          </Button>
+          <Button
             onClick={() => {
               if (resultsObject) {
                 SendResults.mutate(resultsObject);
@@ -299,6 +343,12 @@ export function ScrapeResults({
             <div className="flex gap-2">
               {isEclecticPending && <Spinner />}
               <span>Process Eclectic</span>
+            </div>
+          </Button>
+          <Button onClick={scrapeEclectic} disabled={isEclecticPending}>
+            <div className="flex gap-2">
+              {isEclecticPending && <Spinner />}
+              <span>Process Eclectic (alt)</span>
             </div>
           </Button>
           <Button
