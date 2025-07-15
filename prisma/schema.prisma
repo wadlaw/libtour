@@ -154,6 +154,7 @@ model Hole {
     NR          Boolean   @default(false) @map("nr")
     points      Int       @default(0)
     net         Int?
+    description String?   @map("description")
     scorecard   Scorecard @relation(fields: [scorecardId], references: [id], onDelete: Cascade)
 
     @@unique([scorecardId, holeNo])

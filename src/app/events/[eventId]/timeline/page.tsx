@@ -82,6 +82,7 @@ type NotableHole = {
   holeNo: number;
   strokes?: number;
   veryNotable: boolean;
+  description?: string;
   score:
     | "Hole in One"
     | "Albatross"
@@ -97,7 +98,9 @@ type NotableHole = {
     | "Quintuple Bogey"
     | "Sextuple Bogey"
     | "Blob"
-    | DisasterHole;
+    | DisasterHole
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    | (string & {});
   toString: () => string;
 };
 
@@ -198,46 +201,54 @@ function leaderboardThruXHoles(
         notableHoles: !entrant.scorecard
           ? []
           : entrant.scorecard.holes
-              .filter((hole) => hole.points !== 2)
+              .filter((hole) => !!hole.description || hole.points !== 2)
               .map((hole) => {
                 const note: NotableHole = {
                   toString: function (): string {
-                    return `${this.score}${this.veryNotable && this.strokes && this.strokes > 4 ? " " + this.strokes : ""} on ${this.holeNo}`;
+                    if (!!hole.description) {
+                      return `${hole.description} on ${this.holeNo}`;
+                    } else {
+                      return `${this.score}${this.veryNotable && this.strokes && this.strokes > 4 ? " " + this.strokes : ""} on ${this.holeNo}`;
+                    }
                   },
                   holeNo: hole.holeNo,
-                  score: hole.NR
-                    ? "Blob"
-                    : !hole.strokes
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  score: !!hole.description
+                    ? hole.description
+                    : hole.NR
                       ? "Blob"
-                      : hole.strokes === 1
-                        ? "Hole in One"
-                        : hole.par - hole.strokes === 3
-                          ? "Albatross"
-                          : hole.par - hole.strokes === 2
-                            ? "Eagle"
-                            : hole.par - hole.strokes === 1
-                              ? "Birdie"
-                              : hole.par - hole.strokes === 0
-                                ? "Par"
-                                : hole.par - hole.strokes === -1
-                                  ? "Bogey"
-                                  : hole.par - hole.strokes === -2
-                                    ? "Double Bogey"
-                                    : hole.par - hole.strokes === -3
-                                      ? "Triple Bogey"
-                                      : hole.par - hole.strokes === -4
-                                        ? "Quadruple Bogey"
-                                        : disasterHoleStrings[
-                                            Math.floor(
-                                              Math.random() *
-                                                disasterHoleStrings.length,
-                                            )
-                                          ] ?? "Nightmare",
+                      : !hole.strokes
+                        ? "Blob"
+                        : hole.strokes === 1
+                          ? "Hole in One"
+                          : hole.par - hole.strokes === 3
+                            ? "Albatross"
+                            : hole.par - hole.strokes === 2
+                              ? "Eagle"
+                              : hole.par - hole.strokes === 1
+                                ? "Birdie"
+                                : hole.par - hole.strokes === 0
+                                  ? "Par"
+                                  : hole.par - hole.strokes === -1
+                                    ? "Bogey"
+                                    : hole.par - hole.strokes === -2
+                                      ? "Double Bogey"
+                                      : hole.par - hole.strokes === -3
+                                        ? "Triple Bogey"
+                                        : hole.par - hole.strokes === -4
+                                          ? "Quadruple Bogey"
+                                          : disasterHoleStrings[
+                                              Math.floor(
+                                                Math.random() *
+                                                  disasterHoleStrings.length,
+                                              )
+                                            ] ?? "Nightmare",
                   veryNotable: !!(
-                    !hole.NR &&
-                    hole.strokes &&
-                    (hole.par - hole.strokes > 0 ||
-                      hole.par - hole.strokes <= -5)
+                    !!hole.description ||
+                    (!hole.NR &&
+                      hole.strokes &&
+                      (hole.par - hole.strokes > 0 ||
+                        hole.par - hole.strokes <= -5))
                   ),
                   strokes: hole.strokes ? hole.strokes : undefined,
                 };
