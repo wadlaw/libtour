@@ -16,6 +16,7 @@ import {
   PoundSterling,
   ChevronRight,
   Podcast,
+  FileStack,
 } from "lucide-react";
 
 import {
@@ -196,6 +197,16 @@ function AdminMenu() {
                 title: "Event Admin",
                 url: "/admin/events",
                 icon: <CalendarCog />,
+              }}
+            />
+          </Protect>
+          <Protect condition={() => !!sessionClaims?.metadata.adminPermission}>
+            <MenuItem
+              key="Scorecard Admin"
+              item={{
+                title: "Scorecard Admin",
+                url: "/admin/scorecards",
+                icon: <FileStack />,
               }}
             />
           </Protect>

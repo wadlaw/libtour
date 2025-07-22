@@ -719,10 +719,10 @@ function getTeamScores(thru: number, data: Leaderboard) {
       {
         teamId: "2B",
         teamName: "Two Ballers",
-        position: 3600,
+        position: 0,
         tied: false,
         positionChange: 0,
-        score: 0,
+        score: 3600,
         score1: 1800,
         score2: 1800,
         scoreCount: 0,
@@ -1055,8 +1055,10 @@ function CompStats({ comp }: CompStatsProps) {
     const allScores = holeScores.get(i) ?? [];
     const theScores = allScores.filter((sc) => sc.strokes) ?? [];
     const scoreAve =
-      theScores?.reduce((acc, cur) => acc + (cur.strokes ?? 100), 0) /
-      theScores?.length;
+      theScores.length > 0
+        ? theScores.reduce((acc, cur) => acc + (cur.strokes ?? 100), 0) /
+          theScores.length
+        : 0;
 
     const hole: HoleAveStat = {
       holeNo: i,

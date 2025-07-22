@@ -238,7 +238,7 @@ export const scorecardRouter = createTRPCRouter({
       z.object({
         scorecardId: z.number(),
         holeNo: z.number(),
-        description: z.string(),
+        description: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -249,7 +249,7 @@ export const scorecardRouter = createTRPCRouter({
             holeNo: input.holeNo,
           },
         },
-        data: { description: input.description },
+        data: { description: input.description ? input.description : null },
       });
     }),
 
