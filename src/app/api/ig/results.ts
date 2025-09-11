@@ -102,6 +102,7 @@ export async function GetResults(
   compFormat: "Medal" | "Stableford",
   compName: string,
   expand: boolean,
+  round: string,
 ): Promise<ScrapedResultsType> {
   const { sessionClaims } = auth();
   if (!sessionClaims?.metadata.adminPermission)
@@ -177,19 +178,37 @@ export async function GetResults(
 
   //Select iframe
   const iframeSelector = "iframe";
-  const iframeElementHandle = await page.$(iframeSelector);
+  let iframeElementHandle = await page.$(iframeSelector);
 
   //Select element inside iframe
   if (iframeElementHandle) {
-    const iframe = await iframeElementHandle.contentFrame();
-    await iframe.waitForSelector("a.expand-tournament");
-    const expandTournamentLinks = await iframe.$$("a.expand-tournament");
+    let iframe = await iframeElementHandle.contentFrame();
 
     console.log("compName", compName);
-
+    if (round) {
+      console.log("selecting round", round);
+      await iframe.select("#round", round);
+      await waitTillHTMLRendered(page);
+      console.log("waiting for new iframe");
+      iframeElementHandle = await page.$(iframeSelector);
+      if (iframeElementHandle) {
+        console.log("waiting for new iframe contentFrame");
+        iframe = await iframeElementHandle.contentFrame();
+      }
+    }
+    console.log("waiting for expand tournament");
+    await iframe.waitForSelector("a.expand-tournament");
+    console.log("waiting for expand tournament links");
+    const expandTournamentLinks = await iframe.$$("a.expand-tournament");
+    console.log("expand tournament links count", expandTournamentLinks.length);
+    console.log(
+      `expand = ${expand} -${expand ? "" : " not"} clicking expand tournament`,
+    );
     if (expand) {
       console.log("clicking expand tournament");
-      await expandTournamentLinks[0]?.click();
+      const compNo = !!round ? 3 : 0;
+      console.log("clicking expand tournament", compNo);
+      await expandTournamentLinks[compNo]?.click();
     }
 
     await waitTillHTMLRendered(page);
@@ -250,6 +269,7 @@ export async function ProcessResults(
   compFormat: "Medal" | "Stableford",
   compName: string,
   expand: boolean,
+  round: string,
 ): Promise<ScrapedResultsCheckType> {
   const { sessionClaims } = auth();
   if (!sessionClaims?.metadata.adminPermission)
@@ -260,7 +280,7 @@ export async function ProcessResults(
   const [compEntrants, allEntrants, ggResults] = await Promise.all([
     api.comp.getEntrants({ comp: compId }),
     api.entrant.getAll(),
-    GetResults(compId, resultsPage, compFormat, compName, expand),
+    GetResults(compId, resultsPage, compFormat, compName, expand, round),
   ]);
   // wildcard adjustment variable - used after this to check whether medal or stableford
   const wildcardAdjustment = ggResults.compFormat === "Medal" ? -3 : 3;
@@ -556,6 +576,7 @@ export async function GetEclectic(
   compFormat: "Medal" | "Stableford",
   compName: string,
   expand: boolean,
+  round: string,
 ): Promise<ScrapedEclecticType> {
   const { sessionClaims } = auth();
   if (!sessionClaims?.metadata.adminPermission)
@@ -598,18 +619,31 @@ export async function GetEclectic(
 
     //Select iframe
     const iframeSelector = "iframe";
-    const iframeElementHandle = await page.$(iframeSelector);
+    let iframeElementHandle = await page.$(iframeSelector);
 
     //Select element inside iframe
     if (iframeElementHandle) {
-      const iframe = await iframeElementHandle.contentFrame();
+      let iframe = await iframeElementHandle.contentFrame();
+
+      if (round) {
+        console.log("selecting round", round);
+        await iframe.select("#round", round);
+        await waitTillHTMLRendered(page);
+        console.log("waiting for new iframe");
+        iframeElementHandle = await page.$(iframeSelector);
+        if (iframeElementHandle) {
+          console.log("waiting for new iframe contentFrame");
+          iframe = await iframeElementHandle.contentFrame();
+        }
+      }
       await iframe.waitForSelector("a.expand-tournament");
       const expandTournamentLinks = await iframe.$$("a.expand-tournament");
 
       console.log("compName", compName);
       if (expand) {
         console.log("clicking expand tournament");
-        await expandTournamentLinks[0]?.click();
+        const compNo = !!round ? 3 : 0;
+        await expandTournamentLinks[compNo]?.click();
       }
 
       // await expandTournamentLinks[0]?.click();

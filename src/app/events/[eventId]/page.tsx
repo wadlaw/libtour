@@ -188,6 +188,7 @@ export default async function Event({
                   resultsPage={comp.resultsPage}
                   compFormat={comp.stableford ? "Stableford" : "Medal"}
                   compName={comp.name}
+                  round={comp.round}
                 />
               </LibCardNarrow>
             </TabsContent>

@@ -46,7 +46,13 @@ export default authMiddleware({
       return NextResponse.next();
     }
     // Admin routes=====================
-    const adminRoutes = ["/users", "/admin/entrants", "/admin/events"];
+    const adminRoutes = [
+      "/users",
+      "/admin/entrants",
+      "/admin/events",
+      "/admin/scorecards",
+      "/admin/scorecards/:path",
+    ];
 
     if (adminRoutes.includes(req.nextUrl.pathname)) {
       if (!auth.sessionClaims?.metadata?.adminPermission) {
