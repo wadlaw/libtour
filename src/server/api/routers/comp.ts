@@ -24,6 +24,7 @@ export const compRouter = createTRPCRouter({
         lib: z.boolean(),
         eclectic: z.boolean(),
         resultsPage: z.string(),
+        round: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -47,6 +48,7 @@ export const compRouter = createTRPCRouter({
             lib: input.lib,
             eclectic: input.eclectic,
             resultsPage: input.resultsPage,
+            round: input.round,
           },
         });
       }
