@@ -67,6 +67,19 @@ const winners: Team[] = [
       { name: "Peter Greene" },
     ],
   },
+  {
+    year: 2025,
+    teamName: "Shanks and Big Hook",
+    teamId: "SH",
+    linkName: "shanksandbighook",
+    entrants: [
+      { name: "Steve Dixon (c)" },
+      { name: "Darren Read" },
+      { name: "Linas Bumblys" },
+      { name: "Lokesh Patel" },
+      { name: "Paul Wood" },
+    ],
+  },
 ];
 
 const losers: Team[] = [
@@ -97,6 +110,19 @@ const losers: Team[] = [
       { name: "James Bartlett" },
       { name: "Kelvin Munroe" },
       { name: "Lokesh Patel" },
+    ],
+  },
+  {
+    year: 2025,
+    teamName: "Bogey Boys",
+    teamId: "BB",
+    linkName: "bogeyboys",
+    entrants: [
+      { name: "Kyle Deane (c)" },
+      { name: "Ben Doe" },
+      { name: "Greg Hammond" },
+      { name: "Peter Greene" },
+      { name: "Sam Ryan" },
     ],
   },
 ];
