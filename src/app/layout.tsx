@@ -11,6 +11,7 @@ import { CSPostHogProvider, ThemeProvider } from "./providers";
 import { SidebarProvider, SidebarInset } from "~/components/ui/sidebar";
 import { AppSidebar } from "~/components/app-sidebar";
 import dynamic from "next/dynamic";
+import PodcastWrapper, { Podcast } from "./_components/podcast";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -51,7 +52,7 @@ export default function RootLayout({
         <ViewTransitions>
           <html lang="en" suppressHydrationWarning>
             <CSPostHogProvider>
-              <body className={`font-sans ${inter.variable}`}>
+              <body className={`font-sans ${inter.variable} bg-background`}>
                 <ThemeProvider
                   attribute="class"
                   defaultTheme="system"
@@ -59,19 +60,22 @@ export default function RootLayout({
                   disableTransitionOnChange
                 >
                   <TRPCReactProvider>
-                    <SidebarProvider>
-                      <AppSidebar />
+                    <PodcastWrapper>
+                      <SidebarProvider>
+                        <AppSidebar />
 
-                      <SidebarInset>
-                        <PostHogPageView />
-                        {/* <div className="w-full"> */}
-                        <PageHeader />
-                        <Separator />
-                        {children}
-                        <Toaster />
-                        {/* </div> */}
-                      </SidebarInset>
-                    </SidebarProvider>
+                        <SidebarInset>
+                          <PostHogPageView />
+                          {/* <div className="w-full"> */}
+                          <PageHeader />
+                          <Separator />
+                          <Podcast />
+                          {children}
+                          <Toaster />
+                          {/* </div> */}
+                        </SidebarInset>
+                      </SidebarProvider>
+                    </PodcastWrapper>
                   </TRPCReactProvider>
                 </ThemeProvider>
               </body>

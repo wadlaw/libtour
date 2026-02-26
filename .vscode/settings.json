@@ -1,5 +1,6 @@
 {
-    "prettier.configPath": "./prettier.config.js",
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.configPath": "./prettier.config.js",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prisma.pinToPrisma6": true
 }

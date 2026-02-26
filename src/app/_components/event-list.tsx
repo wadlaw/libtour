@@ -87,6 +87,7 @@ type EventListDisplayProps = {
     eclectic: boolean;
     resultsPage: string;
     round: string;
+    podcast: string;
   }>;
   title?: string;
   lastHeaderText?: string;
@@ -143,19 +144,18 @@ function EventListDisplay({
                 }
               >
                 <TableCell className="px-1 @2xl/libcard:px-2">
-                  {!comp.completed && (
-                    <EditEventDialog
-                      igCompId={comp.igCompId}
-                      shortName={comp.shortName}
-                      name={comp.name}
-                      date={new Date(comp.date)}
-                      stableford={comp.stableford}
-                      lib={comp.lib}
-                      eclectic={comp.eclectic}
-                      resultsPage={comp.resultsPage}
-                      round={comp.round}
-                    />
-                  )}
+                  <EditEventDialog
+                    igCompId={comp.igCompId}
+                    shortName={comp.shortName}
+                    name={comp.name}
+                    date={new Date(comp.date)}
+                    stableford={comp.stableford}
+                    lib={comp.lib}
+                    eclectic={comp.eclectic}
+                    resultsPage={comp.resultsPage}
+                    round={comp.round}
+                    podcast={comp.podcast}
+                  />
                 </TableCell>
               </Protect>
               <TableCell className="px-1 font-medium @2xl/libcard:px-2">

@@ -25,6 +25,7 @@ export const compRouter = createTRPCRouter({
         eclectic: z.boolean(),
         resultsPage: z.string(),
         round: z.string(),
+        podcast: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -33,7 +34,7 @@ export const compRouter = createTRPCRouter({
           igCompId: input.igCompId,
         },
       });
-      if (!comp || comp.completed) {
+      if (!comp) {
         throw new TRPCError({ code: "PRECONDITION_FAILED" });
       } else {
         return ctx.db.comp.update({
@@ -49,6 +50,7 @@ export const compRouter = createTRPCRouter({
             eclectic: input.eclectic,
             resultsPage: input.resultsPage,
             round: input.round,
+            podcast: input.podcast,
           },
         });
       }

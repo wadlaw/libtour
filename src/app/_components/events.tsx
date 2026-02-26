@@ -33,6 +33,7 @@ type EditEventType = {
   eclectic: boolean;
   resultsPage: string;
   round: string;
+  podcast: string;
 };
 export function EditEventDialog({
   igCompId,
@@ -44,6 +45,7 @@ export function EditEventDialog({
   eclectic,
   resultsPage,
   round,
+  podcast,
 }: EditEventType) {
   const [linkName, setLinkName] = useState<string>(shortName);
   const [fullName, setFullName] = useState<string>(name);
@@ -53,6 +55,7 @@ export function EditEventDialog({
   const [isEclectic, setIsEclectic] = useState<boolean>(eclectic);
   const [results, setResults] = useState<string>(resultsPage);
   const [roundId, setRoundId] = useState<string>(round);
+  const [podcastLink, setPodcastLink] = useState<string>(podcast);
   const router = useRouter();
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -76,6 +79,12 @@ export function EditEventDialog({
       });
       await queryClient.invalidateQueries();
       router.refresh();
+    },
+    onError: (error) => {
+      toast({
+        title: "Error updating event",
+        description: error.message,
+      });
     },
   });
 
@@ -187,6 +196,16 @@ export function EditEventDialog({
               onChange={(evt) => setRoundId(evt.target.value)}
             />
           </div>
+          <div className="grid gap-2">
+            <Label htmlFor="podcast">Podcast Link</Label>
+            <Input
+              id="podcast"
+              type="text"
+              placeholder="Podcast Link"
+              value={podcastLink}
+              onChange={(evt) => setPodcastLink(evt.target.value)}
+            />
+          </div>
         </div>
 
         <AlertDialogFooter>
@@ -212,7 +231,8 @@ export function EditEventDialog({
               isLib === lib &&
               isEclectic === eclectic &&
               resultsPage === results &&
-              roundId === round
+              roundId === round &&
+              podcastLink === podcast
             }
             onClick={() => {
               event.mutate({
@@ -225,6 +245,7 @@ export function EditEventDialog({
                 eclectic: isEclectic,
                 resultsPage: results,
                 round: roundId,
+                podcast: podcastLink,
               });
             }}
           >
