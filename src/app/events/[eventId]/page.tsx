@@ -24,6 +24,7 @@ import TeamResultsForComp from "~/app/_components/team-results";
 import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
 import { LeagueTable } from "~/app/_components/league-table";
+import { PlayPodcast } from "~/app/_components/podcast";
 
 export async function generateMetadata({
   params,
@@ -106,6 +107,11 @@ export default async function Event({
         </div>
       </div>
 
+      {comp.podcast && (
+        <div className="flex flex-col items-center">
+          <PlayPodcast podcastLink={comp.podcast} eventName={comp.name} />
+        </div>
+      )}
       {comp.open && (
         <Protect>
           <div className="mt-4 flex flex-col items-center ">

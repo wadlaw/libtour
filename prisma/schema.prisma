@@ -97,6 +97,7 @@ model Comp {
     eclectic           Boolean             @default(true)
     resultsPage        String              @default("")
     round              String              @default("") @map("round")
+    podcast            String              @default("")
     entrants           CompEntrant[]
     teamPoints         TeamPoints[]
     transactions       Transaction[]

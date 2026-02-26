@@ -36,6 +36,7 @@ import {
   MenuItem,
   MenuSubItem,
   MyFooter,
+  PodcastSidebarStopButton,
   UserDropdown,
 } from "./app-sidebar-button";
 import { Protect } from "@clerk/nextjs";
@@ -104,6 +105,7 @@ export async function AppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
+        <PodcastSidebarStopButton />
         <SidebarGroup>
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>

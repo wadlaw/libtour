@@ -15,6 +15,8 @@ import { usePathname } from "next/navigation";
 import Balance from "~/app/_components/balance";
 import {
   SidebarMenu,
+  SidebarGroup,
+  SidebarContent,
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarMenuSubItem,
@@ -33,6 +35,8 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { usePodcastLink } from "~/context/podcast-context";
+import { PlayPodcast } from "~/app/_components/podcast";
 
 type MenuItemProps = {
   key: string;
@@ -376,5 +380,22 @@ export function UserDropdown({
         </DropdownMenuContent>
       </DropdownMenu>
     </SidebarMenuItem>
+  );
+}
+
+export function PodcastSidebarStopButton() {
+  const { podcastIsLoaded } = usePodcastLink();
+
+  if (!podcastIsLoaded) return null;
+  return (
+    <SidebarGroup>
+      <SidebarContent>
+        <PlayPodcast
+          podcastLink="/dummy-podcast"
+          eventName="Dummy Event"
+          stopOnly={true}
+        />
+      </SidebarContent>
+    </SidebarGroup>
   );
 }
