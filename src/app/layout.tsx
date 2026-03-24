@@ -52,7 +52,7 @@ export default function RootLayout({
         <ViewTransitions>
           <html lang="en" suppressHydrationWarning>
             <CSPostHogProvider>
-              <body className={`font-sans ${inter.variable} bg-background`}>
+              <body className={`font-sans ${inter.variable}`}>
                 <ThemeProvider
                   attribute="class"
                   defaultTheme="system"
