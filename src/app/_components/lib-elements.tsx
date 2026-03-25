@@ -11,7 +11,7 @@ import {
 import { Badge } from "~/components/ui/badge";
 import { CollapsibleTrigger } from "~/components/ui/collapsible";
 import GradientText from "./gradient-text";
-const libColours = ["#8360c3", "#2ebf91", "#8360c3"];
+const libColours = ["#6366F1", "#EC4899", "#6366F1"];
 const libSadColours = ["#1e130c", "#9a8478", "#1e130c"];
 
 export default function LibMain(props: { children: React.ReactNode }) {
