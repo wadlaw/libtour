@@ -236,8 +236,8 @@ function EclecticMenu() {
           />
           <Protect
             condition={() =>
-              !!sessionClaims?.metadata.eclecticPermission ||
-              !!sessionClaims?.metadata.adminPermission
+              !!sessionClaims?.metadata?.eclecticPermission ||
+              !!sessionClaims?.metadata?.adminPermission
             }
           >
             <MenuItem
