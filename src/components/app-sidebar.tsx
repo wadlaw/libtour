@@ -72,6 +72,7 @@ const items = [
 
 export async function AppSidebar() {
   const user = await currentUser();
+  console.log("USER", user);
   const entrant = user ? await api.entrant.getMe() : null;
   const eclectic = entrant
     ? await api.eclectic.entrantQuickCheck({ systemName: entrant.systemName })

@@ -1,41 +1,38 @@
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure, adminProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  adminProcedure,
+} from "~/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
-
-    loggedInUser: protectedProcedure
-        .query(({ ctx }) => {
-        return ctx.db.entrant.findUniqueOrThrow({
-             where: { userId: ctx.auth.userId }
-            })
+  loggedInUser: protectedProcedure.query(({ ctx }) => {
+    console.log("IS IT BEING CALLED HERE?");
+    return ctx.db.entrant.findUniqueOrThrow({
+      where: { userId: ctx.auth.userId },
+    });
+  }),
+  getAll: adminProcedure.query(({ ctx }) => {
+    return ctx.db.user.findMany({
+      include: {
+        entrant: true,
+      },
+    });
+  }),
+  assignEntrant: adminProcedure
+    .input(z.object({ entrantId: z.number(), userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.entrant.update({
+        where: {
+          id: input.entrantId,
+        },
+        data: {
+          userId: input.userId,
+        },
+      });
     }),
-    getAll: adminProcedure
-        .query(({ ctx }) => {
-            return ctx.db.user.findMany({
-                include: {
-                    entrant: true
-                }
-            })
-        }),
-    assignEntrant: adminProcedure
-        .input(z.object({ entrantId: z.number(), userId: z.string() }))
-        .mutation(async ({ ctx, input }) => {
-            return ctx.db.entrant.update({
-                where: {
-                    id: input.entrantId
-                },
-                data: {
-                    userId: input.userId,
-                }
-            })
-        }),
-    isAdmin: adminProcedure
-        .query(() => {
-            return true
-        }),
-    
-
-
-
+  isAdmin: adminProcedure.query(() => {
+    return true;
+  }),
 });

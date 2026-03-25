@@ -302,7 +302,7 @@ export const compRouter = createTRPCRouter({
     }),
 
   isEntered: protectedProcedure
-    .input(z.object({ comp: z.string().min(4) }))
+    .input(z.object({ comp: z.string().min(3) }))
     .query(async ({ ctx, input }) => {
       return ctx.db.compEntrant.findFirst({
         where: {
@@ -316,7 +316,7 @@ export const compRouter = createTRPCRouter({
     }),
 
   isSomeoneEntered: protectedProcedure
-    .input(z.object({ comp: z.string().min(4), entrantId: z.number() }))
+    .input(z.object({ comp: z.string().min(3), entrantId: z.number() }))
     .query(async ({ ctx, input }) => {
       return ctx.db.compEntrant.findFirst({
         where: {
@@ -541,7 +541,7 @@ export const compRouter = createTRPCRouter({
   }),
 
   setOpen: entryProcedure
-    .input(z.string().min(4))
+    .input(z.string().min(3))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.comp.update({
         where: {
@@ -555,7 +555,7 @@ export const compRouter = createTRPCRouter({
     }),
 
   setClosed: entryProcedure
-    .input(z.string().min(4))
+    .input(z.string().min(3))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.comp.update({
         where: {
@@ -569,7 +569,7 @@ export const compRouter = createTRPCRouter({
     }),
 
   setCurrent: entryProcedure
-    .input(z.string().min(4))
+    .input(z.string().min(3))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.comp.update({
         where: {
@@ -601,7 +601,7 @@ export const compRouter = createTRPCRouter({
   //   }),
 
   getTeamResultsForComp: publicProcedure
-    .input(z.object({ compId: z.string() }))
+    .input(z.object({ compId: z.string().min(3) }))
     .query(async ({ ctx, input }) => {
       //Check whether comp is stableford
       const stab = await ctx.db.comp.findFirst({
@@ -646,7 +646,7 @@ export const compRouter = createTRPCRouter({
     }),
 
   entrantCount: publicProcedure
-    .input(z.object({ comp: z.string() }))
+    .input(z.object({ comp: z.string().min(3) }))
     .query(({ ctx, input }) => {
       return ctx.db.comp.findFirst({
         where: {
