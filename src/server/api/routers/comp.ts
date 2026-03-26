@@ -16,7 +16,7 @@ export const compRouter = createTRPCRouter({
   update: adminProcedure
     .input(
       z.object({
-        igCompId: z.string().min(4),
+        igCompId: z.string().min(3),
         shortName: z.string().min(1),
         name: z.string().min(1),
         date: z.date(),
@@ -57,7 +57,7 @@ export const compRouter = createTRPCRouter({
     }),
 
   delete: adminProcedure
-    .input(z.object({ igCompId: z.string().min(4) }))
+    .input(z.object({ igCompId: z.string().min(3) }))
     .mutation(({ ctx, input }) => {
       return ctx.db.comp.delete({
         where: {
