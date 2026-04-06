@@ -1,221 +1,219 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
-// datasource db {
-//     provider = "sqlite"
-//     url      = env("DATABASE_URL")
-// }
-
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Team {
-    id         String       @unique
-    teamName   String       @unique @map("teamname")
-    linkName   String       @unique @map("linkname")
-    points     Int          @default(0)
-    entrants   Entrant[]
-    teamPoints TeamPoints[]
+  id         String       @unique
+  teamName   String       @unique @map("teamname")
+  linkName   String       @unique @map("linkname")
+  points     Int          @default(0)
+  entrants   Entrant[]
+  teamPoints TeamPoints[]
 
-    @@map("teams")
+  @@map("teams")
 }
 
 model TeamPoints {
-    teamId   String @map("teamid")
-    igCompId String @map("igcompid")
-    points   Int
-    team     Team   @relation(fields: [teamId], references: [id])
-    comp     Comp   @relation(fields: [igCompId], references: [igCompId])
+  teamId   String @map("teamid")
+  igCompId String @map("igcompid")
+  points   Int
+  comp     Comp   @relation(fields: [igCompId], references: [igCompId])
+  team     Team   @relation(fields: [teamId], references: [id])
 
-    @@unique([teamId, igCompId])
-    @@map("teampoints")
+  @@unique([teamId, igCompId])
+  @@map("teampoints")
 }
 
 model Entrant {
-    id                Int           @id @default(autoincrement())
-    userId            String?       @unique @map("userid")
-    name              String        @unique
-    systemName        String        @unique
-    team              Team          @relation(fields: [teamId], references: [id])
-    teamId            String        @map("teamid")
-    captain           Boolean       @default(false)
-    entryPermission   Boolean       @default(false) @map("entrypermission")
-    financePermission Boolean       @default(false) @map("financepermission")
-    compPermission    Boolean       @default(false) @map("comppermission")
-    adminPermission   Boolean       @default(false) @map("adminpermission")
-    comps             CompEntrant[]
-    transactions      Transaction[]
-    user              User?         @relation(fields: [userId], references: [id])
+  id                Int           @id @default(autoincrement())
+  userId            String?       @unique @map("userid")
+  name              String        @unique
+  systemName        String        @unique
+  teamId            String        @map("teamid")
+  captain           Boolean       @default(false)
+  entryPermission   Boolean       @default(false) @map("entrypermission")
+  financePermission Boolean       @default(false) @map("financepermission")
+  compPermission    Boolean       @default(false) @map("comppermission")
+  adminPermission   Boolean       @default(false) @map("adminpermission")
+  matchplay Boolean @default(false)
+  comps             CompEntrant[] @relation("CompEntrantEntrant")
+  opponentInComps   CompEntrant[] @relation("CompEntrantOpponent")
+  team              Team          @relation(fields: [teamId], references: [id])
+  user              User?         @relation(fields: [userId], references: [id])
+  transactions      Transaction[]
 
-    @@map("entrants")
+  @@map("entrants")
 }
 
 model User {
-    id        String   @unique
-    firstName String   @map("firstname")
-    surname   String
-    email     String
-    avatarUrl String?  @map("avatarurl")
-    entrant   Entrant?
+  id        String   @unique
+  firstName String   @map("firstname")
+  surname   String
+  email     String
+  avatarUrl String?  @map("avatarurl")
+  entrant   Entrant?
 
-    @@map("users")
+  @@map("users")
 }
 
 model Transaction {
-    id          Int          @id @default(autoincrement())
-    entrantId   Int          @map("entrantid")
-    amount      Int
-    description String
-    type        String
-    netAmount   Int          @map("netamount")
-    igCompId    String?      @map("igcompid")
-    winnings    Boolean      @default(false)
-    createdAt   DateTime     @default(now()) @map("createdat")
-    compEntry   CompEntrant? @relation(fields: [igCompId, entrantId], references: [compId, entrantId], onDelete: Cascade)
-    entrant     Entrant      @relation(fields: [entrantId], references: [id])
-    comp        Comp?        @relation(fields: [igCompId], references: [igCompId])
+  id          Int          @id @default(autoincrement())
+  entrantId   Int          @map("entrantid")
+  amount      Int
+  description String
+  type        String
+  netAmount   Int          @map("netamount")
+  igCompId    String?      @map("igcompid")
+  winnings    Boolean      @default(false)
+  createdAt   DateTime     @default(now()) @map("createdat")
+  entrant     Entrant      @relation(fields: [entrantId], references: [id])
+  compEntry   CompEntrant? @relation(fields: [igCompId, entrantId], references: [compId, entrantId], onDelete: Cascade)
+  comp        Comp?        @relation(fields: [igCompId], references: [igCompId])
 
-    @@map("transactions")
+  @@map("transactions")
 }
 
 model Comp {
-    igCompId           String              @unique @map("igcompid")
-    shortName          String              @unique @map("shortname")
-    name               String              @unique
-    date               DateTime
-    stableford         Boolean             @default(false)
-    open               Boolean             @default(false)
-    current            Boolean             @default(false)
-    completed          Boolean             @default(false)
-    lib                Boolean             @default(true)
-    eclectic           Boolean             @default(true)
-    resultsPage        String              @default("")
-    round              String              @default("") @map("round")
-    podcast            String              @default("")
-    entrants           CompEntrant[]
-    teamPoints         TeamPoints[]
-    transactions       Transaction[]
-    eclecticScorecards EclecticScorecard[]
+  igCompId           String              @unique @map("igcompid")
+  shortName          String              @unique @map("shortname")
+  name               String              @unique
+  date               DateTime
+  stableford         Boolean             @default(false)
+  open               Boolean             @default(false)
+  current            Boolean             @default(false)
+  completed          Boolean             @default(false)
+  lib                Boolean             @default(true)
+  eclectic           Boolean             @default(true)
+  resultsPage        String              @default("")
+  round              String              @default("") @map("round")
+  podcast            String              @default("")
+  entrants           CompEntrant[]
+  eclecticScorecards EclecticScorecard[]
+  teamPoints         TeamPoints[]
+  transactions       Transaction[]
 
-    @@map("comps")
+  @@map("comps")
 }
 
 model CompEntrant {
-    compId           String
-    entrantId        Int           @map("entrantid")
-    position         Int?
-    igPosition       Int?          @map("igposition")
-    provisionalScore Int?          @map("provisionalscore")
-    score            Int?
-    teamScore        Int?          @map("teamscore")
-    noResult         Boolean       @default(false) @map("noresult")
-    wildcard         Boolean       @default(false)
-    fee              Int           @default(500)
-    createdAt        DateTime      @default(now()) @map("createdat")
-    entrant          Entrant       @relation(fields: [entrantId], references: [id])
-    comp             Comp          @relation(fields: [compId], references: [igCompId])
-    transactions     Transaction[]
-    scorecard        Scorecard?
+  compId           String
+  entrantId        Int           @map("entrantid")
+  position         Int?
+  igPosition       Int?          @map("igposition")
+  provisionalScore Int?          @map("provisionalscore")
+  score            Int?
+  teamScore        Int?          @map("teamscore")
+  noResult         Boolean       @default(false) @map("noresult")
+  wildcard         Boolean       @default(false)
+  fee              Int           @default(500)
+  createdAt        DateTime      @default(now()) @map("createdat")
+  opponentId Int? @map("opponentid")
+  matchplayPoints Int? @map("matchplaypoints")
+  matchplayDiff Int? @map("matchplaydiff")
+  comp             Comp          @relation(fields: [compId], references: [igCompId])
+  entrant          Entrant       @relation("CompEntrantEntrant", fields: [entrantId], references: [id])
+  opponent         Entrant?       @relation("CompEntrantOpponent", fields: [opponentId], references: [id])
+  scorecard        Scorecard?
+  transactions     Transaction[]
 
-    @@unique([compId, entrantId])
-    @@map("compentrants")
+  @@unique([compId, entrantId])
+  @@map("compentrants")
 }
 
 model Scorecard {
-    id               Int         @id @default(autoincrement())
-    compId           String      @map("compid")
-    entrantId        Int         @map("entrantid")
-    handicap         Int
-    stableford       Boolean
-    NR               Boolean     @default(false) @map("nr")
-    strokes          Int?
-    strokesCountback BigInt?     @map("strokescountback")
-    points           Int
-    pointsCountback  BigInt      @map("pointscountback")
-    net              Int?
-    netCountback     BigInt?     @map("netcountback")
-    holes            Hole[]
-    compEntrant      CompEntrant @relation(fields: [compId, entrantId], references: [compId, entrantId], onDelete: Cascade)
+  id               Int         @id @default(autoincrement())
+  compId           String      @map("compid")
+  entrantId        Int         @map("entrantid")
+  handicap         Int
+  stableford       Boolean
+  NR               Boolean     @default(false) @map("nr")
+  strokes          Int?
+  strokesCountback BigInt?     @map("strokescountback")
+  points           Int
+  pointsCountback  BigInt      @map("pointscountback")
+  net              Int?
+  netCountback     BigInt?     @map("netcountback")
+  holes            Hole[]
+  compEntrant      CompEntrant @relation(fields: [compId, entrantId], references: [compId, entrantId], onDelete: Cascade)
 
-    @@unique([compId, entrantId])
-    @@map("scorecards")
+  @@unique([compId, entrantId])
+  @@map("scorecards")
 }
 
 model Hole {
-    scorecardId Int       @map("scorecardid")
-    holeNo      Int       @map("holeno")
-    par         Int
-    strokeIndex Int       @map("strokeindex")
-    strokes     Int?
-    NR          Boolean   @default(false) @map("nr")
-    points      Int       @default(0)
-    net         Int?
-    description String?   @map("description")
-    scorecard   Scorecard @relation(fields: [scorecardId], references: [id], onDelete: Cascade)
+  scorecardId Int       @map("scorecardid")
+  holeNo      Int       @map("holeno")
+  par         Int
+  strokeIndex Int       @map("strokeindex")
+  strokes     Int?
+  NR          Boolean   @default(false) @map("nr")
+  points      Int       @default(0)
+  net         Int?
+  description String?   @map("description")
+  scorecard   Scorecard @relation(fields: [scorecardId], references: [id], onDelete: Cascade)
 
-    @@unique([scorecardId, holeNo])
-    @@map("holes")
+  @@unique([scorecardId, holeNo])
+  @@map("holes")
 }
 
 model CompPrizes {
-    prizePot Int  @id @map("prizepot")
-    first    Int
-    second   Int
-    third    Int?
-    fourth   Int?
-    fifth    Int?
+  prizePot Int  @id @map("prizepot")
+  first    Int
+  second   Int
+  third    Int?
+  fourth   Int?
+  fifth    Int?
 
-    @@map("compprizes")
+  @@map("compprizes")
 }
 
 model EclecticEntrant {
-    id          Int                 @id @default(autoincrement())
-    displayName String              @unique @map("displayname")
-    systemName  String              @unique @map("systemname")
-    paid        Boolean             @default(false) @map("paid")
-    scorecards  EclecticScorecard[]
+  id          Int                 @id @default(autoincrement())
+  displayName String              @unique @map("displayname")
+  systemName  String              @unique @map("systemname")
+  paid        Boolean             @default(false) @map("paid")
+  scorecards  EclecticScorecard[]
 
-    @@map("eclecticentrants")
+  @@map("eclecticentrants")
 }
 
 model EclecticScorecard {
-    id               Int             @id @default(autoincrement())
-    compId           String          @map("compid")
-    entrantId        Int             @map("entrantid")
-    handicap         Int
-    stableford       Boolean
-    NR               Boolean         @default(false) @map("nr")
-    strokes          Int?
-    strokesCountback BigInt?         @map("strokescountback")
-    points           Int
-    pointsCountback  BigInt          @map("pointscountback")
-    net              Int?
-    netCountback     BigInt?         @map("netcountback")
-    holes            EclecticHole[]
-    entrant          EclecticEntrant @relation(fields: [entrantId], references: [id])
-    comp             Comp            @relation(fields: [compId], references: [igCompId])
+  id               Int             @id @default(autoincrement())
+  compId           String          @map("compid")
+  entrantId        Int             @map("entrantid")
+  handicap         Int
+  stableford       Boolean
+  NR               Boolean         @default(false) @map("nr")
+  strokes          Int?
+  strokesCountback BigInt?         @map("strokescountback")
+  points           Int
+  pointsCountback  BigInt          @map("pointscountback")
+  net              Int?
+  netCountback     BigInt?         @map("netcountback")
+  holes            EclecticHole[]
+  comp             Comp            @relation(fields: [compId], references: [igCompId])
+  entrant          EclecticEntrant @relation(fields: [entrantId], references: [id])
 
-    @@unique([compId, entrantId])
-    @@map("eclecticscorecards")
+  @@unique([compId, entrantId])
+  @@map("eclecticscorecards")
 }
 
 model EclecticHole {
-    id          Int               @id @default(autoincrement())
-    scorecardId Int               @map("scorecardid")
-    holeNo      Int               @map("holeno")
-    par         Int
-    strokeIndex Int               @map("strokeindex")
-    strokes     Int?
-    NR          Boolean           @default(false) @map("nr")
-    points      Int               @default(0)
-    net         Int?
-    scorecard   EclecticScorecard @relation(fields: [scorecardId], references: [id], onDelete: Cascade)
+  id          Int               @id @default(autoincrement())
+  scorecardId Int               @map("scorecardid")
+  holeNo      Int               @map("holeno")
+  par         Int
+  strokeIndex Int               @map("strokeindex")
+  strokes     Int?
+  NR          Boolean           @default(false) @map("nr")
+  points      Int               @default(0)
+  net         Int?
+  scorecard   EclecticScorecard @relation(fields: [scorecardId], references: [id], onDelete: Cascade)
 
-    @@map("eclecticholes")
+  @@map("eclecticholes")
 }

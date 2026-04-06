@@ -180,22 +180,13 @@ async function main() {
       teamId: "BS",
       captain: true,
       transactions: {
-        create: [
-          {
-            amount: 2000,
-            description: "Libtour Entry Fee",
-            type: "DR",
-            netAmount: -2000,
-            createdAt: "2026-03-24T01:00:00.000Z",
-          },
-          {
-            amount: 5550,
-            description: "Balance from 2024",
-            type: "CR",
-            netAmount: 5550,
-            createdAt: "2025-03-01T01:00:00.000Z",
-          },
-        ],
+        create: {
+          amount: 2000,
+          description: "Libtour Entry Fee",
+          type: "DR",
+          netAmount: -2000,
+          createdAt: "2026-03-24T01:00:00.000Z",
+        },
       },
     },
   });
