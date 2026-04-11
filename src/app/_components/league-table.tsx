@@ -67,7 +67,7 @@ export async function LeagueTable({
                 {team.teamPoints.length}
               </TableCell>
               <TableCell className="px-1 text-center @2xl/libcard:px-2">
-                {team.teamPoints.filter((res) => res.points === 8).length}
+                {team.teamPoints.filter((res) => res.points === 6).length}
               </TableCell>
               <TableCell className="px-1 text-center @2xl/libcard:px-2">
                 <Link href={`/teams/${team.linkName}`}>
