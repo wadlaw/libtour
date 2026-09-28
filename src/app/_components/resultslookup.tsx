@@ -147,6 +147,13 @@ export function ScrapeResults({
       await queryClient.invalidateQueries();
       router.refresh();
     },
+    onError: async (err) => {
+      toast({
+        variant: "destructive",
+        title: "Results not finalised!",
+        description: `${err.message}`,
+      });
+    },
   });
 
   const scores = api.scorecard.addMany.useMutation({

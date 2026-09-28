@@ -137,6 +137,14 @@ function HandicapTable({ handicapIndex, tee }: HandicapTableProps) {
             {round(courseHandicap * 0.95)}
           </TableCell>
         </TableRow>
+        <TableRow>
+          <TableCell>Playing Handicap</TableCell>
+          <TableCell>Pairs Matchplay</TableCell>
+          <TableCell className="text-center">90%</TableCell>
+          <TableCell className="text-center">
+            {round(courseHandicap * 0.9)}
+          </TableCell>
+        </TableRow>
       </TableBody>
     </Table>
   );
