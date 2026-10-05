@@ -80,6 +80,20 @@ const winners: Team[] = [
       { name: "Paul Wood" },
     ],
   },
+  {
+    year: 2026,
+    teamName: "Big Sticks",
+    teamId: "BS",
+    linkName: "bigsticks",
+    entrants: [
+      { name: "Suki Saran (c)" },
+      { name: "Dan Blatchford" },
+      { name: "Malk Dhami" },
+      { name: "Paul McAllister" },
+      { name: "Paul Wood" },
+      { name: "Randip Gill" },
+    ],
+  },
 ];
 
 const losers: Team[] = [
@@ -125,10 +139,25 @@ const losers: Team[] = [
       { name: "Sam Ryan" },
     ],
   },
+  {
+    year: 2026,
+    teamName: "Swingers",
+    teamId: "SW",
+    linkName: "swingers",
+    entrants: [
+      { name: "Kelvin Munroe (c)" },
+      { name: "Ben Pettet" },
+      { name: "Gareth Coulter" },
+      { name: "Gareth Peers-Jones" },
+      { name: "Justin Gledhill-Carr" },
+      { name: "Terry Hare" },
+    ],
+  },
 ];
 
 const holesInOne: HoleAchievement[] = [
   { holeNo: 17, name: "Tom Whitelaw", comp: "OCO 2023" },
+  { holeNo: 8, name: "Linas Bumblys", comp: "Club Champs 2026" },
 ];
 
 export function Winners() {
