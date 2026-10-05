@@ -78,6 +78,7 @@ export default authMiddleware({
     "/entrants",
     "/entrants/:path",
     "/api/webhooks/user",
+    "/api/mcp",
     "/sign-in",
     "/prizewinners",
     "/halloffame",
