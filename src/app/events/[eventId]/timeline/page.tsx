@@ -616,20 +616,20 @@ function getTeamScores(thru: number, data: Leaderboard) {
   const allowTies = thru < 18;
 
   const scores = new Map<Teams, TeamScore>([
-    [
-      "BB",
-      {
-        teamId: "BB",
-        teamName: "Bogey Boys",
-        position: 0,
-        tied: false,
-        positionChange: 0,
-        score: 3600,
-        score1: 1800,
-        score2: 1800,
-        scoreCount: 0,
-      },
-    ],
+    // [
+    //   "BB",
+    //   {
+    //     teamId: "BB",
+    //     teamName: "Bogey Boys",
+    //     position: 0,
+    //     tied: false,
+    //     positionChange: 0,
+    //     score: 3600,
+    //     score1: 1800,
+    //     score2: 1800,
+    //     scoreCount: 0,
+    //   },
+    // ],
     [
       "BD",
       {
@@ -658,20 +658,20 @@ function getTeamScores(thru: number, data: Leaderboard) {
         scoreCount: 0,
       },
     ],
-    [
-      "EU",
-      {
-        teamId: "EU",
-        teamName: "Eurekas",
-        position: 0,
-        tied: false,
-        positionChange: 0,
-        score: 3600,
-        score1: 1800,
-        score2: 1800,
-        scoreCount: 0,
-      },
-    ],
+    // [
+    //   "EU",
+    //   {
+    //     teamId: "EU",
+    //     teamName: "Eurekas",
+    //     position: 0,
+    //     tied: false,
+    //     positionChange: 0,
+    //     score: 3600,
+    //     score1: 1800,
+    //     score2: 1800,
+    //     scoreCount: 0,
+    //   },
+    // ],
     [
       "RF",
       {
@@ -1109,8 +1109,8 @@ function CompStats({ comp }: CompStatsProps) {
       {stats.mostBlobbedHole.length > 0 && stats.mostBlobbedHole.length < 3 ? (
         <p>
           Most Blobbed Hole{stats.mostBlobbedHole.length > 1 ? "s" : ""}:
-          {" Hole "}
-          {stats.mostBlobbedHole.length > 1 ? "s" : ""}
+          {" Hole"}
+          {stats.mostBlobbedHole.length > 1 ? "s " : " "}
           {stats.mostBlobbedHole.map((sc) => sc.player).join(", ")} with{" "}
           {stats.mostBlobbedHole[0]?.score} blob
           {(stats.mostBlobbedHole[0]?.score ?? 0) > 1 ? "s" : ""}
