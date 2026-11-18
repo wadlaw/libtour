@@ -2,6 +2,10 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { ensure } from "~/lib/utils";
+import {
+  publicEntrantProfileSelect,
+  publicEntrantSelect,
+} from "~/server/api/public-entrant";
 
 import {
   createTRPCRouter,
@@ -26,13 +30,21 @@ export const entrantRouter = createTRPCRouter({
     .query(({ ctx, input }) => {
       return ctx.db.entrant.findMany({
         where: { comps: { some: { compId: input.compId } } },
+        select: publicEntrantSelect,
       });
     }),
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.entrant.findMany({
       orderBy: [{ team: { teamName: "asc" } }, { name: "asc" }],
-      include: {
-        team: true,
+      select: publicEntrantSelect,
+    });
+  }),
+  getAllForAdmin: adminProcedure.query(({ ctx }) => {
+    return ctx.db.entrant.findMany({
+      orderBy: [{ team: { teamName: "asc" } }, { name: "asc" }],
+      select: {
+        ...publicEntrantSelect,
+        userId: true,
       },
     });
   }),
@@ -43,9 +55,8 @@ export const entrantRouter = createTRPCRouter({
         where: {
           id: input.entrantId,
         },
-        include: {
-          team: true,
-          user: true,
+        select: {
+          ...publicEntrantProfileSelect,
           comps: {
             orderBy: {
               comp: {
@@ -188,7 +199,8 @@ export const entrantRouter = createTRPCRouter({
 
   summary: publicProcedure.query(({ ctx }) => {
     return ctx.db.entrant.findMany({
-      include: {
+      select: {
+        ...publicEntrantSelect,
         comps: {
           where: {
             comp: {
@@ -213,7 +225,8 @@ export const entrantRouter = createTRPCRouter({
         where: {
           teamId: input.teamId,
         },
-        include: {
+        select: {
+          ...publicEntrantSelect,
           comps: {
             where: {
               comp: {
@@ -260,8 +273,8 @@ export const entrantRouter = createTRPCRouter({
       });
 
       const entrants = await ctx.db.entrant.findMany({
-        include: {
-          team: true,
+        select: {
+          ...publicEntrantSelect,
           transactions: {
             where: {
               winnings: true,

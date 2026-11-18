@@ -23,7 +23,7 @@ export const metadata = {
 
 export default async function Page() {
   const users = await api.user.getAll();
-  const entrants = await api.entrant.getAll();
+  const entrants = await api.entrant.getAllForAdmin();
 
   return (
     <LibMain>

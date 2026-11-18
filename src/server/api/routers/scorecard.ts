@@ -5,6 +5,7 @@ import {
   adminProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+import { publicEntrantSelect } from "~/server/api/public-entrant";
 
 const CalculatePoints = (
   strokes: number | undefined,
@@ -438,7 +439,7 @@ export const scorecardRouter = createTRPCRouter({
             compEntrant: {
               include: {
                 comp: true,
-                entrant: true,
+                entrant: { select: publicEntrantSelect },
               },
             },
           },
@@ -471,7 +472,7 @@ export const scorecardRouter = createTRPCRouter({
             compEntrant: {
               include: {
                 comp: true,
-                entrant: true,
+                entrant: { select: publicEntrantSelect },
               },
             },
           },
@@ -507,7 +508,7 @@ export const scorecardRouter = createTRPCRouter({
             compEntrant: {
               include: {
                 comp: true,
-                entrant: true,
+                entrant: { select: publicEntrantSelect },
               },
             },
           },
@@ -525,7 +526,7 @@ export const scorecardRouter = createTRPCRouter({
           compEntrant: {
             include: {
               comp: true,
-              entrant: true,
+              entrant: { select: publicEntrantSelect },
             },
           },
         },
@@ -546,7 +547,7 @@ export const scorecardRouter = createTRPCRouter({
           compEntrant: {
             include: {
               comp: true,
-              entrant: true,
+              entrant: { select: publicEntrantSelect },
             },
           },
         },
@@ -568,7 +569,7 @@ export const scorecardRouter = createTRPCRouter({
           compEntrant: {
             include: {
               comp: true,
-              entrant: true,
+              entrant: { select: publicEntrantSelect },
             },
           },
         },
@@ -590,7 +591,7 @@ export const scorecardRouter = createTRPCRouter({
           compEntrant: {
             include: {
               comp: true,
-              entrant: true,
+              entrant: { select: publicEntrantSelect },
             },
           },
         },
@@ -612,7 +613,7 @@ export const scorecardRouter = createTRPCRouter({
           compEntrant: {
             include: {
               comp: true,
-              entrant: true,
+              entrant: { select: publicEntrantSelect },
             },
           },
         },
@@ -633,7 +634,7 @@ export const scorecardRouter = createTRPCRouter({
           compEntrant: {
             include: {
               comp: true,
-              entrant: true,
+              entrant: { select: publicEntrantSelect },
             },
           },
         },
@@ -647,8 +648,8 @@ export const scorecardRouter = createTRPCRouter({
 
   LibEclecticScores: publicProcedure.query(async ({ ctx }) => {
     return ctx.db.entrant.findMany({
-      include: {
-        team: true,
+      select: {
+        ...publicEntrantSelect,
         comps: {
           include: {
             scorecard: {
