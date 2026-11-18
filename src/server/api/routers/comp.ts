@@ -11,6 +11,7 @@ import {
   entryProcedure,
   adminProcedure,
 } from "~/server/api/trpc";
+import { publicEntrantSelect } from "~/server/api/public-entrant";
 
 export const compRouter = createTRPCRouter({
   update: adminProcedure
@@ -229,7 +230,7 @@ export const compRouter = createTRPCRouter({
             },
             take: 3,
             include: {
-              entrant: true,
+              entrant: { select: publicEntrantSelect },
             },
           },
           teamPoints: {
@@ -261,7 +262,7 @@ export const compRouter = createTRPCRouter({
               position: "asc",
             },
             include: {
-              entrant: true,
+              entrant: { select: publicEntrantSelect },
               scorecard: {
                 include: {
                   holes: {
@@ -294,7 +295,7 @@ export const compRouter = createTRPCRouter({
             },
             orderBy: [{ amount: "desc" }],
             include: {
-              entrant: true,
+              entrant: { select: publicEntrantSelect },
             },
           },
         },
@@ -341,7 +342,7 @@ export const compRouter = createTRPCRouter({
         },
         include: {
           comp: true,
-          entrant: true,
+          entrant: { select: publicEntrantSelect },
           transactions: {
             where: {
               winnings: true,
@@ -379,7 +380,7 @@ export const compRouter = createTRPCRouter({
               winnings: true,
             },
           },
-          entrant: true,
+          entrant: { select: publicEntrantSelect },
         },
       });
     }),
@@ -392,7 +393,7 @@ export const compRouter = createTRPCRouter({
           compId: input.comp,
         },
         include: {
-          entrant: true,
+          entrant: { select: publicEntrantSelect },
         },
         orderBy: [
           {
@@ -430,6 +431,7 @@ export const compRouter = createTRPCRouter({
           id: { notIn: enteredIds.map((entId) => entId.entrantId) },
         },
         orderBy: [{ team: { teamName: "asc" } }, { name: "asc" }],
+        select: publicEntrantSelect,
       });
     }),
 
@@ -445,7 +447,7 @@ export const compRouter = createTRPCRouter({
       include: {
         entrants: {
           include: {
-            entrant: true,
+            entrant: { select: publicEntrantSelect },
           },
         },
       },
@@ -461,7 +463,7 @@ export const compRouter = createTRPCRouter({
       include: {
         entrants: {
           include: {
-            entrant: true,
+            entrant: { select: publicEntrantSelect },
           },
         },
       },
@@ -477,7 +479,7 @@ export const compRouter = createTRPCRouter({
       include: {
         entrants: {
           include: {
-            entrant: true,
+            entrant: { select: publicEntrantSelect },
           },
         },
       },
@@ -495,7 +497,7 @@ export const compRouter = createTRPCRouter({
       include: {
         entrants: {
           include: {
-            entrant: true,
+            entrant: { select: publicEntrantSelect },
           },
         },
       },
@@ -523,7 +525,7 @@ export const compRouter = createTRPCRouter({
       include: {
         entrants: {
           include: {
-            entrant: true,
+            entrant: { select: publicEntrantSelect },
           },
         },
       },
@@ -636,7 +638,7 @@ export const compRouter = createTRPCRouter({
                   teamScore: { not: null },
                 },
                 include: {
-                  entrant: true,
+                  entrant: { select: publicEntrantSelect },
                 },
               },
             },

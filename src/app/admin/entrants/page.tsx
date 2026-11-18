@@ -18,7 +18,7 @@ import { EditEntrantDialog } from "~/app/_components/entrants";
 import UserSelect from "~/app/_components/user-select";
 
 export default async function Entrants() {
-  const entrants = await api.entrant.getAll();
+  const entrants = await api.entrant.getAllForAdmin();
   const users = await api.user.getAll();
   return (
     <LibMain>

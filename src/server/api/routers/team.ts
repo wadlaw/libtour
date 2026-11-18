@@ -3,6 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { publicEntrantSelect } from "~/server/api/public-entrant";
 
 export const teamRouter = createTRPCRouter({
   hello: publicProcedure
@@ -83,7 +84,7 @@ export const teamRouter = createTRPCRouter({
     return ctx.db.team.findMany({
         orderBy: { teamName: "asc" },
         include: {
-            entrants: true
+            entrants: { select: publicEntrantSelect }
         }
     })
   }),
