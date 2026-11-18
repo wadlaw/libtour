@@ -63,6 +63,7 @@ export function ThemedLogo() {
         alt={`Libtour badge`}
         height="36"
         width="24"
+        priority
       />
       <Image
         className="dark:hidden"
@@ -70,6 +71,7 @@ export function ThemedLogo() {
         alt={`Libtour badge`}
         height="36"
         width="24"
+        priority
       />
       <h1 className="pr-1 text-4xl">ibtour</h1>
     </div>

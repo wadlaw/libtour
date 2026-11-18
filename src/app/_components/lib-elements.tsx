@@ -107,6 +107,7 @@ export function TeamDisplay({
             width={30}
             height={30}
             alt={`${team.teamName} Team Logo`}
+            loading="eager"
           ></Image>
         </div>
         <div className={`${iconOnlyWhenSmall && "hidden"} @2xl/libcard:block`}>
@@ -129,6 +130,7 @@ export function TeamDisplayCollapsible({ team }: TeamDisplayCollapsibleProps) {
             width={30}
             height={30}
             alt={`${team.teamName} Team Logo`}
+            loading="eager"
           ></Image>
         </CollapsibleTrigger>
       </div>
